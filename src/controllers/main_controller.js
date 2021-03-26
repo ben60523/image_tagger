@@ -12,7 +12,7 @@ const Datastore = require('nedb');
 
 const FIND_ONE = 'FIND_ONE';
 const UPDATE = 'UPDATE';
-const getPathStr = 'userData';
+const getPathStr = 'appData';
 
 const db = new Datastore({
   filename: path.join(
