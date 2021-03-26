@@ -44,7 +44,7 @@ export default ({
         Tags
       </h5>
       {
-        tagList !== null ? tagList.map((tag) => {
+        nLabelList.labels.length !== 0 && tagList !== null ? tagList.map((tag) => {
           const { key } = tag;
           const label = getLabel(tag.label);
 
@@ -71,7 +71,7 @@ export default ({
             >
               <span
                 className="icon icon-record"
-                style={{ color: label !== null ? label.color : '', marginRight: '5px' }}
+                style={{ color: label.color, marginRight: '5px' }}
               />
               <strong>{label.title}</strong>
               {getEditBar(tag)}
