@@ -1,6 +1,6 @@
 {
   "name": "media_tagger",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "",
   "main": "./build/main.js",
   "scripts": {
@@ -37,11 +37,11 @@
       "!src/main.js"
     ],
     "mac": {
-      "artifactName": "media_tagger.${ext}",
+      "artifactName": "media_tagger_${version}_setup.${ext}",
       "category": "public.app-category.developer-tools"
     },
     "win": {
-      "artifactName": "media_tagger.${ext}",
+      "artifactName": "media_tagger_${version}_setup.${ext}",
       "target": [
         {
           "arch": [
