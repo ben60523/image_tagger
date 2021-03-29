@@ -2,15 +2,6 @@ const { app, BrowserWindow, ipcMain, screen, Menu } = require('electron');
 const electronShortcut = require('electron-localshortcut');
 const winston = require('winston');
 
-// const logger = winston.createLogger({
-//   level: 'info',
-//   format: winston.format.json(),
-//   transports: [
-//     new winston.transports.Console(),
-//     new winston.transports.File({ filename: 'combine.log'})
-//   ]
-// });
-
 const path = require('path');
 const URL = require('url');
 const isDev = require('electron-is-dev');
@@ -20,9 +11,6 @@ const mainController = require('./controllers/main_controller');
 const appMenu = require('./menu');
 
 const config = require('./config');
-
-// TODO: Is this necessary?
-app.setName(config.appName);
 
 const {
   TO_MAIN,
@@ -40,6 +28,20 @@ if (isDev) {
     electron: path.join(__dirname, '../', './node_modules/electron')
   });
 }
+
+  app.setName(config.appName);
+  app.setPath('userData', path.join(app.getPath('appData'), config.appName));
+  app.setAppLogsPath(path.join(app.getPath('logs').replace('Electron', ''), config.appName));
+
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.json(),
+  transports: [
+    new winston.transports.File({
+      filename: path.join(app.getPath('logs'), 'combine.log')
+    })
+  ]
+});
 
 function createWindow () {
   const { width, height } = screen.getPrimaryDisplay().rotation;
