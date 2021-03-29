@@ -1,5 +1,15 @@
 const { app, BrowserWindow, ipcMain, screen, Menu } = require('electron');
 const electronShortcut = require('electron-localshortcut');
+const winston = require('winston');
+
+// const logger = winston.createLogger({
+//   level: 'info',
+//   format: winston.format.json(),
+//   transports: [
+//     new winston.transports.Console(),
+//     new winston.transports.File({ filename: 'combine.log'})
+//   ]
+// });
 
 const path = require('path');
 const URL = require('url');

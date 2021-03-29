@@ -17,8 +17,6 @@ module.exports = {
         'electron-reload': 'require(\'electron-reload\')'
     } ],
     resolve: {
-        modules: [
-            path.resolve('./node_modules')
-        ]
+      modules: [path.resolve(__dirname, "node_modules"), "node_modules"]
     }
 }
