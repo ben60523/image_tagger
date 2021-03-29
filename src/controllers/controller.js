@@ -48,7 +48,7 @@ db.label = new Datastore({
   autoload: true,
 });
 
-module.exports = ({win, props}) => {
+module.exports = ({win, props, logger}) => {
   const sendResponse = (channel, msg) => {
     win.webContents.send(channel, msg);
   }
@@ -219,7 +219,7 @@ module.exports = ({win, props}) => {
             config.appPath,
             'media_store',
           );
-          
+
           sendResponse(
             FROM_GENERAL,
             {
@@ -228,10 +228,17 @@ module.exports = ({win, props}) => {
             }
           );
 
-          if (props.type === 'pages' && props.name === 'update' && resp.src) {
-            if (resp.src.length !== 0) {
+          if (props.type === 'pages' && props.name === 'update') {
+            if (resp.hasOwnProperty('src')) {
               copyFiles(resp.src, mediaStorePath);
             };
+
+            logger.log({
+              level: 'info',
+              message: 'update/insert page',
+              props,
+              resp,
+            });
           } else if (props.type === 'pages' && props.name === 'find') {
             syncMediaStore(resp, mediaStorePath);
           }

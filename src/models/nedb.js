@@ -11,9 +11,9 @@ module.exports = (() => {
   const update = (db, props) => {
     const dbUpdate = (item) => {
       return new Promise((resolve, reject) => {   
-        db.update({key: item.key}, item, {}, (err, numReplace) => {
+        db.update({key: item.key}, item, { returnUpdatedDocs: true }, (err, numReplace, affectedDocuments) => {
           if (err) reject(err);
-          resolve(numReplace);
+          resolve(affectedDocuments);
         })
       })
         .then((resp) => {

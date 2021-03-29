@@ -29,16 +29,16 @@ if (isDev) {
   });
 }
 
-  app.setName(config.appName);
-  app.setPath('userData', path.join(app.getPath('appData'), config.appName));
-  app.setAppLogsPath(path.join(app.getPath('logs').replace('Electron', ''), config.appName));
+app.setName(config.appName);
+app.setPath('userData', path.join(app.getPath('appData'), config.appName));
+app.setAppLogsPath(path.join(app.getPath('logs').replace('Electron', ''), config.appName));
 
 const logger = winston.createLogger({
   level: 'info',
   format: winston.format.json(),
   transports: [
     new winston.transports.File({
-      filename: path.join(app.getPath('logs'), 'combine.log')
+      filename: path.join(app.getPath('logs'), 'media_tagger_main.json')
     })
   ]
 });
@@ -100,7 +100,7 @@ function createWindow () {
 
   ipcMain.on(TO_GENERAL, (e, props) => {
     // console.log(props);
-    controller({win, app, props})
+    controller({win, app, props, logger: logger})
   })
 }
 
