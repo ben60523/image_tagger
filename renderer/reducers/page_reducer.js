@@ -28,10 +28,29 @@ const onAddPage = (state, action) => {
 
 const onUpdate = (pages, updatedPage) => {
   const pageIndex = findPageIndex(updatedPage, pages);
-  if (pageIndex !== -1) {
-    pages.splice(pageIndex, 1, updatedPage);
+  const comparedPage = pages[pageIndex];
+
+  console.log(comparedPage, updatedPage);
+
+  // Page contents is wrong
+  if (!Array.isArray(comparedPage.tags) || !Array.isArray(updatedPage.tags)) {
+    return pages;
   }
-  return [...pages];
+
+  const isSame = () => {
+    if (comparedPage.tags.length !== updatedPage.tags.length) {
+      return false;
+    }
+
+    return true;
+  };
+
+  if (pageIndex !== -1 && !isSame(comparedPage, updatedPage)) {
+    pages.splice(pageIndex, 1, updatedPage);
+    return [...pages];
+  }
+
+  return pages;
 };
 
 const onImportPage = (prePages, importCtn) => importCtn.reduce(
