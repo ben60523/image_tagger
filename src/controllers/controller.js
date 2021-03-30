@@ -237,7 +237,6 @@ module.exports = ({win, props, logger}) => {
               level: 'info',
               message: 'update/insert page',
               props,
-              resp,
             });
           } else if (props.type === 'pages' && props.name === 'find') {
             syncMediaStore(resp, mediaStorePath);
