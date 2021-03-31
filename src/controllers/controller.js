@@ -229,9 +229,9 @@ module.exports = ({win, props, logger}) => {
           );
 
           if (props.type === 'pages' && props.name === 'update') {
-            if (resp.hasOwnProperty('src')) {
-              copyFiles(resp.src, mediaStorePath);
-            };
+            // if (resp.hasOwnProperty('src')) {
+            //   copyFiles(resp.src, mediaStorePath);
+            // };
 
             logger.log({
               level: 'info',
