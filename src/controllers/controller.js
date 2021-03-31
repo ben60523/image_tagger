@@ -237,6 +237,7 @@ module.exports = ({win, props, logger}) => {
               level: 'info',
               message: 'update/insert page',
               contents: props,
+              position: 'controller.js',
               createAt: new Date(),
             });
           } else if (props.type === 'pages' && props.name === 'find') {
