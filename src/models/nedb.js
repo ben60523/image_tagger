@@ -17,7 +17,7 @@ module.exports = (() => {
         })
       })
         .then((resp) => {
-          if (resp === 0) return insert(db, { contents: item });
+          if (resp === undefined) return insert(db, { contents: item });
           return resp;
         })
     };

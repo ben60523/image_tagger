@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, screen, Menu } = require('electron');
 const electronShortcut = require('electron-localshortcut');
 const winston = require('winston');
+const Datastore = require('nedb');
 
 const path = require('path');
 const URL = require('url');
@@ -16,6 +17,10 @@ const {
   TO_MAIN,
   FROM_MAIN,
   TO_GENERAL,
+  DB_PATH,
+  PAGE_COLLECTION,
+  LABEL_COLLECTION,
+  APP_PATH,
 } = require("./const");
 
 /**
@@ -33,6 +38,8 @@ app.setName(config.appName);
 app.setPath('userData', path.join(app.getPath('appData'), config.appName));
 app.setAppLogsPath(path.join(app.getPath('logs').replace('Electron', ''), config.appName));
 
+console.log(app.getPath('userData'));
+
 const logger = winston.createLogger({
   level: 'info',
   format: winston.format.json(),
@@ -42,6 +49,31 @@ const logger = winston.createLogger({
     })
   ]
 });
+
+const db = {};
+db.page = new Datastore({
+  filename: path.join(
+    app.getPath(APP_PATH),
+    DB_PATH,
+    PAGE_COLLECTION,
+  ),
+  autoload: true,
+});
+
+db.label = new Datastore({
+  filename: path.join(
+    app.getPath(APP_PATH),
+    DB_PATH,
+    LABEL_COLLECTION,
+  ),
+  autoload: true,
+});
+
+console.log(path.join(
+  app.getPath(APP_PATH),
+  DB_PATH,
+  LABEL_COLLECTION,
+));
 
 function createWindow () {
   const { width, height } = screen.getPrimaryDisplay().rotation;
@@ -100,7 +132,7 @@ function createWindow () {
 
   ipcMain.on(TO_GENERAL, (e, props) => {
     // console.log(props);
-    controller({win, app, props, logger: logger})
+    controller({win, app, db, props, logger: logger})
   })
 }
 

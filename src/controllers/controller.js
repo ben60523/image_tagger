@@ -1,6 +1,4 @@
-const Datastore = require('nedb');
 const path = require('path');
-const config = require('../config');
 const { dialog } = require('electron');
 const moment = require('moment');
 
@@ -17,38 +15,18 @@ const { app } = require('electron');
 
 const {
   FROM_GENERAL,
-  PAGE_COLLECTION,
-  LABEL_COLLECTION,
 } = require("../const");
 
 const SELECT_FILES = 'SELECT_FILES';
 const EXPORT_PROJECT = 'EXPORT_PROJECT';
 const SELECT_FOLDER = 'SELECT_FOLDER';
 
-const getPathStr = 'appData';
 
 const supportSuffix = ['jpg', 'png', 'jpeg'];
 
-const db = {};
-db.page = new Datastore({
-  filename: path.join(
-    app.getPath(getPathStr),
-    config.dbPath,
-    PAGE_COLLECTION,
-  ),
-  autoload: true,
-});
 
-db.label = new Datastore({
-  filename: path.join(
-    app.getPath(getPathStr),
-    config.dbPath,
-    LABEL_COLLECTION,
-  ),
-  autoload: true,
-});
 
-module.exports = ({win, props, logger}) => {
+module.exports = ({win, props, db, logger}) => {
   const sendResponse = (channel, msg) => {
     win.webContents.send(channel, msg);
   }
@@ -214,11 +192,6 @@ module.exports = ({win, props, logger}) => {
     default:
       require('../models/nedb')[props.name](getDB(props), props)
         .then((resp) => {
-          const mediaStorePath = path.join(
-            app.getPath(getPathStr),
-            config.appPath,
-            'media_store',
-          );
 
           sendResponse(
             FROM_GENERAL,
@@ -241,7 +214,7 @@ module.exports = ({win, props, logger}) => {
               createAt: new Date(),
             });
           } else if (props.type === 'pages' && props.name === 'find') {
-            syncMediaStore(resp, mediaStorePath);
+            // syncMediaStore(resp, mediaStorePath);
           }
         })
         .catch((err) => { console.log(err) })
