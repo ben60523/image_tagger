@@ -71,7 +71,6 @@ const App = () => {
         imgs.map((img) => {
           const newPage = pageCreater(img, PROJECT_NAME);
           dispatch(addPage(newPage));
-          send2Local(TO_GENERAL, update(PAGES, newPage));
           return newPage;
         })[0].key,
       );
