@@ -192,7 +192,6 @@ module.exports = ({win, props, db, logger}) => {
     default:
       require('../models/nedb')[props.name](getDB(props), props)
         .then((resp) => {
-
           sendResponse(
             FROM_GENERAL,
             {

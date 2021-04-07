@@ -38,8 +38,6 @@ app.setName(config.appName);
 app.setPath('userData', path.join(app.getPath('appData'), config.appName));
 app.setAppLogsPath(path.join(app.getPath('logs').replace('Electron', ''), config.appName));
 
-console.log(app.getPath('userData'));
-
 const logger = winston.createLogger({
   level: 'info',
   format: winston.format.json(),
@@ -68,12 +66,6 @@ db.label = new Datastore({
   ),
   autoload: true,
 });
-
-console.log(path.join(
-  app.getPath(APP_PATH),
-  DB_PATH,
-  LABEL_COLLECTION,
-));
 
 function createWindow () {
   const { width, height } = screen.getPrimaryDisplay().rotation;
