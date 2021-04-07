@@ -138,7 +138,6 @@ const SideBar = ({ pages }) => {
         ],
       );
     }
-    history.push('/');
   }, [workingPath]);
 
   return (

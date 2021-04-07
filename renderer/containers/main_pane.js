@@ -8,19 +8,21 @@ import SideBar from './sidebar';
 const MainContent = ({ pages }) => (
   <div className="pane">
     <div className="pane-group">
-      <SideBar pages={pages} />
       <Route path="/" exact component={() => <Home />} />
       {
         pages.map((page) => (
           <Route
             path={page.key}
             render={(props) => (
-              <div className="pane">
-                <PageLoader
-                  {...props}
-                  properties={{ page }}
-                />
-              </div>
+              <>
+                <SideBar pages={pages} />
+                <div className="pane">
+                  <PageLoader
+                    {...props}
+                    properties={{ page }}
+                  />
+                </div>
+              </>
             )}
           />
         ))
