@@ -20,6 +20,7 @@ const {
   DB_PATH,
   PAGE_COLLECTION,
   LABEL_COLLECTION,
+  PROJECT_COLLECTION,
   APP_PATH,
 } = require("./const");
 
@@ -63,6 +64,15 @@ db.label = new Datastore({
     app.getPath(APP_PATH),
     DB_PATH,
     LABEL_COLLECTION,
+  ),
+  autoload: true,
+});
+
+db.project = new Datastore({
+  filename: path.join(
+    app.getPath(APP_PATH),
+    DB_PATH,
+    PROJECT_COLLECTION,
   ),
   autoload: true,
 });
@@ -118,6 +128,7 @@ function createWindow () {
   ipcMain.on(TO_MAIN, (e, props) => {
     mainController({
       win,
+      db: db.project,
       props
     })
   })
