@@ -105,12 +105,12 @@ const SideBar = ({ pages }) => {
     return null;
   };
 
-  const findTagFilter = () => filterList.findIndex(
-    (filter) => filter.name === TAGGED_IMAGE,
+  const findFilter = (filterName) => filterList.findIndex(
+    (filter) => filter.name === filterName,
   );
 
-  const toggleTagFilter = () => {
-    const filterIndex = findTagFilter();
+  const toggleTagFilter = (filterName) => {
+    const filterIndex = findFilter(filterName);
 
     if (filterIndex === -1) {
       setFilterList(
@@ -128,16 +128,19 @@ const SideBar = ({ pages }) => {
   const imageList = filterPage();
 
   useEffect(() => {
-    if (workingPath !== 'import') {
-      setFilterList(
-        [
-          {
-            name: WORKING_FOLDER,
-            options: { workingPath },
-          },
-        ],
+    const updateWorkingPath = () => {
+      filterList.splice(
+        findFilter(WORKING_FOLDER),
+        1,
+        {
+          name: WORKING_FOLDER,
+          options: { workingPath },
+        },
       );
-    }
+      setFilterList([...filterList]);
+    };
+
+    updateWorkingPath();
   }, [workingPath]);
 
   return (
@@ -164,10 +167,10 @@ const SideBar = ({ pages }) => {
           <IconButton
             aria-label="expand"
             size="small"
-            onClick={() => toggleTagFilter()}
+            onClick={() => toggleTagFilter(TAGGED_IMAGE)}
           >
             {
-              findTagFilter() === -1 ? (
+              findFilter(TAGGED_IMAGE) === -1 ? (
                 <BookmarkBorderIcon fontSize="inherit" />
               ) : (
                 <BookmarkIcon fontSize="inherit" />
