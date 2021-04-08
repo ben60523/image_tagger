@@ -47,7 +47,7 @@ const containerStyle = {
 const initialPoint = { left: -1, top: -1 };
 
 export default function imageTagger({ page }) {
-  const { onUpdatePage } = useContext(ContextStore);
+  const { onUpdatePage, labels } = useContext(ContextStore);
   const canvasRef = useRef(null);
   const routeHistory = useHistory();
   const [snapshot, setSnapshot] = useState(null);
@@ -63,7 +63,7 @@ export default function imageTagger({ page }) {
     if (content.type === 'canvas' && snapshot !== null) {
       const canvas = canvasRef.current;
       const context = canvas.getContext('2d');
-      drawInstructions(context, snapshot, tags, tagConfig);
+      drawInstructions(context, snapshot, tags, labels);
     }
   };
 
@@ -199,7 +199,6 @@ export default function imageTagger({ page }) {
               top: Math.round(mouseDownPoint.top * scale().scaleY),
               width: Math.round((mouseUpPoint.left - mouseDownPoint.left) * scale().scaleX),
               height: Math.round((mouseUpPoint.top - mouseDownPoint.top) * scale().scaleY),
-              color: tagConfig.color,
               label: tagConfig.key,
             }, dispatch);
           }

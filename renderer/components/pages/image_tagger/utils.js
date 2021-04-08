@@ -79,11 +79,17 @@ export const drawTagRectangle = (properties, dispatch) => {
   ]);
 };
 
-export const drawInstructions = (ctx, imgData, tagList) => {
+export const drawInstructions = (ctx, imgData, tagList, labels) => {
   ctx.putImageData(imgData, 0, 0);
   tagList.map((tag) => {
     if (tag.type === DRAW_RECTANGLE && !tag.hide) {
-      drawRectangle(tag, ctx);
+      drawRectangle(
+        {
+          ...tag,
+          color: labels.find((label) => label.key === tag.label).color,
+        },
+        ctx,
+      );
     }
     return true;
   });
