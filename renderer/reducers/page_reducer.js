@@ -30,8 +30,6 @@ const onUpdate = (pages, updatedPage) => {
   const pageIndex = findPageIndex(updatedPage, pages);
   const comparedPage = pages[pageIndex];
 
-  console.log(comparedPage, updatedPage);
-
   // Page contents is wrong
   if (!Array.isArray(comparedPage.tags) || !Array.isArray(updatedPage.tags)) {
     return pages;
