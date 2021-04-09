@@ -38,13 +38,14 @@ export function drawRectangle(props, ctx) {
 
   if (props.title) {
     const fontSize = ctx.lineWidth * 10;
+    const spaceNum = (props.title.split(' ').length - 1);
 
     ctx.beginPath();
     ctx.fillStyle = color;
     ctx.fillRect(
       left,
       top - fontSize - 5,
-      ctx.lineWidth * props.title.length * 5 + 5,
+      ctx.lineWidth * (props.title.length - spaceNum) * 5 + 5,
       fontSize + 5,
     );
     ctx.stroke();
