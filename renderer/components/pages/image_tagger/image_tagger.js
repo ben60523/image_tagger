@@ -240,6 +240,7 @@ export default function imageTagger({ page }) {
                 fontSize: '1.1rem',
                 margin: '10px 10px',
                 overflow: 'auto',
+                textOverflow: 'ellipsis',
               }}
             >
               {page.name}
