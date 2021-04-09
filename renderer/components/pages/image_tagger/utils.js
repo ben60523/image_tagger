@@ -44,15 +44,15 @@ export function drawRectangle(props, ctx) {
     ctx.fillStyle = color;
     ctx.fillRect(
       left,
-      top - fontSize - 5,
-      ctx.lineWidth * (props.title.length - spaceNum) * 5 + 5,
-      fontSize + 5,
+      top - fontSize,
+      ctx.lineWidth * (props.title.length - spaceNum) * 5 + ctx.lineWidth,
+      fontSize,
     );
     ctx.stroke();
 
     ctx.fillStyle = 'white';
     ctx.font = `${fontSize}px Arial`;
-    ctx.fillText(props.title, left + 5, top - 10);
+    ctx.fillText(props.title, left + ctx.lineWidth, top - ctx.lineWidth * 2);
   }
 
   ctx.stroke();
