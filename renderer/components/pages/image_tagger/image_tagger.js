@@ -8,6 +8,9 @@ import React, {
 } from 'react';
 
 import { useHistory } from 'react-router-dom';
+import CameraIcon from '@material-ui/icons/Camera';
+import IconButton from '@material-ui/core/IconButton';
+import Divider from '@material-ui/core/Divider';
 
 import ContextStore from '../../../context_store';
 
@@ -74,6 +77,13 @@ export default function imageTagger({ page }) {
 
   const removeTag = (selectedTag) => {
     dispatch([DELETE_TAG, selectedTag]);
+  };
+
+  const takeScreenShot = (e) => {
+    const dataURL = canvasRef.current.toDataURL();
+
+    console.log(e.currentTarget);
+    e.currentTarget.href = dataURL;
   };
 
   // Initial content
@@ -225,9 +235,35 @@ export default function imageTagger({ page }) {
       {
         useCallback(content.type === 'canvas' ? (
           <div style={{ height: '100%', width: '10em' }}>
-            <h3 style={{ marginLeft: '10px' }}>
+            <div
+              style={{
+                fontSize: '1.1rem',
+                margin: '10px 10px',
+              }}
+            >
               {page.name}
-            </h3>
+            </div>
+            <Divider />
+            <a
+              href="test"
+              download="screenshot.png"
+              style={{
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                margin: '5px 10px',
+              }}
+              onClick={takeScreenShot}
+            >
+              <IconButton size="small">
+                <CameraIcon
+                  style={{
+                    color: 'rgba(0, 0, 0, 0.65)',
+                  }}
+                />
+              </IconButton>
+            </a>
+            <Divider />
             <Labels setTagConfig={setTagConfig} />
             <TagList
               tagList={tagList}

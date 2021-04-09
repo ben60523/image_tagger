@@ -115,7 +115,7 @@ export default ({ setTagConfig }) => {
                       placeholder={label.title}
                     />
                   )
-                  : <strong>{label.title}</strong>
+                  : label.title
               }
               {/* { getEditBar(label) } */}
             </div>
