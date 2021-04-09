@@ -61,6 +61,7 @@ export default ({
                 marginTop: '5px',
                 display: 'flex',
                 boxSizing: 'border-box',
+                maxWidth: '9rem',
               }}
               tabIndex={0}
               onMouseDown={(e) => onTagPressed(e, tag)}

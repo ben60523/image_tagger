@@ -234,7 +234,7 @@ export default function imageTagger({ page }) {
       { content }
       {
         useCallback(content.type === 'canvas' ? (
-          <div style={{ height: '100%', maxWidth: '10rem' }}>
+          <div style={{ height: '100%', maxWidth: '10rem', marginRight: '3px' }}>
             <div
               style={{
                 fontSize: '1.1rem',
