@@ -30,9 +30,30 @@ export function drawRectangle(props, ctx) {
   ctx.lineWidth = ctx.canvas.width > ctx.canvas.height
     ? Math.round(ctx.canvas.width / 500)
     : Math.round(ctx.canvas.height / 500);
+
   ctx.beginPath();
   ctx.strokeStyle = color;
   ctx.rect(left, top, width, height);
+  ctx.stroke();
+
+  if (props.title) {
+    const fontSize = ctx.lineWidth * 10;
+
+    ctx.beginPath();
+    ctx.fillStyle = color;
+    ctx.fillRect(
+      left,
+      top - fontSize - 5,
+      ctx.lineWidth * props.title.length * 5 + 5,
+      fontSize + 5,
+    );
+    ctx.stroke();
+
+    ctx.fillStyle = 'white';
+    ctx.font = `${fontSize}px Arial`;
+    ctx.fillText(props.title, left + 5, top - 10);
+  }
+
   ctx.stroke();
 }
 
@@ -83,10 +104,12 @@ export const drawInstructions = (ctx, imgData, tagList, labels) => {
   ctx.putImageData(imgData, 0, 0);
   tagList.map((tag) => {
     if (tag.type === DRAW_RECTANGLE && !tag.hide) {
+      const foundLabel = labels.find((label) => label.key === tag.label);
       drawRectangle(
         {
           ...tag,
-          color: labels.find((label) => label.key === tag.label).color,
+          title: foundLabel.title,
+          color: foundLabel.color,
         },
         ctx,
       );
