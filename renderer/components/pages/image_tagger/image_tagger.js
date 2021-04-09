@@ -234,11 +234,12 @@ export default function imageTagger({ page }) {
       { content }
       {
         useCallback(content.type === 'canvas' ? (
-          <div style={{ height: '100%', width: '10em' }}>
+          <div style={{ height: '100%', maxWidth: '10rem' }}>
             <div
               style={{
                 fontSize: '1.1rem',
                 margin: '10px 10px',
+                overflow: 'auto',
               }}
             >
               {page.name}
@@ -251,7 +252,7 @@ export default function imageTagger({ page }) {
                 textDecoration: 'none',
                 display: 'flex',
                 alignItems: 'center',
-                margin: '5px 10px',
+                margin: '3px 10px',
               }}
               onClick={takeScreenShot}
             >
