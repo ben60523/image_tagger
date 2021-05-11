@@ -35,9 +35,7 @@ if (isDev) {
   });
 }
 
-app.setName(config.appName);
-app.setPath('userData', path.join(app.getPath('appData'), config.appName));
-app.setAppLogsPath(path.join(app.getPath('logs').replace('Electron', ''), config.appName));
+app.setAppLogsPath(path.join(app.getPath('logs').replace('Electron', ''), app.getName()));
 
 const logger = winston.createLogger({
   level: 'info',

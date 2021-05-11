@@ -1,11 +1,12 @@
 {
   "name": "media_tagger",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "",
   "main": "./build/main.js",
+  "productName": "media_tagger",
   "scripts": {
-    "start:test": "electron build/main.js",
-    "start": "cross-env NODE_ENV=development webpack --config ./webpack.main.config.js && concurrently \"npm:watch\" \"electron ./build/main.js\"",
+    "start:test": "electron .",
+    "start": "cross-env NODE_ENV=development webpack --config ./webpack.main.config.js && concurrently \"npm:watch\" \"electron .\"",
     "build:main": "cross-env NODE_ENV=production webpack --config ./webpack.main.config.js",
     "build:renderer": "cross-env NODE_ENV=production webpack --config ./webpack.renderer.config.js",
     "build": "npm run build:main && npm run build:renderer",
