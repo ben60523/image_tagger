@@ -50,7 +50,7 @@ const containerStyle = {
 const initialPoint = { left: -1, top: -1 };
 
 export default function imageTagger({ page }) {
-  const { onUpdatePage, labels } = useContext(ContextStore);
+  const { onUpdatePage, labels, onAutoAnno } = useContext(ContextStore);
   const canvasRef = useRef(null);
   const routeHistory = useHistory();
   const [snapshot, setSnapshot] = useState(null);
@@ -272,6 +272,13 @@ export default function imageTagger({ page }) {
                 />
               </IconButton>
             </a>
+            <IconButton size="small" onClick={() => onAutoAnno(page)}>
+              <CameraIcon
+                style={{
+                  color: 'rgba(0, 0, 0, 0.65)',
+                }}
+              />
+            </IconButton>
             <Divider />
             <Labels setTagConfig={setTagConfig} />
             <TagList

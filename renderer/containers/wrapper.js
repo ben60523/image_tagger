@@ -25,6 +25,7 @@ import {
   FIND,
   find,
   remove,
+  autoAnno,
 } from '../request';
 
 import {
@@ -71,17 +72,21 @@ const App = () => {
         imgs.map((img) => {
           const newPage = pageCreater(img, PROJECT_NAME);
           dispatch(addPage(newPage));
-          return newPage;
-        })[0].key,
-      );
-    } else {
-      dispatch(addPage(pageCreater(imgs, PROJECT_NAME)));
-    }
-  };
+            return newPage;
+          })[0].key,
+        );
+      } else {
+        dispatch(addPage(pageCreater(imgs, PROJECT_NAME)));
+      }
+    };
 
-  const onUpdatePage = (targetPage) => {
-    dispatch(updatePage(targetPage));
-    send2Local(TO_GENERAL, update(PAGES, targetPage));
+    const onUpdatePage = (targetPage) => {
+      dispatch(updatePage(targetPage));
+      send2Local(TO_GENERAL, update(PAGES, targetPage));
+    };
+
+    const onAutoAnno = (targetPage) => {
+      send2Local(TO_GENERAL, autoAnno(PAGES, targetPage));
   };
 
   const removePage = (removedPage) => {
@@ -231,6 +236,7 @@ const App = () => {
         ldispatch,
         removePage,
         onUpdatePage,
+        onAutoAnno,
         workingPath,
         filterList,
         setFilterList,
