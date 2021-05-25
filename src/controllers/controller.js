@@ -179,6 +179,24 @@ module.exports = ({win, props, db, logger}) => {
     }
   }
 
+  const autoAnnotationImage = (props) => {
+    autoAnno(props.contents)
+      .then(lacations => {
+        console.log({
+          ...props,
+          contents: lacations                                                                                                                                                                                                                                                                                                                                                                                                 
+        });
+        return sendResponse(
+          FROM_GENERAL,
+          {
+            ...props,
+            contents: lacations                                                                                                                                                                                                                                                                                                                                                                                                 
+          }
+        );
+      })
+      .catch(err => console.error('autoAnnotationImage error'))
+  }
+
   switch(props.name) {
     case SELECT_FILES:
       return selectFiles(props);
@@ -187,7 +205,7 @@ module.exports = ({win, props, db, logger}) => {
     case EXPORT_PROJECT:
       return exportProject(props);
     case AUTO_ANNO:
-      return autoAnno(props);
+      return autoAnnotationImage(props);
     default:
       require('../models/nedb')[props.name](getDB(props), props)
         .then((resp) => {

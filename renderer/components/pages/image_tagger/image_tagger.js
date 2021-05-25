@@ -18,6 +18,7 @@ import {
   DELETE_TAG,
   SHOW_TAG,
   HIDE_TAG,
+  GET_TAGS_FROM_DB,
 } from './constants';
 
 import {
@@ -175,6 +176,12 @@ export default function imageTagger({ page }) {
       drawTags(tagList);
     }
   }, [tagList]);
+
+  useEffect(() => {
+    if (page.tags.length !== tagList.length) {
+      dispatch([GET_TAGS_FROM_DB, page.tags]);
+    }
+  }, [page]);
 
   useEffect(() => {
     drawTags(tagList);
