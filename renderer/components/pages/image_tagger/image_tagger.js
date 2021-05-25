@@ -61,7 +61,7 @@ export default function imageTagger({ page }) {
   const [mouseDownPoint, setMouseDownPoint] = useState(initialPoint);
   const [currentMousePoint, setCurrentMousePoint] = useState(initialPoint);
   const [mouseUpPoint, setMouseUpPoint] = useState(initialPoint);
-  const dpi = window.devicePixelRatio;
+  const dpr = window.devicePixelRatio;
 
   const drawTags = (tags) => {
     if (content.type === 'canvas' && snapshot !== null) {
@@ -135,16 +135,16 @@ export default function imageTagger({ page }) {
       .then((img) => {
         setContent(
           createCanvas(
-            img.naturalWidth * dpi,
-            img.naturalHeight * dpi,
+            img.naturalWidth * dpr,
+            img.naturalHeight * dpr,
           ),
         );
 
         const initDraw = () => {
           const canvas = canvasRef.current;
           const context = canvas.getContext('2d');
-          const width = img.naturalWidth * dpi;
-          const height = img.naturalHeight * dpi;
+          const width = img.naturalWidth * dpr;
+          const height = img.naturalHeight * dpr;
 
           context.drawImage(img, 0, 0, width, height);
           setSnapshot(context.getImageData(0, 0, width, height));
@@ -178,6 +178,7 @@ export default function imageTagger({ page }) {
   }, [tagList]);
 
   useEffect(() => {
+    // update auto annotation
     if (page.tags.length !== tagList.length) {
       dispatch([GET_TAGS_FROM_DB, page.tags]);
     }
@@ -194,8 +195,8 @@ export default function imageTagger({ page }) {
       const context = canvas.getContext('2d');
 
       const scale = () => ({
-        scaleX: canvas.width / context.canvas.offsetWidth,
-        scaleY: canvas.height / context.canvas.offsetHeight,
+        scaleX: canvas.width / context.canvas.offsetWidth / dpr,
+        scaleY: canvas.height / context.canvas.offsetHeight / dpr,
       });
 
       // Check the point isn't in initial state

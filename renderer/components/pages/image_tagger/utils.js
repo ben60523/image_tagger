@@ -27,13 +27,15 @@ export function drawRectangle(props, ctx) {
     left, top, width, height, color,
   } = props;
 
+  const dpr = window.devicePixelRatio;
+
   ctx.lineWidth = ctx.canvas.width > ctx.canvas.height
     ? Math.round(ctx.canvas.width / 500)
     : Math.round(ctx.canvas.height / 500);
 
   ctx.beginPath();
   ctx.strokeStyle = color;
-  ctx.rect(left, top, width, height);
+  ctx.rect(left * dpr, top * dpr, width * dpr, height * dpr);
   ctx.stroke();
 
   if (props.title) {
@@ -43,8 +45,8 @@ export function drawRectangle(props, ctx) {
     ctx.beginPath();
     ctx.fillStyle = color;
     ctx.fillRect(
-      left,
-      top - fontSize,
+      left * dpr,
+      top * dpr - fontSize,
       ctx.lineWidth * (props.title.length - spaceNum) * 5 + ctx.lineWidth,
       fontSize,
     );
@@ -52,7 +54,7 @@ export function drawRectangle(props, ctx) {
 
     ctx.fillStyle = 'white';
     ctx.font = `${fontSize}px Arial`;
-    ctx.fillText(props.title, left + ctx.lineWidth, top - ctx.lineWidth * 2);
+    ctx.fillText(props.title, left * dpr + ctx.lineWidth, top * dpr - ctx.lineWidth * 2);
   }
 
   ctx.stroke();
@@ -68,13 +70,27 @@ export function fillRectangle(props, ctx) {
 }
 
 export const drawPreviewingRectangle = (position, context) => {
+  const {
+    left,
+    top,
+    width,
+    height,
+  } = position;
+  const dpr = window.devicePixelRatio;
+
   drawRectangle({
-    ...position,
+    left: left * dpr,
+    top: top * dpr,
+    width: width * dpr,
+    height: height * dpr,
     color: 'rgba(179, 179, 179, 1)',
   }, context);
 
   fillRectangle({
-    ...position,
+    left: left * dpr,
+    top: top * dpr,
+    width: width * dpr,
+    height: height * dpr,
     color: 'rgba(179, 179, 179, 0.3)',
   }, context);
 };
@@ -101,7 +117,7 @@ export const drawTagRectangle = (properties, dispatch) => {
   ]);
 };
 
-export const drawInstructions = (ctx, imgData, tagList, labels) => {
+export const drawInstructions = (ctx, imgData, tagList, labels, dpr) => {
   ctx.putImageData(imgData, 0, 0);
   tagList.map((tag) => {
     if (tag.type === DRAW_RECTANGLE && !tag.hide) {
@@ -113,6 +129,7 @@ export const drawInstructions = (ctx, imgData, tagList, labels) => {
           color: foundLabel.color,
         },
         ctx,
+        dpr,
       );
     }
     return true;

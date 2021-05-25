@@ -1,7 +1,28 @@
 const { spawn } = require('child_process');
 const path = require('path');
 
-const autoAnno = async (image) => {
+const DRAW_RECTANGLE = 'DRAW_RECTANGLE';
+
+const createTag = (area) => {
+	const taggedArea = {
+		left: area.x,
+		top: area.y,
+		width: area.w,
+		height: area.h,
+	};
+
+	const generateKey = () => (`${taggedArea.left}${taggedArea.top}${taggedArea.width}${taggedArea.height}`)
+
+	return {
+		type: DRAW_RECTANGLE,
+		...taggedArea,
+		label: "76a46512186eeecb0d4bf953f9bbf8e520db3bb2edcd5816ad594fe79acbd960",
+		key: generateKey(area),
+		hide: false,
+	}
+};
+
+const autoAnno = (image) => {
     return new Promise((resolve, reject) => {
         console.log("Start Auto Annotation", image.src);
         const imgAnno = spawn(path.join(__dirname, "../../extra_res/bin/", "image_annotation_anoscope.exe"), [image.src]);
@@ -29,8 +50,14 @@ const autoAnno = async (image) => {
         })
     
         imgAnno.on('close', (code) => {
-            console.log(`result ${JSON.stringify(annotationParse(result))}`)
-            resolve(annotationParse(result));
+						console.log(`result ${JSON.stringify(annotationParse(result))}`)
+						
+						let newTags = annotationParse(result).map(createTag);
+
+            resolve({
+							...image,
+							tags: newTags
+						});
         })
     })
 }
