@@ -8,7 +8,7 @@ import {
 
 import { removeFromList, hideTag, showTag } from './utils';
 
-const onAddTag = (tagList, newTag) => {
+const checkNewTag = (tagList, newTag) => {
   const tagIndex = tagList.findIndex((tag) => (
     tag.label === newTag.label
     && tag.width === newTag.width
@@ -22,6 +22,14 @@ const onAddTag = (tagList, newTag) => {
   }
 
   return tagList;
+};
+
+const onAddTag = (tagList, newTags) => {
+  if (Array.isArray(newTags)) {
+    return newTags.reduce(checkNewTag, tagList);
+  }
+
+  return checkNewTag(tagList, newTags);
 };
 
 export default (state, [type, payload]) => {

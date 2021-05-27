@@ -19,7 +19,7 @@ import {
   DELETE_TAG,
   SHOW_TAG,
   HIDE_TAG,
-  GET_TAGS_FROM_DB,
+  ADD_TAG,
 } from './constants';
 
 import {
@@ -181,7 +181,7 @@ export default function imageTagger({ page }) {
   useEffect(() => {
     // update auto annotation
     if (page.tags.length !== tagList.length) {
-      dispatch([GET_TAGS_FROM_DB, page.tags]);
+      dispatch([ADD_TAG, page.tags]);
     }
   }, [page]);
 
