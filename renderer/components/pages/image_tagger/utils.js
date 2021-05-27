@@ -79,10 +79,10 @@ export const drawPreviewingRectangle = (position, context) => {
   const dpr = window.devicePixelRatio;
 
   drawRectangle({
-    left: left * dpr,
-    top: top * dpr,
-    width: width * dpr,
-    height: height * dpr,
+    left,
+    top,
+    width,
+    height,
     color: 'rgba(179, 179, 179, 1)',
   }, context);
 
