@@ -10,6 +10,7 @@ import React, {
 import { useHistory } from 'react-router-dom';
 import CameraIcon from '@material-ui/icons/Camera';
 import IconButton from '@material-ui/core/IconButton';
+import FormatShapesIcon from '@material-ui/icons/FormatShapes';
 import Divider from '@material-ui/core/Divider';
 
 import ContextStore from '../../../context_store';
@@ -281,7 +282,7 @@ export default function imageTagger({ page }) {
               </IconButton>
             </a>
             <IconButton size="small" onClick={() => onAutoAnno(page)}>
-              <CameraIcon
+              <FormatShapesIcon
                 style={{
                   color: 'rgba(0, 0, 0, 0.65)',
                 }}
