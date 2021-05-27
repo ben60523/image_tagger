@@ -7,6 +7,7 @@ import { addNewTaggingLabel } from '../../../reducers/label_actions';
 import defaultabel from '../../../reducers/default_label';
 
 // const PENCIL = 'pencil';
+const AUTO_GENERATE = 'auto_gen';
 
 export default ({ setTagConfig }) => {
   // const [enteredLabel, setEnteredLabel] = useState(null);
@@ -16,7 +17,8 @@ export default ({ setTagConfig }) => {
   const [editedLabel] = useState(null);
 
   const updateCurrentLabel = (selectedLabel) => {
-    if (editedLabel === null) {
+    if (editedLabel === null && selectedLabel.describe !== AUTO_GENERATE) {
+      console.log(selectedLabel);
       setTagConfig(selectedLabel);
       setFocusLabel(selectedLabel);
     }
