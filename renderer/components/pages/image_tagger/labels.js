@@ -18,7 +18,6 @@ export default ({ setTagConfig }) => {
 
   const updateCurrentLabel = (selectedLabel) => {
     if (editedLabel === null && selectedLabel.describe !== AUTO_GENERATE) {
-      console.log(selectedLabel);
       setTagConfig(selectedLabel);
       setFocusLabel(selectedLabel);
     }
