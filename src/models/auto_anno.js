@@ -16,7 +16,7 @@ const createTag = (area) => {
 	return {
 		type: DRAW_RECTANGLE,
 		...taggedArea,
-		label: "030f833e31bd8ea574a4935b5bc89b1983e78083a67ce8ba17d3080f1713754c",
+		label: "929260ad9b9ea9fe0f3553dd964f4ff3deb5792efd031a2b90f573fe91f012bb",
 		key: generateKey(area),
 		hide: false,
 	}
