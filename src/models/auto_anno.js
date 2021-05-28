@@ -23,45 +23,45 @@ const createTag = (area) => {
 };
 
 const autoAnno = (image) => {
-    return new Promise((resolve, reject) => {
-        console.log("Start Auto Annotation", image.src);
-        const imgAnno = spawn(path.join(__dirname, "../../extra_res/bin/", "image_annotation_anoscope.exe"), [image.src]);
-    
-        let result = '';
-    
-        const annotationParse = (msg) => {
-            let rectArr = []
-    
-            msg.split('@').forEach(rect => {
-                if(rect.includes('{')) {
-                    rectArr.push(JSON.parse(rect));
-                }
-            });
+	return new Promise((resolve, reject) => {
+		console.log("Start Auto Annotation", image.src);
+		const imgAnno = spawn(path.join(__dirname, "../../extra_res/bin/", "image_annotation_anoscope.exe"), [image.src]);
 
-            return rectArr;
-        }
-    
-        imgAnno.stdout.on('data', (data) => {
-            result += data;
-        })
-    
-        imgAnno.stderr.on('data', (data) => {
-            reject(`stderr: ${data}`);
-        })
-    
-        imgAnno.on('close', (code) => {
-						console.log(`result ${JSON.stringify(annotationParse(result))}`)
-						
-						let newTags = annotationParse(result).map(createTag);
+		let result = '';
 
-            resolve({
-							...image,
-							tags: newTags
-						});
-        })
-    })
+		const annotationParse = (msg) => {
+			let rectArr = []
+
+			msg.split('@').forEach(rect => {
+				if(rect.includes('{')) {
+						rectArr.push(JSON.parse(rect));
+				}
+			});
+
+			return rectArr;
+		}
+
+		imgAnno.stdout.on('data', (data) => {
+				result += data;
+		})
+
+		imgAnno.stderr.on('data', (data) => {
+				reject(`stderr: ${data}`);
+		})
+
+		imgAnno.on('close', (code) => {
+			console.log(`result ${JSON.stringify(annotationParse(result))}`)
+				
+			let newTags = annotationParse(result).map(createTag);
+
+			resolve({
+				...image,
+				tags: newTags
+			});
+		})
+	})
 }
 
 module.exports = {
-    autoAnno,
+	autoAnno,
 }
