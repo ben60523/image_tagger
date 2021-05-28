@@ -11,6 +11,7 @@ import { useHistory } from 'react-router-dom';
 import CameraIcon from '@material-ui/icons/Camera';
 import IconButton from '@material-ui/core/IconButton';
 import FormatShapesIcon from '@material-ui/icons/FormatShapes';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Divider from '@material-ui/core/Divider';
 
 import ContextStore from '../../../context_store';
@@ -62,6 +63,7 @@ export default function imageTagger({ page }) {
   const [mouseDownPoint, setMouseDownPoint] = useState(initialPoint);
   const [currentMousePoint, setCurrentMousePoint] = useState(initialPoint);
   const [mouseUpPoint, setMouseUpPoint] = useState(initialPoint);
+  const [progress, setProgress] = useState(false);
   const dpr = window.devicePixelRatio;
 
   const drawTags = (tags) => {
@@ -168,6 +170,15 @@ export default function imageTagger({ page }) {
     drawImage();
   }, []);
 
+  const autoAnno = () => {
+    setProgress(true);
+    onAutoAnno(page);
+
+    setTimeout(() => {
+      setProgress(false);
+    }, 30000);
+  };
+
   useEffect(() => {
     if (tagList !== null) {
       onUpdatePage({
@@ -180,9 +191,8 @@ export default function imageTagger({ page }) {
 
   useEffect(() => {
     // update auto annotation
-    if (page.tags.length !== tagList.length) {
-      dispatch([ADD_TAG, page.tags]);
-    }
+    dispatch([ADD_TAG, page.tags]);
+    setProgress(false);
   }, [page]);
 
   useEffect(() => {
@@ -262,32 +272,50 @@ export default function imageTagger({ page }) {
               {page.name}
             </div>
             <Divider />
-            <a
-              href="test"
-              download="screenshot.png"
+            <div
               style={{
-                textDecoration: 'none',
                 display: 'flex',
                 alignItems: 'center',
-                margin: '3px 10px',
               }}
-              onClick={takeScreenShot}
             >
-              <IconButton size="small">
-                <CameraIcon
+              <a
+                href="test"
+                download="screenshot.png"
+                style={{
+                  textDecoration: 'none',
+                }}
+                onClick={takeScreenShot}
+              >
+                <IconButton size="small">
+                  <CameraIcon
+                    style={{
+                      color: 'rgba(0, 0, 0, 0.65)',
+                    }}
+                  />
+                </IconButton>
+              </a>
+              <IconButton size="small" onClick={autoAnno}>
+                <FormatShapesIcon
                   style={{
-                    color: 'rgba(0, 0, 0, 0.65)',
+                    color: `rgba(0, 0, 0, ${progress ? '0.2' : '0.65'})`,
                   }}
                 />
+                {
+                  progress ? (
+                    <CircularProgress
+                      size={24}
+                      style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        marginTop: '-12px',
+                        marginLeft: '-12px',
+                      }}
+                    />
+                  ) : null
+                }
               </IconButton>
-            </a>
-            <IconButton size="small" onClick={() => onAutoAnno(page)}>
-              <FormatShapesIcon
-                style={{
-                  color: 'rgba(0, 0, 0, 0.65)',
-                }}
-              />
-            </IconButton>
+            </div>
             <Divider />
             <Labels setTagConfig={setTagConfig} />
             <TagList
@@ -296,7 +324,7 @@ export default function imageTagger({ page }) {
               removeTag={removeTag}
             />
           </div>
-        ) : null, [tagList, content])
+        ) : null, [tagList, content, progress])
       }
     </div>
   );

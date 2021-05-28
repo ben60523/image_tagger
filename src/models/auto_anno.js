@@ -37,7 +37,7 @@ const autoAnno = (image) => {
                     rectArr.push(JSON.parse(rect));
                 }
             });
-    
+
             return rectArr;
         }
     
