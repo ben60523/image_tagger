@@ -87,9 +87,7 @@ const App = () => {
   };
 
   const onAutoAnno = (targetPage) => {
-    if ( Array.isArray(targetPage.tags) && targetPage.tags.length !== 0 ) {
-      send2Local(TO_GENERAL, autoAnno(PAGES, targetPage));
-    }
+    send2Local(TO_GENERAL, autoAnno(PAGES, targetPage));
   };
 
   const removePage = (removedPage) => {
@@ -180,7 +178,9 @@ const App = () => {
         case FIND:
           return onFind();
         case AUTO_ANNO:
-          onUpdatePage(resp.contents);
+          if (Array.isArray(resp.contents.tags) && resp.contents.tags.length !== 0) {
+            onUpdatePage(resp.contents);
+          }
           break;
         default:
           console.log('event not found', resp);
