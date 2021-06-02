@@ -87,7 +87,9 @@ const App = () => {
   };
 
   const onAutoAnno = (targetPage) => {
-    send2Local(TO_GENERAL, autoAnno(PAGES, targetPage));
+    if ( Array.isArray(targetPage.tags) && targetPage.tags.length !== 0 ) {
+      send2Local(TO_GENERAL, autoAnno(PAGES, targetPage));
+    }
   };
 
   const removePage = (removedPage) => {
