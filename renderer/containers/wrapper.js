@@ -86,7 +86,7 @@ const App = () => {
     send2Local(TO_GENERAL, update(PAGES, targetPage));
   };
 
-  const onAutoAnno = (targetPage) => {
+  const onAutoAnnoClick = (targetPage) => {
     send2Local(TO_GENERAL, autoAnno(PAGES, targetPage));
   };
 
@@ -259,7 +259,7 @@ const App = () => {
         ldispatch,
         removePage,
         onUpdatePage,
-        onAutoAnno,
+        onAutoAnnoClick,
         workingPath,
         filterList,
         setFilterList,
