@@ -64,7 +64,7 @@ const SideBar = ({ pages }) => {
   };
 
   const filterPage = () => {
-    if (pages.length > 0) {
+    if (Array.isArray(pages) && pages.length > 0) {
       const filteredMedia = filterList.reduce((list, filter) => (
         getFilter(filter.name, list, filter.options)
       ), pages);
@@ -78,7 +78,7 @@ const SideBar = ({ pages }) => {
       return filteredMedia;
     }
 
-    return null;
+    return [];
   };
 
   const findFilter = (filterName) => filterList.findIndex(
