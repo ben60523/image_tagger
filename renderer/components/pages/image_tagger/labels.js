@@ -64,7 +64,11 @@ export default ({ setTagConfig }) => {
 
   useEffect(() => {
     if (labels.filter(taggingLabelFilter).length !== 0) {
-      setFocusLabel(labels[0]);
+      if (labels[0].describe !== AUTO_GENERATE) {
+        setFocusLabel(labels[0]);
+      } else {
+        setFocusLabel(labels[1]);
+      }
     } else {
       const action = addNewTaggingLabel(defaultabel);
       setFocusLabel(action.payload[0]);
@@ -81,6 +85,7 @@ export default ({ setTagConfig }) => {
         labels.length !== 0 ? labels
           .filter(taggingLabelFilter)
           .filter(projectFilter)
+          .sort((a, b) => (a.title > b.title ? 1 : -1))
           .map((label) => (
             <div
               key={label.key}
