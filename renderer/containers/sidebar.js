@@ -1,8 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -46,31 +44,9 @@ const SideBarItem = ({
   );
 };
 
-const ExpandIcon = ({
-  sidebarExpand,
-  setSidebarExpand,
-  maxLength,
-}) => {
-  if ((maxLength > 25 && sidebarExpand) || (maxLength < 25 && !sidebarExpand)) {
-    return (
-      <ChevronLeftIcon
-        fontSize="inherit"
-        onClick={() => setSidebarExpand(!sidebarExpand)}
-      />
-    );
-  }
-
-  return (
-    <ChevronRightIcon
-      fontSize="inherit"
-      onClick={() => setSidebarExpand(!sidebarExpand)}
-    />
-  );
-};
-
 const SideBar = ({ pages }) => {
   const history = useHistory();
-  const [sidebarExpand, setSidebarExpand] = useState(false);
+  const [sidebarExpand] = useState(false);
   const {
     removePage,
     workingPath,
@@ -176,16 +152,6 @@ const SideBar = ({ pages }) => {
                 <BookmarkIcon fontSize="inherit" />
               )
             }
-          </IconButton>
-          <IconButton
-            aria-label="expand"
-            size="small"
-          >
-            <ExpandIcon
-              sidebarExpand={sidebarExpand}
-              setSidebarExpand={setSidebarExpand}
-              maxLength={maxLength}
-            />
           </IconButton>
         </div>
       </div>
