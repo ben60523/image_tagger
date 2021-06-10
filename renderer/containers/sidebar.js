@@ -140,19 +140,24 @@ const SideBar = ({ pages }) => {
           Images
         </div>
         <div>
-          <IconButton
-            aria-label="expand"
-            size="small"
-            onClick={() => toggleTagFilter(TAGGED_IMAGE)}
+          <Tooltip
+            title="Show tagged images only"
+            placement="right"
           >
-            {
-              findFilter(TAGGED_IMAGE) === -1 ? (
-                <BookmarkBorderIcon fontSize="inherit" />
-              ) : (
-                <BookmarkIcon fontSize="inherit" />
-              )
-            }
-          </IconButton>
+            <IconButton
+              aria-label="expand"
+              size="small"
+              onClick={() => toggleTagFilter(TAGGED_IMAGE)}
+            >
+              {
+                findFilter(TAGGED_IMAGE) === -1 ? (
+                  <BookmarkBorderIcon fontSize="inherit" />
+                ) : (
+                  <BookmarkIcon fontSize="inherit" />
+                )
+              }
+            </IconButton>
+          </Tooltip>
         </div>
       </div>
       <ul className="list-group">
