@@ -53,7 +53,6 @@ const SideBar = ({ pages }) => {
     filterList,
     setFilterList,
   } = useContext(ContextStore);
-  let maxLength = 0;
 
   const handleClick = (e, page) => {
     if (e.target.className.indexOf('icon-cancel-circled') !== -1) {
@@ -68,12 +67,6 @@ const SideBar = ({ pages }) => {
       const filteredMedia = filterList.reduce((list, filter) => (
         getFilter(filter.name, list, filter.options)
       ), pages);
-
-      for (let i = 0; i < filteredMedia.length; i += 1) {
-        if (filteredMedia[i].name.length > maxLength) {
-          maxLength = filteredMedia[i].name.length;
-        }
-      }
 
       return filteredMedia;
     }
@@ -124,7 +117,7 @@ const SideBar = ({ pages }) => {
       className={`${sidebarExpand === true ? '' : 'pane-sm '}sidebar`}
       style={{
         overflowY: 'scroll',
-        maxWidth: maxLength < 25 ? '170px' : '',
+        maxWidth: '170px',
       }}
     >
       <div
@@ -167,7 +160,6 @@ const SideBar = ({ pages }) => {
               page={page}
               handleClick={handleClick}
               focusTabName={history.location.pathname}
-              maxLength={maxLength}
             />
           )) : null
         }
