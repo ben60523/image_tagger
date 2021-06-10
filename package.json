@@ -3,7 +3,7 @@
   "version": "1.2.1",
   "description": "",
   "main": "./build/main.js",
-  "productName": "media_tagger",
+  "productName": "media_tagger_${version}",
   "scripts": {
     "start:test": "electron .",
     "start": "cross-env NODE_ENV=development webpack --config ./webpack.main.config.js && concurrently \"npm:watch\" \"electron .\"",
