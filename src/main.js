@@ -35,6 +35,7 @@ if (isDev) {
   });
 }
 
+app.setName(`${app.getName()}_${app.getVersion()}`);
 app.setAppLogsPath(path.join(app.getPath('logs').replace('Electron', ''), app.getName()));
 
 const logger = winston.createLogger({
