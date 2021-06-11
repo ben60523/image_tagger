@@ -281,7 +281,7 @@ export default function imageTagger({ page }) {
               <Tooltip title="Take Snapshot">
                 <a
                   href="test"
-                  download="screenshot.png"
+                  download={`${page.name}_snapshot.png`}
                   style={{
                     textDecoration: 'none',
                   }}
