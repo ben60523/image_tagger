@@ -22,10 +22,16 @@ const createTag = (area) => {
 	}
 };
 
+const getBinPath = () => {
+	return require('electron-is-dev')
+		? path.join(__dirname, "../../extra_res/bin/")
+		: path.join(process.resourcesPath, "./extra_res/bin/");
+}
+
 const autoAnno = (image) => {
 	return new Promise((resolve, reject) => {
 		console.log("Start Auto Annotation", image.src);
-		const imgAnno = spawn(path.join(__dirname, "../../extra_res/bin/", "image_annotation_anoscope.exe"), [image.src]);
+		const imgAnno = spawn(path.join(getBinPath(), "image_annotation_anoscope.exe"), [image.src]);
 
 		let result = '';
 

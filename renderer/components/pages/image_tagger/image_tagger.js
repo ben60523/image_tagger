@@ -53,7 +53,7 @@ const containerStyle = {
 const initialPoint = { left: -1, top: -1 };
 
 export default function imageTagger({ page }) {
-  const { onUpdatePage, labels } = useContext(ContextStore);
+  const { onUpdatePage, labels, onAutoAnnoClick } = useContext(ContextStore);
   const canvasRef = useRef(null);
   const routeHistory = useHistory();
   const [snapshot, setSnapshot] = useState(null);
@@ -172,7 +172,7 @@ export default function imageTagger({ page }) {
 
   const autoAnno = () => {
     setProgress(true);
-    // onAutoAnnoClick(page);
+    onAutoAnnoClick(page);
 
     setTimeout(() => {
       setProgress(false);

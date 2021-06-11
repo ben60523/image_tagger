@@ -33,9 +33,16 @@
     "files": [
       "**/*",
       "public",
+      "extra_res",
       "!node_module",
       "!renderer",
       "!src/main.js"
+    ],
+    "extraResources": [
+      {
+        "from": "./extra_res/bin",
+        "to": "./extra_res/bin"
+      }
     ],
     "mac": {
       "artifactName": "media_tagger_${version}_setup.${ext}",
