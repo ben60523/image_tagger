@@ -32,20 +32,22 @@ const Header = ({
           <AddPhotoAlternateIcon className="icon" />
         </Button> */}
       <div>
-        <IconButton
-          aria-label="expand"
-          size="small"
-          onClick={() => selectFolder('default')}
-          style={{
-            marginRight: '5px',
-          }}
-        >
-          <FolderOpenIcon className="icon" />
-        </IconButton>
+        <Tooltip title="Open Folder">
+          <IconButton
+            aria-label="expand"
+            size="small"
+            onClick={() => selectFolder('default')}
+            style={{
+              marginRight: '5px',
+            }}
+          >
+            <FolderOpenIcon className="icon" />
+          </IconButton>
+        </Tooltip>
         <strong>{workingPath}</strong>
       </div>
       {/* </ButtonGroup> */}
-      <Tooltip title="save">
+      <Tooltip title="Save">
         <IconButton
           aria-label="expand"
           size="small"
