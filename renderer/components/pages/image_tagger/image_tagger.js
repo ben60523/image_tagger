@@ -12,10 +12,10 @@ import CameraIcon from '@material-ui/icons/Camera';
 import IconButton from '@material-ui/core/IconButton';
 import FormatShapesIcon from '@material-ui/icons/FormatShapes';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Tooltip from '@material-ui/core/Tooltip';
 import Divider from '@material-ui/core/Divider';
 
 import ContextStore from '../../../context_store';
-
 import {
   DELETE_TAG,
   SHOW_TAG,
@@ -53,7 +53,7 @@ const containerStyle = {
 const initialPoint = { left: -1, top: -1 };
 
 export default function imageTagger({ page }) {
-  const { onUpdatePage, labels, onAutoAnnoClick } = useContext(ContextStore);
+  const { onUpdatePage, labels } = useContext(ContextStore);
   const canvasRef = useRef(null);
   const routeHistory = useHistory();
   const [snapshot, setSnapshot] = useState(null);
@@ -172,7 +172,7 @@ export default function imageTagger({ page }) {
 
   const autoAnno = () => {
     setProgress(true);
-    onAutoAnnoClick(page);
+    // onAutoAnnoClick(page);
 
     setTimeout(() => {
       setProgress(false);
@@ -278,43 +278,47 @@ export default function imageTagger({ page }) {
                 alignItems: 'center',
               }}
             >
-              <a
-                href="test"
-                download="screenshot.png"
-                style={{
-                  textDecoration: 'none',
-                }}
-                onClick={takeScreenShot}
-              >
-                <IconButton size="small">
-                  <CameraIcon
-                    style={{
-                      color: 'rgba(0, 0, 0, 0.65)',
-                    }}
-                  />
-                </IconButton>
-              </a>
-              <IconButton size="small" onClick={autoAnno}>
-                <FormatShapesIcon
+              <Tooltip title="Take snapshot">
+                <a
+                  href="test"
+                  download="screenshot.png"
                   style={{
-                    color: `rgba(0, 0, 0, ${progress ? '0.2' : '0.65'})`,
+                    textDecoration: 'none',
                   }}
-                />
-                {
-                  progress ? (
-                    <CircularProgress
-                      size={24}
+                  onClick={takeScreenShot}
+                >
+                  <IconButton size="small">
+                    <CameraIcon
                       style={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        marginTop: '-12px',
-                        marginLeft: '-12px',
+                        color: 'rgba(0, 0, 0, 0.65)',
                       }}
                     />
-                  ) : null
-                }
-              </IconButton>
+                  </IconButton>
+                </a>
+              </Tooltip>
+              <Tooltip title="Auto-Annotation">
+                <IconButton size="small" onClick={autoAnno}>
+                  <FormatShapesIcon
+                    style={{
+                      color: `rgba(0, 0, 0, ${progress ? '0.2' : '0.65'})`,
+                    }}
+                  />
+                  {
+                    progress ? (
+                      <CircularProgress
+                        size={24}
+                        style={{
+                          position: 'absolute',
+                          top: '50%',
+                          left: '50%',
+                          marginTop: '-12px',
+                          marginLeft: '-12px',
+                        }}
+                      />
+                    ) : null
+                  }
+                </IconButton>
+              </Tooltip>
             </div>
             <Divider />
             <Labels setTagConfig={setTagConfig} />
