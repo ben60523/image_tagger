@@ -278,7 +278,7 @@ export default function imageTagger({ page }) {
                 alignItems: 'center',
               }}
             >
-              <Tooltip title="Take snapshot">
+              <Tooltip title="Take Snapshot">
                 <a
                   href="test"
                   download="screenshot.png"
