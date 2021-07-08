@@ -10,14 +10,17 @@ import React, {
 import { useHistory } from 'react-router-dom';
 import CameraIcon from '@material-ui/icons/Camera';
 import IconButton from '@material-ui/core/IconButton';
+import FormatShapesIcon from '@material-ui/icons/FormatShapes';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Tooltip from '@material-ui/core/Tooltip';
 import Divider from '@material-ui/core/Divider';
 
 import ContextStore from '../../../context_store';
-
 import {
   DELETE_TAG,
   SHOW_TAG,
   HIDE_TAG,
+  ADD_TAG,
 } from './constants';
 
 import {
@@ -50,7 +53,7 @@ const containerStyle = {
 const initialPoint = { left: -1, top: -1 };
 
 export default function imageTagger({ page }) {
-  const { onUpdatePage, labels } = useContext(ContextStore);
+  const { onUpdatePage, labels, onAutoAnnoClick } = useContext(ContextStore);
   const canvasRef = useRef(null);
   const routeHistory = useHistory();
   const [snapshot, setSnapshot] = useState(null);
@@ -60,7 +63,8 @@ export default function imageTagger({ page }) {
   const [mouseDownPoint, setMouseDownPoint] = useState(initialPoint);
   const [currentMousePoint, setCurrentMousePoint] = useState(initialPoint);
   const [mouseUpPoint, setMouseUpPoint] = useState(initialPoint);
-  const dpi = window.devicePixelRatio;
+  const [progress, setProgress] = useState(false);
+  const dpr = window.devicePixelRatio;
 
   const drawTags = (tags) => {
     if (content.type === 'canvas' && snapshot !== null) {
@@ -134,16 +138,16 @@ export default function imageTagger({ page }) {
       .then((img) => {
         setContent(
           createCanvas(
-            img.naturalWidth * dpi,
-            img.naturalHeight * dpi,
+            img.naturalWidth * dpr,
+            img.naturalHeight * dpr,
           ),
         );
 
         const initDraw = () => {
           const canvas = canvasRef.current;
           const context = canvas.getContext('2d');
-          const width = img.naturalWidth * dpi;
-          const height = img.naturalHeight * dpi;
+          const width = img.naturalWidth * dpr;
+          const height = img.naturalHeight * dpr;
 
           context.drawImage(img, 0, 0, width, height);
           setSnapshot(context.getImageData(0, 0, width, height));
@@ -166,6 +170,15 @@ export default function imageTagger({ page }) {
     drawImage();
   }, []);
 
+  const autoAnno = () => {
+    setProgress(true);
+    onAutoAnnoClick(page);
+
+    setTimeout(() => {
+      setProgress(false);
+    }, 30000);
+  };
+
   useEffect(() => {
     if (tagList !== null) {
       onUpdatePage({
@@ -175,6 +188,12 @@ export default function imageTagger({ page }) {
       drawTags(tagList);
     }
   }, [tagList]);
+
+  useEffect(() => {
+    // update auto annotation
+    dispatch([ADD_TAG, page.tags]);
+    setProgress(false);
+  }, [page]);
 
   useEffect(() => {
     drawTags(tagList);
@@ -187,8 +206,8 @@ export default function imageTagger({ page }) {
       const context = canvas.getContext('2d');
 
       const scale = () => ({
-        scaleX: canvas.width / context.canvas.offsetWidth,
-        scaleY: canvas.height / context.canvas.offsetHeight,
+        scaleX: canvas.width / context.canvas.offsetWidth / dpr,
+        scaleY: canvas.height / context.canvas.offsetHeight / dpr,
       });
 
       // Check the point isn't in initial state
@@ -253,25 +272,54 @@ export default function imageTagger({ page }) {
               {page.name}
             </div>
             <Divider />
-            <a
-              href="test"
-              download="screenshot.png"
+            <div
               style={{
-                textDecoration: 'none',
                 display: 'flex',
                 alignItems: 'center',
-                margin: '3px 10px',
               }}
-              onClick={takeScreenShot}
             >
-              <IconButton size="small">
-                <CameraIcon
+              <Tooltip title="Take Snapshot">
+                <a
+                  href="test"
+                  download={`${page.name}_snapshot.png`}
                   style={{
-                    color: 'rgba(0, 0, 0, 0.65)',
+                    textDecoration: 'none',
                   }}
-                />
-              </IconButton>
-            </a>
+                  onClick={takeScreenShot}
+                >
+                  <IconButton size="small">
+                    <CameraIcon
+                      style={{
+                        color: 'rgba(0, 0, 0, 0.65)',
+                      }}
+                    />
+                  </IconButton>
+                </a>
+              </Tooltip>
+              <Tooltip title="Auto-Annotation">
+                <IconButton size="small" onClick={autoAnno}>
+                  <FormatShapesIcon
+                    style={{
+                      color: `rgba(0, 0, 0, ${progress ? '0.2' : '0.65'})`,
+                    }}
+                  />
+                  {
+                    progress ? (
+                      <CircularProgress
+                        size={24}
+                        style={{
+                          position: 'absolute',
+                          top: '50%',
+                          left: '50%',
+                          marginTop: '-12px',
+                          marginLeft: '-12px',
+                        }}
+                      />
+                    ) : null
+                  }
+                </IconButton>
+              </Tooltip>
+            </div>
             <Divider />
             <Labels setTagConfig={setTagConfig} />
             <TagList
@@ -280,7 +328,7 @@ export default function imageTagger({ page }) {
               removeTag={removeTag}
             />
           </div>
-        ) : null, [tagList, content])
+        ) : null, [tagList, content, progress])
       }
     </div>
   );

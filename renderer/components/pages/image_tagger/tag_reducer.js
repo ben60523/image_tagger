@@ -8,6 +8,30 @@ import {
 
 import { removeFromList, hideTag, showTag } from './utils';
 
+const checkNewTag = (tagList, newTag) => {
+  const tagIndex = tagList.findIndex((tag) => (
+    tag.label === newTag.label
+    && tag.width === newTag.width
+    && tag.height === newTag.height
+    && tag.left === newTag.left
+    && tag.top === newTag.top
+  ));
+
+  if (tagIndex === -1) {
+    return [...tagList, newTag];
+  }
+
+  return tagList;
+};
+
+const onAddTag = (tagList, newTags) => {
+  if (Array.isArray(newTags)) {
+    return newTags.reduce(checkNewTag, tagList);
+  }
+
+  return checkNewTag(tagList, newTags);
+};
+
 export default (state, [type, payload]) => {
   switch (type) {
     case GET_TAGS_FROM_DB:
@@ -15,7 +39,7 @@ export default (state, [type, payload]) => {
     case DELETE_TAG:
       return removeFromList(payload, state);
     case ADD_TAG:
-      return [...state, payload];
+      return onAddTag(state, payload);
     case HIDE_TAG:
       return hideTag(payload, state);
     case SHOW_TAG:

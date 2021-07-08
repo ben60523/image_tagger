@@ -26,6 +26,22 @@ const onAddPage = (state, action) => {
   return [...state, action.payload];
 };
 
+const checkTags = (tagList, newTag) => {
+  const tagIndex = tagList.findIndex((tag) => (
+    tag.label === newTag.label
+    && tag.width === newTag.width
+    && tag.height === newTag.height
+    && tag.left === newTag.left
+    && tag.top === newTag.top
+  ));
+
+  if (tagIndex === -1) {
+    return true;
+  }
+
+  return false;
+};
+
 const onUpdate = (pages, updatedPage) => {
   const pageIndex = findPageIndex(updatedPage, pages);
   const comparedPage = pages[pageIndex];
@@ -38,6 +54,12 @@ const onUpdate = (pages, updatedPage) => {
   const isSame = () => {
     if (comparedPage.tags.length !== updatedPage.tags.length) {
       return false;
+    }
+
+    for (let i = 0; i < updatedPage.tags.length; i += 1) {
+      if (checkTags(comparedPage.tags, updatedPage.tags[i])) {
+        return false;
+      }
     }
 
     return true;

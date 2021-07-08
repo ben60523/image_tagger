@@ -25,6 +25,7 @@ import {
   FIND,
   find,
   remove,
+  autoAnno,
 } from '../request';
 
 import {
@@ -40,6 +41,7 @@ import {
   EXPORT_PROJECT,
   SELECT_FOLDER,
   PAGES,
+  AUTO_ANNO,
 } from '../constants';
 
 const App = () => {
@@ -82,6 +84,10 @@ const App = () => {
   const onUpdatePage = (targetPage) => {
     dispatch(updatePage(targetPage));
     send2Local(TO_GENERAL, update(PAGES, targetPage));
+  };
+
+  const onAutoAnnoClick = (targetPage) => {
+    send2Local(TO_GENERAL, autoAnno(PAGES, targetPage));
   };
 
   const removePage = (removedPage) => {
@@ -129,10 +135,8 @@ const App = () => {
 
     // Add listener
     receive(FROM_GENERAL, (e, resp) => {
-      if (init && resp.name === SELECT_FOLDER) {
-        console.log(resp);
-
-        if (resp.options.taggedFile !== null) {
+      const onSelectFolder = () => {
+        if (init && resp.options.taggedFile !== null) {
           setOpenDialog(true);
           setDialogCtn(resp.options);
           history.push(
@@ -154,11 +158,35 @@ const App = () => {
         }
 
         setWorkingPath(resp.contents[0].dir);
-      } else if (resp.name === FIND && resp.type === PAGES) {
-        // TODO: ADD Initial page
+        return null;
+      };
+
+      const onFind = () => {
+        if (resp.type !== PAGES) {
+          return null;
+        }
+
         initPage(resp.contents);
         init = true;
+
+        return null;
+      };
+
+      switch (resp.name) {
+        case SELECT_FOLDER:
+          return onSelectFolder(resp);
+        case FIND:
+          return onFind();
+        case AUTO_ANNO:
+          if (Array.isArray(resp.contents.tags) && resp.contents.tags.length !== 0) {
+            onUpdatePage(resp.contents);
+          }
+          break;
+        default:
+          console.log('event not found', resp);
       }
+
+      return null;
     });
 
     const getLabels = (e, resp) => {
@@ -231,6 +259,7 @@ const App = () => {
         ldispatch,
         removePage,
         onUpdatePage,
+        onAutoAnnoClick,
         workingPath,
         filterList,
         setFilterList,

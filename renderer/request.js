@@ -2,6 +2,7 @@ export const FIND_ONE = 'findOne';
 export const UPDATE = 'update';
 export const FIND = 'find';
 export const REMOVE = 'remove';
+export const AUTO_ANNO = 'AUTO_ANNO';
 
 export const send2Local = (channel, content) => {
   window.api.send(channel, {
@@ -30,6 +31,12 @@ export const update = (type, contents) => ({
 export const remove = (type, contents) => ({
   type,
   name: REMOVE,
+  contents,
+});
+
+export const autoAnno = (type, contents) => ({
+  type,
+  name: AUTO_ANNO,
   contents,
 });
 

@@ -23,4 +23,10 @@ export default [
     project: 'default',
     describe: 'Default',
   },
+  {
+    title: 'auto',
+    color: '#0000ff',
+    project: 'default',
+    describe: 'auto_gen',
+  },
 ];

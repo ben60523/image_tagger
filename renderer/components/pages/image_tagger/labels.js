@@ -7,6 +7,7 @@ import { addNewTaggingLabel } from '../../../reducers/label_actions';
 import defaultabel from '../../../reducers/default_label';
 
 // const PENCIL = 'pencil';
+const AUTO_GENERATE = 'auto_gen';
 
 export default ({ setTagConfig }) => {
   // const [enteredLabel, setEnteredLabel] = useState(null);
@@ -16,7 +17,7 @@ export default ({ setTagConfig }) => {
   const [editedLabel] = useState(null);
 
   const updateCurrentLabel = (selectedLabel) => {
-    if (editedLabel === null) {
+    if (editedLabel === null && selectedLabel.describe !== AUTO_GENERATE) {
       setTagConfig(selectedLabel);
       setFocusLabel(selectedLabel);
     }
@@ -63,7 +64,11 @@ export default ({ setTagConfig }) => {
 
   useEffect(() => {
     if (labels.filter(taggingLabelFilter).length !== 0) {
-      setFocusLabel(labels[0]);
+      if (labels[0].describe !== AUTO_GENERATE) {
+        setFocusLabel(labels[0]);
+      } else {
+        setFocusLabel(labels[1]);
+      }
     } else {
       const action = addNewTaggingLabel(defaultabel);
       setFocusLabel(action.payload[0]);
@@ -80,6 +85,7 @@ export default ({ setTagConfig }) => {
         labels.length !== 0 ? labels
           .filter(taggingLabelFilter)
           .filter(projectFilter)
+          .sort((a, b) => (a.title > b.title ? 1 : -1))
           .map((label) => (
             <div
               key={label.key}

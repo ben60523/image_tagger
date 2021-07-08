@@ -4,14 +4,13 @@ const moment = require('moment');
 
 const {
   syncMediaStore,
-  copyFiles,
   createFolder,
   writeFile,
   readdir,
   readFile,
 } = require('../models/fs_handler');
 
-const { app } = require('electron');
+const { autoAnno } = require('../models/auto_anno');
 
 const {
   FROM_GENERAL,
@@ -20,11 +19,9 @@ const {
 const SELECT_FILES = 'SELECT_FILES';
 const EXPORT_PROJECT = 'EXPORT_PROJECT';
 const SELECT_FOLDER = 'SELECT_FOLDER';
-
+const AUTO_ANNO = 'AUTO_ANNO';
 
 const supportSuffix = ['jpg', 'png', 'jpeg'];
-
-
 
 module.exports = ({win, props, db, logger}) => {
   const sendResponse = (channel, msg) => {
@@ -182,6 +179,24 @@ module.exports = ({win, props, db, logger}) => {
     }
   }
 
+  const autoAnnotationImage = (props) => {
+    autoAnno(props.contents)
+      .then(lacations => {
+        console.log({
+          ...props,
+          contents: lacations                                                                                                                                                                                                                                                                                                                                                                                                 
+        });
+        return sendResponse(
+          FROM_GENERAL,
+          {
+            ...props,
+            contents: lacations                                                                                                                                                                                                                                                                                                                                                                                                 
+          }
+        );
+      })
+      .catch(err => console.error('autoAnnotationImage error'))
+  }
+
   switch(props.name) {
     case SELECT_FILES:
       return selectFiles(props);
@@ -189,6 +204,8 @@ module.exports = ({win, props, db, logger}) => {
       return selectFolder(props);
     case EXPORT_PROJECT:
       return exportProject(props);
+    case AUTO_ANNO:
+      return autoAnnotationImage(props);
     default:
       require('../models/nedb')[props.name](getDB(props), props)
         .then((resp) => {

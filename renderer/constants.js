@@ -14,3 +14,5 @@ export const SELECT_FOLDER = 'SELECT_FOLDER';
 
 export const LABELS = 'labels';
 export const PAGES = 'pages';
+
+export const AUTO_ANNO = 'AUTO_ANNO';
