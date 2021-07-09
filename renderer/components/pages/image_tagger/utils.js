@@ -22,41 +22,67 @@ export function loadImage(src) {
   });
 }
 
-export function drawRectangle(props, ctx) {
-  const {
-    left, top, width, height, color,
-  } = props;
+// export function drawRectangle(props, ctx) {
+//   const {
+//     left, top, width, height, color,
+//   } = props;
 
+//   const dpr = window.devicePixelRatio;
+
+//   ctx.lineWidth = ctx.canvas.width > ctx.canvas.height
+//     ? Math.round(ctx.canvas.width / 500)
+//     : Math.round(ctx.canvas.height / 500);
+
+//   ctx.beginPath();
+//   ctx.strokeStyle = color;
+//   ctx.rect(left * dpr, top * dpr, width * dpr, height * dpr);
+//   ctx.stroke();
+
+//   if (props.title) {
+//     const fontSize = ctx.lineWidth * 10;
+//     const spaceNum = (props.title.split(' ').length - 1);
+
+//     ctx.beginPath();
+//     ctx.fillStyle = color;
+//     ctx.fillRect(
+//       left * dpr,
+//       top * dpr - fontSize,
+//       ctx.lineWidth * (props.title.length - spaceNum) * 5 + ctx.lineWidth,
+//       fontSize,
+//     );
+//     ctx.stroke();
+
+//     ctx.fillStyle = 'white';
+//     ctx.font = `${fontSize}px Arial`;
+//     ctx.fillText(props.title, left * dpr + ctx.lineWidth, top * dpr - ctx.lineWidth * 2);
+//   }
+
+//   ctx.stroke();
+// }
+
+export function drawRectangle(props, ctx) {
   const dpr = window.devicePixelRatio;
+
+  const left = props.left * dpr;
+  const top = props.top * dpr;
+  const rectangleWidth = props.width * dpr;
+  const rectangleHeight = props.height * dpr;
+
+  const ellipseX = left + 0.5 * rectangleWidth;
+  const ellipseY = top + 0.5 * rectangleHeight;
+  const ellipseWidth = Math.abs(0.5 * rectangleWidth);
+  const ellipseHeight = Math.abs(0.5 * rectangleHeight);
+  const rotation = 0;
+  const startAngle = 0;
+  const endAngle = 2 * Math.PI;
 
   ctx.lineWidth = ctx.canvas.width > ctx.canvas.height
     ? Math.round(ctx.canvas.width / 500)
     : Math.round(ctx.canvas.height / 500);
 
+  ctx.strokeStyle = props.color;
   ctx.beginPath();
-  ctx.strokeStyle = color;
-  ctx.rect(left * dpr, top * dpr, width * dpr, height * dpr);
-  ctx.stroke();
-
-  if (props.title) {
-    const fontSize = ctx.lineWidth * 10;
-    const spaceNum = (props.title.split(' ').length - 1);
-
-    ctx.beginPath();
-    ctx.fillStyle = color;
-    ctx.fillRect(
-      left * dpr,
-      top * dpr - fontSize,
-      ctx.lineWidth * (props.title.length - spaceNum) * 5 + ctx.lineWidth,
-      fontSize,
-    );
-    ctx.stroke();
-
-    ctx.fillStyle = 'white';
-    ctx.font = `${fontSize}px Arial`;
-    ctx.fillText(props.title, left * dpr + ctx.lineWidth, top * dpr - ctx.lineWidth * 2);
-  }
-
+  ctx.ellipse(ellipseX, ellipseY, ellipseWidth, ellipseHeight, rotation, startAngle, endAngle);
   ctx.stroke();
 }
 
