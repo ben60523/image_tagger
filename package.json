@@ -105,6 +105,7 @@
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.3.0",
     "image-webpack-loader": "^6.0.0",
+    "jest": "^27.0.6",
     "mini-css-extract-plugin": "^0.10.0",
     "node-sass": "^4.14.1",
     "sass-loader": "^9.0.3",
