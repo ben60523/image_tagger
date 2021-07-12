@@ -200,7 +200,7 @@ const App = () => {
     };
 
     const getDBLabels = () => {
-      send2Local(TO_GENERAL, find(LABELS, {}));
+      // send2Local(TO_GENERAL, find(LABELS, {}));
       receive(FROM_GENERAL, getLabels);
     };
 
