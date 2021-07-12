@@ -29,4 +29,10 @@ export default [
     project: 'default',
     describe: 'auto_gen',
   },
+  {
+    title: 'normal',
+    color: '#99ff33',
+    project: 'default',
+    describe: 'normal',
+  },
 ];
