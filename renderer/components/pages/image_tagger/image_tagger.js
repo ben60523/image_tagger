@@ -2,38 +2,21 @@ import React, {
   useEffect,
   useRef,
   useState,
-  useReducer,
-  useCallback,
   useContext,
 } from 'react';
 
-import { useHistory } from 'react-router-dom';
 import CameraIcon from '@material-ui/icons/Camera';
 import IconButton from '@material-ui/core/IconButton';
-import FormatShapesIcon from '@material-ui/icons/FormatShapes';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Tooltip from '@material-ui/core/Tooltip';
 import Divider from '@material-ui/core/Divider';
 
 import ContextStore from '../../../context_store';
-import {
-  DELETE_TAG,
-  SHOW_TAG,
-  HIDE_TAG,
-  ADD_TAG,
-} from './constants';
 
 import {
   loadImage,
-  drawTagRectangle,
-  drawPreviewingRectangle,
-  drawInstructions,
 } from './utils';
 
-import tagListReducer from './tag_reducer';
-
 import Labels from './labels';
-import TagList from './tag_list';
 
 const baseStyle = {
   borderRadius: '4px',
@@ -50,286 +33,173 @@ const containerStyle = {
   padding: '5px',
 };
 
-const initialPoint = { left: -1, top: -1 };
+const Canvas = ({ image, getTag }) => {
+  let prePoint = {};
+  const canvasRef = useRef(null);
+
+  const paint = (prevPos, currPos, color) => {
+    const { left, top } = currPos;
+    const { left: x, top: y } = prevPos;
+
+    const canvas = canvasRef.current;
+    const context = canvas.getContext('2d');
+
+    const scale = () => ({
+      scaleX: canvas.width / context.canvas.offsetWidth,
+      scaleY: canvas.height / context.canvas.offsetHeight,
+    });
+
+    context.lineWidth = context.canvas.width > context.canvas.height
+      ? Math.round(context.canvas.width / 500)
+      : Math.round(context.canvas.height / 500);
+
+    context.beginPath();
+
+    context.strokeStyle = color;
+    // Move the the prevPosition of the mouse
+    context.moveTo(x * scale().scaleX, y * scale().scaleY);
+    // Draw a line to the current position of the mouse
+    context.lineTo(left * scale().scaleX, top * scale().scaleY);
+    // Visualize the line using the strokeStyle
+    context.stroke();
+
+    prePoint = { left, top };
+  };
+
+  const onMouseDown = (e) => {
+    prePoint = {
+      left: e.offsetX,
+      top: e.offsetY,
+    };
+
+    // Add mouse move event
+    canvasRef.current.onmousemove = (event) => {
+      paint(
+        prePoint,
+        {
+          left: event.offsetX,
+          top: event.offsetY,
+        },
+        getTag().color,
+      );
+    };
+  };
+
+  const onMouseUp = () => {
+    // remove mouse move event
+    canvasRef.current.onmousemove = null;
+  };
+
+  const initDraw = () => {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext('2d');
+    const width = image.naturalWidth;
+    const height = image.naturalHeight;
+
+    context.drawImage(image, 0, 0, width, height);
+  };
+
+  useEffect(() => {
+    if (image) {
+      initDraw();
+    }
+    console.log(image);
+  }, [image]);
+
+  return image ? (
+    <canvas
+      ref={canvasRef}
+      width={image.width}
+      height={image.height}
+      style={
+        image.width < image.height + 50
+          ? { ...baseStyle, height: '100%' }
+          : { ...baseStyle, width: 'calc(100% - 11em)' }
+      }
+      onMouseDown={(e) => onMouseDown(e)}
+      onMouseUp={(e) => onMouseUp(e)}
+    />
+  ) : null;
+};
 
 export default function imageTagger({ page }) {
-  const { onUpdatePage, labels, onAutoAnnoClick } = useContext(ContextStore);
-  const canvasRef = useRef(null);
-  const routeHistory = useHistory();
-  const [snapshot, setSnapshot] = useState(null);
-  const [tagConfig, setTagConfig] = useState({});
-  const [tagList, dispatch] = useReducer(tagListReducer, page.tags);
-  const [content, setContent] = useState(<div>loading</div>);
-  const [mouseDownPoint, setMouseDownPoint] = useState(initialPoint);
-  const [currentMousePoint, setCurrentMousePoint] = useState(initialPoint);
-  const [mouseUpPoint, setMouseUpPoint] = useState(initialPoint);
-  const [progress, setProgress] = useState(false);
-  const dpr = window.devicePixelRatio;
+  const { labels } = useContext(ContextStore);
+  const [image, setImage] = useState(null);
+  const [tagConfig, setTagConfig] = useState(labels[0]);
 
-  const drawTags = (tags) => {
-    if (content.type === 'canvas' && snapshot !== null) {
-      const canvas = canvasRef.current;
-      const context = canvas.getContext('2d');
-      drawInstructions(context, snapshot, tags, labels);
-    }
+  console.log(tagConfig);
+
+  const takeScreenShot = () => {
+    // const dataURL = canvasRef.current.toDataURL();
+
+    // console.log(e.currentTarget);
+    // e.currentTarget.href = dataURL;
   };
 
-  const toggleTags = (selectedTag) => {
-    if (selectedTag.hide) dispatch([SHOW_TAG, selectedTag]);
-    else dispatch([HIDE_TAG, selectedTag]);
-  };
-
-  const removeTag = (selectedTag) => {
-    dispatch([DELETE_TAG, selectedTag]);
-  };
-
-  const takeScreenShot = (e) => {
-    const dataURL = canvasRef.current.toDataURL();
-
-    console.log(e.currentTarget);
-    e.currentTarget.href = dataURL;
-  };
+  const getTag = () => tagConfig;
 
   // Initial content
   useEffect(() => {
-    const onMouseDown = (e) => {
-      setMouseUpPoint(initialPoint);
-      setMouseDownPoint({
-        left: e.nativeEvent.offsetX,
-        top: e.nativeEvent.offsetY,
-      });
-
-      // Add mouse move event
-      canvasRef.current.onmousemove = (event) => {
-        setCurrentMousePoint({
-          left: event.offsetX,
-          top: event.offsetY,
-        });
-      };
-    };
-
-    const onMouseUp = (e) => {
-      setMouseUpPoint({
-        left: e.nativeEvent.offsetX,
-        top: e.nativeEvent.offsetY,
-      });
-
-      // remove mouse move event
-      canvasRef.current.onmousemove = null;
-      setCurrentMousePoint(initialPoint);
-    };
-
-    const createCanvas = (width, height) => (
-      <canvas
-        ref={canvasRef}
-        width={width}
-        height={height}
-        style={
-          width < height + 50
-            ? { ...baseStyle, height: '100%' }
-            : { ...baseStyle, width: 'calc(100% - 11em)' }
-        }
-        onMouseDown={(e) => onMouseDown(e)}
-        onMouseUp={(e) => onMouseUp(e)}
-      />
-    );
-
     const drawImage = () => loadImage(page.src)
-      .then((img) => {
-        setContent(
-          createCanvas(
-            img.naturalWidth * dpr,
-            img.naturalHeight * dpr,
-          ),
-        );
-
-        const initDraw = () => {
-          const canvas = canvasRef.current;
-          const context = canvas.getContext('2d');
-          const width = img.naturalWidth * dpr;
-          const height = img.naturalHeight * dpr;
-
-          context.drawImage(img, 0, 0, width, height);
-          setSnapshot(context.getImageData(0, 0, width, height));
-        };
-
-        if (canvasRef.current) {
-          initDraw();
-        } else {
-          setTimeout(() => initDraw(), 0);
-        }
-      })
-      .catch((err) => {
-        setContent(<div>Loading Media Error</div>);
-        console.log(err);
-        setTimeout(() => {
-          routeHistory.goBack();
-        }, 1000);
-      });
+      .then((img) => setImage(img))
+      .catch((error) => console.log('loading image error', error));
 
     drawImage();
   }, []);
-
-  const autoAnno = () => {
-    setProgress(true);
-    onAutoAnnoClick(page);
-
-    setTimeout(() => {
-      setProgress(false);
-    }, 30000);
-  };
-
-  useEffect(() => {
-    if (tagList !== null) {
-      onUpdatePage({
-        ...page,
-        tags: tagList,
-      });
-      drawTags(tagList);
-    }
-  }, [tagList]);
-
-  useEffect(() => {
-    // update auto annotation
-    dispatch([ADD_TAG, page.tags]);
-    setProgress(false);
-  }, [page]);
-
-  useEffect(() => {
-    drawTags(tagList);
-  }, [snapshot]);
-
-  // handle mouse events
-  useEffect(() => {
-    if (canvasRef.current) {
-      const canvas = canvasRef.current;
-      const context = canvas.getContext('2d');
-
-      const scale = () => ({
-        scaleX: canvas.width / context.canvas.offsetWidth / dpr,
-        scaleY: canvas.height / context.canvas.offsetHeight / dpr,
-      });
-
-      // Check the point isn't in initial state
-      const checkPoint = (point) => (point.left !== -1 && point.top !== -1);
-
-      // Check the scope in point1 and point2 isn't a line or a point
-      const isArea = (point1, point2) => (
-        point1.left !== point2.left && point1.top !== point2.top
-      );
-
-      if (checkPoint(mouseDownPoint) && content !== null) {
-        if (checkPoint(mouseUpPoint)) {
-          // Clean canvas
-          drawTags(tagList);
-          if (isArea(mouseDownPoint, mouseUpPoint)) {
-            drawTagRectangle({
-              left: Math.round(mouseDownPoint.left * scale().scaleX),
-              top: Math.round(mouseDownPoint.top * scale().scaleY),
-              width: Math.round((mouseUpPoint.left - mouseDownPoint.left) * scale().scaleX),
-              height: Math.round((mouseUpPoint.top - mouseDownPoint.top) * scale().scaleY),
-              label: tagConfig.key,
-            }, dispatch);
-          }
-        } else if (checkPoint(currentMousePoint)) {
-          // Clean canvas
-          drawTags(tagList);
-          drawPreviewingRectangle({
-            left: mouseDownPoint.left * scale().scaleX,
-            top: mouseDownPoint.top * scale().scaleY,
-            width: (currentMousePoint.left - mouseDownPoint.left) * scale().scaleX,
-            height: (currentMousePoint.top - mouseDownPoint.top) * scale().scaleY,
-          }, context);
-        }
-      }
-    }
-  }, [mouseDownPoint, mouseUpPoint, currentMousePoint]);
 
   return (
     <div
       id="canvas-container"
       style={containerStyle}
     >
-      { content }
-      {
-        useCallback(content.type === 'canvas' ? (
-          <div
-            style={{
-              height: '100%',
-              maxWidth: '10rem',
-              marginRight: '3px',
-              overflowY: 'scroll',
-            }}
-          >
-            <div
+      <Canvas getTag={getTag} image={image} />
+      <div
+        style={{
+          height: '100%',
+          maxWidth: '10rem',
+          marginRight: '3px',
+          overflowY: 'scroll',
+        }}
+      >
+        <div
+          style={{
+            fontSize: '1.1rem',
+            margin: '10px 10px',
+            overflow: 'auto',
+            textOverflow: 'ellipsis',
+          }}
+        >
+          {page.name}
+        </div>
+        <Divider />
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <Tooltip title="Take Snapshot">
+            <a
+              href="test"
+              download={`${page.name}_snapshot.png`}
               style={{
-                fontSize: '1.1rem',
-                margin: '10px 10px',
-                overflow: 'auto',
-                textOverflow: 'ellipsis',
+                textDecoration: 'none',
               }}
+              onClick={takeScreenShot}
             >
-              {page.name}
-            </div>
-            <Divider />
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <Tooltip title="Take Snapshot">
-                <a
-                  href="test"
-                  download={`${page.name}_snapshot.png`}
+              <IconButton size="small">
+                <CameraIcon
                   style={{
-                    textDecoration: 'none',
+                    color: 'rgba(0, 0, 0, 0.65)',
                   }}
-                  onClick={takeScreenShot}
-                >
-                  <IconButton size="small">
-                    <CameraIcon
-                      style={{
-                        color: 'rgba(0, 0, 0, 0.65)',
-                      }}
-                    />
-                  </IconButton>
-                </a>
-              </Tooltip>
-              <Tooltip title="Auto-Annotation">
-                <IconButton size="small" onClick={autoAnno}>
-                  <FormatShapesIcon
-                    style={{
-                      color: `rgba(0, 0, 0, ${progress ? '0.2' : '0.65'})`,
-                    }}
-                  />
-                  {
-                    progress ? (
-                      <CircularProgress
-                        size={24}
-                        style={{
-                          position: 'absolute',
-                          top: '50%',
-                          left: '50%',
-                          marginTop: '-12px',
-                          marginLeft: '-12px',
-                        }}
-                      />
-                    ) : null
-                  }
-                </IconButton>
-              </Tooltip>
-            </div>
-            <Divider />
-            <Labels setTagConfig={setTagConfig} />
-            <TagList
-              tagList={tagList}
-              toggleTags={toggleTags}
-              removeTag={removeTag}
-            />
-          </div>
-        ) : null, [tagList, content, progress])
-      }
+                />
+              </IconButton>
+            </a>
+          </Tooltip>
+        </div>
+        <Divider />
+        <Labels setTagConfig={setTagConfig} />
+      </div>
     </div>
   );
 }
