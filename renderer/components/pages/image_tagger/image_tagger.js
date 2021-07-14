@@ -5,9 +5,6 @@ import React, {
   useContext,
 } from 'react';
 
-import CameraIcon from '@material-ui/icons/Camera';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
 import Divider from '@material-ui/core/Divider';
 
 import ContextStore from '../../../context_store';
@@ -33,7 +30,7 @@ const containerStyle = {
   padding: '5px',
 };
 
-const Canvas = ({ image, getTag }) => {
+const Canvas = ({ image, getTag, updatePage }) => {
   let prePoint = {};
   const canvasRef = useRef(null);
 
@@ -103,7 +100,12 @@ const Canvas = ({ image, getTag }) => {
     if (image) {
       initDraw();
     }
-    console.log(image);
+
+    return () => {
+      if (image && canvasRef.current) {
+        updatePage(canvasRef.current.toDataURL());
+      }
+    };
   }, [image]);
 
   return image ? (
@@ -123,28 +125,30 @@ const Canvas = ({ image, getTag }) => {
 };
 
 export default function imageTagger({ page }) {
-  const { labels } = useContext(ContextStore);
+  const { labels, onUpdatePage } = useContext(ContextStore);
   const [image, setImage] = useState(null);
   const [tagConfig, setTagConfig] = useState(labels[0]);
 
-  console.log(tagConfig);
-
-  const takeScreenShot = () => {
-    // const dataURL = canvasRef.current.toDataURL();
-
-    // console.log(e.currentTarget);
-    // e.currentTarget.href = dataURL;
+  const updatePage = (snapshot) => {
+    onUpdatePage({
+      ...page,
+      snapshot,
+    });
   };
 
   const getTag = () => tagConfig;
 
   // Initial content
   useEffect(() => {
-    const drawImage = () => loadImage(page.src)
-      .then((img) => setImage(img))
-      .catch((error) => console.log('loading image error', error));
-
-    drawImage();
+    if (page.snapshot) {
+      const img = new Image();
+      img.onload = () => setImage(img);
+      img.src = page.snapshot;
+    } else {
+      loadImage(page.src)
+        .then((img) => setImage(img))
+        .catch((error) => console.log('loading image error', error));
+    }
   }, []);
 
   return (
@@ -152,7 +156,11 @@ export default function imageTagger({ page }) {
       id="canvas-container"
       style={containerStyle}
     >
-      <Canvas getTag={getTag} image={image} />
+      <Canvas
+        getTag={getTag}
+        image={image}
+        updatePage={updatePage}
+      />
       <div
         style={{
           height: '100%',
@@ -170,32 +178,6 @@ export default function imageTagger({ page }) {
           }}
         >
           {page.name}
-        </div>
-        <Divider />
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <Tooltip title="Take Snapshot">
-            <a
-              href="test"
-              download={`${page.name}_snapshot.png`}
-              style={{
-                textDecoration: 'none',
-              }}
-              onClick={takeScreenShot}
-            >
-              <IconButton size="small">
-                <CameraIcon
-                  style={{
-                    color: 'rgba(0, 0, 0, 0.65)',
-                  }}
-                />
-              </IconButton>
-            </a>
-          </Tooltip>
         </div>
         <Divider />
         <Labels setTagConfig={setTagConfig} />

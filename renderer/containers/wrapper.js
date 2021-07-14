@@ -83,7 +83,7 @@ const App = () => {
 
   const onUpdatePage = (targetPage) => {
     dispatch(updatePage(targetPage));
-    send2Local(TO_GENERAL, update(PAGES, targetPage));
+    // send2Local(TO_GENERAL, update(PAGES, targetPage));
   };
 
   const onAutoAnnoClick = (targetPage) => {
