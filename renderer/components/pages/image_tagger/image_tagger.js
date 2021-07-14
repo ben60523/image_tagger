@@ -103,7 +103,7 @@ const Canvas = ({ image, getTag, updatePage }) => {
 
     return () => {
       if (image && canvasRef.current) {
-        updatePage(canvasRef.current.toDataURL());
+        updatePage(canvasRef.current.toDataURL('image/jpeg', 1.0));
       }
     };
   }, [image]);

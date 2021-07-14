@@ -1,6 +1,10 @@
 import React, { useReducer, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import '../assets/css/photon.css';
+import JSZip from 'jszip';
+import moment from 'moment';
+import { saveAs } from 'file-saver';
+
 import ContextStore from '../context_store';
 
 import pageReducer from '../reducers/page_reducer';
@@ -38,7 +42,6 @@ import {
   FIND_ONE,
   TO_GENERAL,
   FROM_GENERAL,
-  EXPORT_PROJECT,
   SELECT_FOLDER,
   PAGES,
   AUTO_ANNO,
@@ -72,12 +75,12 @@ const App = () => {
       history.push(
         imgs.map((img) => {
           const newPage = pageCreater(img, PROJECT_NAME);
-          dispatch(addPage(newPage));
+          // dispatch(addPage(newPage));
           return newPage;
         })[0].key,
       );
     } else {
-      dispatch(addPage(pageCreater(imgs, PROJECT_NAME)));
+      // dispatch(addPage(pageCreater(imgs, PROJECT_NAME)));
     }
   };
 
@@ -114,13 +117,40 @@ const App = () => {
   };
 
   const exportProject = () => {
-    send2Local(TO_GENERAL, {
-      type: PAGES,
-      name: EXPORT_PROJECT,
-      contents: {
-        workingPath,
-      },
-    });
+    const findPagesInWorkingPath = (page) => {
+      if (page.src.indexOf(workingPath) !== -1) {
+        return true;
+      }
+
+      return false;
+    };
+
+    const haveSnapshot = (page) => {
+      console.log(page);
+      if (page.snapshot) {
+        return true;
+      }
+
+      return false;
+    };
+
+    const zip = new JSZip();
+
+    const img = zip.folder('images');
+
+    const result = pages.filter(findPagesInWorkingPath)
+      .filter(haveSnapshot)
+      .map((page) => {
+        const commaIndex = page.snapshot.indexOf(',');
+        img.file(page.name, page.snapshot.slice(commaIndex + 1), { base64: true });
+
+        return page;
+      });
+
+    console.log(result);
+
+    zip.generateAsync({ type: 'blob' })
+      .then((ctn) => saveAs(ctn, `${moment(new Date()).format('YYYYMMDD_HHmmss')}.zip`));
   };
 
   const getProject = () => {
@@ -183,7 +213,7 @@ const App = () => {
           }
           break;
         default:
-          console.log('event not found', resp);
+          // console.log('event not found', resp);
       }
 
       return null;
