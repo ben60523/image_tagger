@@ -7,7 +7,7 @@ export default [
   },
   {
     title: 'dental line',
-    color: '#fdbc40',
+    color: '#99ff33',
     project: 'default',
     describe: 'Default',
   },
@@ -31,7 +31,7 @@ export default [
   },
   {
     title: 'normal',
-    color: '#99ff33',
+    color: '#fdbc40',
     project: 'default',
     describe: 'normal',
   },
