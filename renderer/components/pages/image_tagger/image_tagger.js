@@ -36,7 +36,7 @@ const containerStyle = {
 
 const Canvas = ({
   image,
-  getTag,
+  getFocusLabel,
   updatePage,
   canvasRef,
 }) => {
@@ -86,7 +86,7 @@ const Canvas = ({
           left: event.offsetX,
           top: event.offsetY,
         },
-        getTag().color,
+        getFocusLabel().color,
       );
     };
   };
@@ -147,7 +147,7 @@ export default function imageTagger({ page }) {
     });
   };
 
-  const getTag = () => tagConfig;
+  const getFocusLabel = () => tagConfig;
 
   const initImage = () => {
     loadImage(page.src)
@@ -179,7 +179,7 @@ export default function imageTagger({ page }) {
     >
       <Canvas
         canvasRef={canvasRef}
-        getTag={getTag}
+        getFocusLabel={getFocusLabel}
         image={image}
         updatePage={updatePage}
       />
