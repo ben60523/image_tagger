@@ -9,6 +9,7 @@ import Divider from '@material-ui/core/Divider';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
+import CameraIcon from '@material-ui/icons/Camera';
 
 import ContextStore from '../../../context_store';
 
@@ -33,9 +34,13 @@ const containerStyle = {
   padding: '5px',
 };
 
-const Canvas = ({ image, getTag, updatePage }) => {
+const Canvas = ({
+  image,
+  getTag,
+  updatePage,
+  canvasRef,
+}) => {
   let prePoint = {};
-  const canvasRef = useRef(null);
 
   const paint = (prevPos, currPos, color) => {
     const { left, top } = currPos;
@@ -73,7 +78,8 @@ const Canvas = ({ image, getTag, updatePage }) => {
     };
 
     // Add mouse move event
-    canvasRef.current.onmousemove = (event) => {
+    const ref = canvasRef;
+    ref.current.onmousemove = (event) => {
       paint(
         prePoint,
         {
@@ -87,7 +93,8 @@ const Canvas = ({ image, getTag, updatePage }) => {
 
   const onMouseUp = () => {
     // remove mouse move event
-    canvasRef.current.onmousemove = null;
+    const ref = canvasRef;
+    ref.current.onmousemove = null;
   };
 
   const initDraw = () => {
@@ -128,6 +135,7 @@ const Canvas = ({ image, getTag, updatePage }) => {
 };
 
 export default function imageTagger({ page }) {
+  const canvasRef = useRef(null);
   const { labels, onUpdatePage } = useContext(ContextStore);
   const [image, setImage] = useState(null);
   const [tagConfig, setTagConfig] = useState(labels[0]);
@@ -147,6 +155,12 @@ export default function imageTagger({ page }) {
       .catch((error) => console.log('loading image error', error));
   };
 
+  const takeSnapshot = (e) => {
+    const dataURL = canvasRef.current.toDataURL();
+    console.log(e.currentTarget);
+    e.currentTarget.href = dataURL;
+  };
+
   // Initial content
   useEffect(() => {
     if (page.snapshot) {
@@ -164,6 +178,7 @@ export default function imageTagger({ page }) {
       style={containerStyle}
     >
       <Canvas
+        canvasRef={canvasRef}
         getTag={getTag}
         image={image}
         updatePage={updatePage}
@@ -187,14 +202,42 @@ export default function imageTagger({ page }) {
           {page.name}
         </div>
         <Divider />
-        <Tooltip title="Refresh">
-          <IconButton
-            size="small"
-            onClick={initImage}
-          >
-            <RefreshIcon />
-          </IconButton>
-        </Tooltip>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <Tooltip title="Refresh">
+            <IconButton
+              size="small"
+              onClick={initImage}
+            >
+              <RefreshIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Snapshot">
+            <a
+              href="test"
+              download={`${page.name}_snapshot.png`}
+              onClick={takeSnapshot}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <CameraIcon
+                size="small"
+                style={{
+                  textDecoration: 'none',
+                  color: 'rgba(0, 0, 0, 0.65)',
+                }}
+              >
+                <RefreshIcon />
+              </CameraIcon>
+            </a>
+          </Tooltip>
+        </div>
         <Divider />
         <Labels setTagConfig={setTagConfig} />
       </div>
