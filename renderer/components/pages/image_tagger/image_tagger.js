@@ -6,6 +6,9 @@ import React, {
 } from 'react';
 
 import Divider from '@material-ui/core/Divider';
+import RefreshIcon from '@material-ui/icons/Refresh';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import ContextStore from '../../../context_store';
 
@@ -138,6 +141,12 @@ export default function imageTagger({ page }) {
 
   const getTag = () => tagConfig;
 
+  const initImage = () => {
+    loadImage(page.src)
+      .then((img) => setImage(img))
+      .catch((error) => console.log('loading image error', error));
+  };
+
   // Initial content
   useEffect(() => {
     if (page.snapshot) {
@@ -145,9 +154,7 @@ export default function imageTagger({ page }) {
       img.onload = () => setImage(img);
       img.src = page.snapshot;
     } else {
-      loadImage(page.src)
-        .then((img) => setImage(img))
-        .catch((error) => console.log('loading image error', error));
+      initImage();
     }
   }, []);
 
@@ -179,6 +186,15 @@ export default function imageTagger({ page }) {
         >
           {page.name}
         </div>
+        <Divider />
+        <Tooltip title="Refresh">
+          <IconButton
+            size="small"
+            onClick={initImage}
+          >
+            <RefreshIcon />
+          </IconButton>
+        </Tooltip>
         <Divider />
         <Labels setTagConfig={setTagConfig} />
       </div>
