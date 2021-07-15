@@ -24,12 +24,6 @@ export default [
     describe: 'Default',
   },
   {
-    title: 'auto',
-    color: '#0000ff',
-    project: 'default',
-    describe: 'auto_gen',
-  },
-  {
     title: 'normal',
     color: '#fdbc40',
     project: 'default',
