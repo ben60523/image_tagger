@@ -34,18 +34,21 @@ const containerStyle = {
   padding: '5px',
 };
 
+const PAINTING = 'painting';
+
 const Canvas = ({
   image,
   getFocusLabel,
-  updatePage,
+  updatePageTag,
   canvasRef,
   page,
+  getLabelByID,
 }) => {
   const { tags } = page;
   let prePoint = {};
 
   const createTag = () => ({
-    type: 'painting',
+    type: PAINTING,
     points: [],
     labelID: getFocusLabel().key,
   });
@@ -104,9 +107,21 @@ const Canvas = ({
     ref.current.onmouseup = () => {
       // remove mouse move event
       tags.push(newTag);
-      console.log(tags);
       ref.current.onmousemove = null;
     };
+  };
+
+  const drawTags = (paintedTags) => {
+    if (paintedTags.length !== 0) {
+      paintedTags.forEach((tag) => {
+        const { color } = getLabelByID(tag.labelID);
+        if (tag.type === PAINTING && Array.isArray(tag.points)) {
+          for (let i = 0; i < tag.points.length - 1; i += 1) {
+            paint(tag.points[i], tag.points[i + 1], color);
+          }
+        }
+      });
+    }
   };
 
   const initDraw = () => {
@@ -116,6 +131,7 @@ const Canvas = ({
     const height = image.naturalHeight;
 
     context.drawImage(image, 0, 0, width, height);
+    drawTags(tags);
   };
 
   useEffect(() => {
@@ -125,7 +141,7 @@ const Canvas = ({
 
     return () => {
       if (image && canvasRef.current) {
-        updatePage(canvasRef.current.toDataURL('image/jpeg', 1.0));
+        updatePageTag(tags);
       }
     };
   }, [image]);
@@ -151,12 +167,14 @@ export default function imageTagger({ page }) {
   const [image, setImage] = useState(null);
   const [tagConfig, setTagConfig] = useState(labels[0]);
 
-  const updatePage = (snapshot) => {
+  const updatePageTag = (tags) => {
     onUpdatePage({
       ...page,
-      snapshot,
+      tags,
     });
   };
+
+  const getLabelByID = (id) => labels.find((label) => label.key === id);
 
   const getFocusLabel = () => tagConfig;
 
@@ -192,8 +210,9 @@ export default function imageTagger({ page }) {
         canvasRef={canvasRef}
         getFocusLabel={getFocusLabel}
         image={image}
-        updatePage={updatePage}
+        updatePageTag={updatePageTag}
         page={page}
+        getLabelByID={getLabelByID}
       />
       <div
         style={{
