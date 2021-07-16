@@ -39,8 +39,16 @@ const Canvas = ({
   getFocusLabel,
   updatePage,
   canvasRef,
+  page,
 }) => {
+  const { tags } = page;
   let prePoint = {};
+
+  const createTag = () => ({
+    type: 'painting',
+    points: [],
+    labelID: getFocusLabel().key,
+  });
 
   const paint = (prevPos, currPos, color) => {
     const { left, top } = currPos;
@@ -77,9 +85,12 @@ const Canvas = ({
       top: e.offsetY,
     };
 
+    const newTag = createTag();
+
     // Add mouse move event
     const ref = canvasRef;
     ref.current.onmousemove = (event) => {
+      newTag.points.push(prePoint);
       paint(
         prePoint,
         {
@@ -89,12 +100,13 @@ const Canvas = ({
         getFocusLabel().color,
       );
     };
-  };
 
-  const onMouseUp = () => {
-    // remove mouse move event
-    const ref = canvasRef;
-    ref.current.onmousemove = null;
+    ref.current.onmouseup = () => {
+      // remove mouse move event
+      tags.push(newTag);
+      console.log(tags);
+      ref.current.onmousemove = null;
+    };
   };
 
   const initDraw = () => {
@@ -129,7 +141,6 @@ const Canvas = ({
           : { ...baseStyle, width: 'calc(100% - 11em)' }
       }
       onMouseDown={(e) => onMouseDown(e)}
-      onMouseUp={(e) => onMouseUp(e)}
     />
   ) : null;
 };
@@ -182,6 +193,7 @@ export default function imageTagger({ page }) {
         getFocusLabel={getFocusLabel}
         image={image}
         updatePage={updatePage}
+        page={page}
       />
       <div
         style={{
