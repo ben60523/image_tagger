@@ -20,7 +20,6 @@ import {
 
 import Main from './main_pane';
 import Header from './header';
-import Dialog from '../components/pages/import_dialog';
 
 import {
   update,
@@ -52,13 +51,7 @@ const App = () => {
   const [pages, dispatch] = useReducer(pageReducer, []);
   const [labels, ldispatch] = useReducer(labelReducer, []);
   const [workingPath, setWorkingPath] = useState('');
-  const [openDialog, setOpenDialog] = useState(false);
-  const [dialogCtn, setDialogCtn] = useState(null);
   const [filterList, setFilterList] = useState([]);
-
-  const handleDialogClose = () => {
-    setOpenDialog(false);
-  };
 
   const initPage = (dbPage) => {
     if (dbPage.length > 0) {
@@ -159,33 +152,13 @@ const App = () => {
 
   // Initial Project
   useEffect(() => {
-    let init = false;
     // Get the preject information from DB
     getProject();
 
     // Add listener
     receive(FROM_GENERAL, (e, resp) => {
       const onSelectFolder = () => {
-        if (init && resp.options.taggedFile !== null) {
-          setOpenDialog(true);
-          setDialogCtn(resp.options);
-          history.push(
-            resp.contents.map((img) => {
-              const newPage = pageCreater(img, PROJECT_NAME);
-
-              const mediaIndex = resp.options.taggedFile.findIndex(
-                (media) => media.name === img.name,
-              );
-
-              newPage.tags = resp.options.taggedFile[mediaIndex].tags;
-              dispatch(addPage(newPage));
-              send2Local(TO_GENERAL, update(PAGES, newPage));
-              return newPage;
-            })[0].key,
-          );
-        } else {
-          addNewPage(resp.contents);
-        }
+        addNewPage(resp.contents);
 
         setWorkingPath(resp.contents[0].dir);
         return null;
@@ -197,7 +170,6 @@ const App = () => {
         }
 
         initPage(resp.contents);
-        init = true;
 
         return null;
       };
@@ -305,11 +277,6 @@ const App = () => {
           <Main pages={pages} />
         </div>
       </div>
-      <Dialog
-        open={openDialog}
-        handleClose={handleDialogClose}
-        dialogCtn={dialogCtn}
-      />
     </ContextStore.Provider>
   );
 };
