@@ -9,7 +9,8 @@ import ContextStore from '../context_store';
 
 import pageReducer from '../reducers/page_reducer';
 import labelReducer from '../reducers/label_reducers';
-import { initializeLabel } from '../reducers/label_actions';
+import { addNewTaggingLabel } from '../reducers/label_actions';
+import defaultabel from '../reducers/default_label';
 
 import {
   addPage,
@@ -22,7 +23,6 @@ import Main from './main_pane';
 import Header from './header';
 
 import {
-  update,
   send2Local,
   receive,
   FIND,
@@ -37,7 +37,6 @@ import {
   PROJECT_NAME,
   SELECT_FILES,
   UPDATE,
-  LABELS,
   FIND_ONE,
   TO_GENERAL,
   FROM_GENERAL,
@@ -61,6 +60,10 @@ const App = () => {
     dbPage.forEach((page) => {
       dispatch(addPage(page));
     });
+  };
+
+  const initLabels = () => {
+    ldispatch(addNewTaggingLabel(defaultabel));
   };
 
   const addNewPage = (imgs) => {
@@ -154,6 +157,7 @@ const App = () => {
   useEffect(() => {
     // Get the preject information from DB
     getProject();
+    initLabels();
 
     // Add listener
     receive(FROM_GENERAL, (e, resp) => {
@@ -190,43 +194,7 @@ const App = () => {
 
       return null;
     });
-
-    const getLabels = (e, resp) => {
-      if (resp.contents !== null) {
-        if (resp.type === LABELS) {
-          if (resp.name === FIND) {
-            ldispatch(initializeLabel(resp.contents));
-          }
-        }
-      }
-    };
-
-    const getDBLabels = () => {
-      // send2Local(TO_GENERAL, find(LABELS, {}));
-      receive(FROM_GENERAL, getLabels);
-    };
-
-    getDBLabels();
   }, []);
-
-  useEffect(() => {
-    const checkUpdateCtn = (labelList) => {
-      for (let i = 0; i < labelList.length; i += 1) {
-        if (!labelList[i]) return false;
-      }
-      return true;
-    };
-
-    if (labels.length !== 0 && checkUpdateCtn(labels)) {
-      send2Local(
-        TO_GENERAL,
-        update(
-          LABELS,
-          labels,
-        ),
-      );
-    }
-  }, [labels]);
 
   useEffect(() => {
     const getProjectConfig = (e, resp) => {
@@ -258,7 +226,6 @@ const App = () => {
       value={{
         projectName: PROJECT_NAME,
         labels,
-        ldispatch,
         removePage,
         onUpdatePage,
         onAutoAnnoClick,
