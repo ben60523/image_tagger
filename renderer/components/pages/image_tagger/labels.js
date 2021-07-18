@@ -2,12 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 
 import ContextStore from '../../../context_store';
 
-export default ({ setTagConfig }) => {
+export default ({ setTaggedLabel }) => {
   const { labels } = useContext(ContextStore);
   const [focusedLabel, setFocusLabel] = useState(labels[0]);
 
   const updateCurrentLabel = (selectedLabel) => {
-    setTagConfig(selectedLabel);
     setFocusLabel(selectedLabel);
   };
 
@@ -16,6 +15,10 @@ export default ({ setTagConfig }) => {
       setFocusLabel(labels[0]);
     }
   }, []);
+
+  useEffect(() => {
+    setTaggedLabel(focusedLabel);
+  }, [focusedLabel]);
 
   return (
     <div>

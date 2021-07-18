@@ -163,7 +163,7 @@ export default function imageTagger({ page }) {
   const canvasRef = useRef(null);
   const { labels, onUpdatePage } = useContext(ContextStore);
   const [image, setImage] = useState(null);
-  const [tagConfig, setTagConfig] = useState(labels[0]);
+  const [teggedLabel, setTaggedLabel] = useState(labels[0]);
 
   const updatePageTag = (tags) => {
     onUpdatePage({
@@ -174,7 +174,7 @@ export default function imageTagger({ page }) {
 
   const getLabelByID = (id) => labels.find((label) => label.key === id);
 
-  const getFocusLabel = () => tagConfig;
+  const getFocusLabel = () => teggedLabel;
 
   const initImage = () => {
     loadImage(page.src)
@@ -268,7 +268,7 @@ export default function imageTagger({ page }) {
           </Tooltip>
         </div>
         <Divider />
-        <Labels setTagConfig={setTagConfig} />
+        <Labels setTaggedLabel={setTaggedLabel} />
       </div>
     </div>
   );
