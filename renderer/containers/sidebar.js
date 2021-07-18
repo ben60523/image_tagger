@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
@@ -46,20 +46,14 @@ const SideBarItem = ({
 
 const SideBar = ({ pages }) => {
   const history = useHistory();
-  const [sidebarExpand] = useState(false);
   const {
-    removePage,
     workingPath,
     filterList,
     setFilterList,
   } = useContext(ContextStore);
 
   const handleClick = (e, page) => {
-    if (e.target.className.indexOf('icon-cancel-circled') !== -1) {
-      removePage(page);
-    } else if (history.location.pathname !== page.key) {
-      history.push(page.key);
-    }
+    history.push(page.key);
   };
 
   const filterPage = () => {
@@ -114,7 +108,7 @@ const SideBar = ({ pages }) => {
 
   return (
     <div
-      className={`${sidebarExpand === true ? '' : 'pane-sm '}sidebar`}
+      className="pane-sm sidebar"
       style={{
         overflowY: 'scroll',
         maxWidth: '170px',

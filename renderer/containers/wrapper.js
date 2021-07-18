@@ -88,14 +88,6 @@ const App = () => {
     send2Local(TO_GENERAL, autoAnno(PAGES, targetPage));
   };
 
-  const removePage = (removedPage) => {
-    if (removedPage.key === history.location.pathname) {
-      history.goBack();
-    }
-    dispatch(closePage(removedPage));
-    send2Local(TO_GENERAL, remove(PAGES, { key: removedPage.key }));
-  };
-
   const selectFolder = (folder) => {
     send2Local(TO_GENERAL, {
       type: PAGES,
@@ -218,7 +210,6 @@ const App = () => {
       value={{
         projectName: PROJECT_NAME,
         labels,
-        removePage,
         onUpdatePage,
         onAutoAnnoClick,
         workingPath,
