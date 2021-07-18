@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 
-import PageLoader from '../components/page_loader';
 import Home from '../components/pages/home/home';
+import ImageTagger from '../components/pages/image_tagger/image_tagger';
 import SideBar from './sidebar';
 
 const MainContent = ({ pages }) => (
@@ -13,14 +13,11 @@ const MainContent = ({ pages }) => (
         pages.map((page) => (
           <Route
             path={page.key}
-            render={(props) => (
+            render={() => (
               <>
                 <SideBar pages={pages} />
                 <div className="pane">
-                  <PageLoader
-                    {...props}
-                    properties={{ page }}
-                  />
+                  <ImageTagger page={page} />
                 </div>
               </>
             )}
