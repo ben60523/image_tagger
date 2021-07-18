@@ -6,20 +6,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 
-// import ContextStore from '../../context_store';
-
 const CreateDialog = ({ open, handleClose, dialogCtn }) => {
-  // const { setSelectLabel, projectName, ldispatch } = useContext(ContextStore);
 
   const handleConfirm = () => {
-    // const newLabel = addNewBucketLabel({
-    //   title: inputContent,
-    //   project: projectName,
-    // });
-
-    // setSelectLabel(newLabel.payload);
-    // ldispatch(newLabel);
-
     handleClose();
   };
 
