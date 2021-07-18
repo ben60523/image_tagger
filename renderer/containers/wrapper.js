@@ -14,7 +14,6 @@ import defaultabel from '../reducers/default_label';
 
 import {
   addPage,
-  closePage,
   pageCreater,
   updatePage,
 } from '../reducers/page_actions';
@@ -27,7 +26,6 @@ import {
   receive,
   FIND,
   find,
-  remove,
   autoAnno,
 } from '../request';
 

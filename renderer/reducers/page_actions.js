@@ -1,7 +1,6 @@
 import CryptoJS from 'crypto-js';
 import {
   ADD_PAGE,
-  CLOSE_PAGE,
   UPDATE_PAGE,
   IMPORT_PAGE,
 } from './constants';
@@ -29,10 +28,5 @@ export const updatePage = (page) => ({
 
 export const importPage = (page) => ({
   type: IMPORT_PAGE,
-  payload: page,
-});
-
-export const closePage = (page) => ({
-  type: CLOSE_PAGE,
   payload: page,
 });
