@@ -35,7 +35,6 @@ import {
   TO_MAIN,
   FROM_MAIN,
   PROJECT_NAME,
-  SELECT_FILES,
   UPDATE,
   FIND_ONE,
   TO_GENERAL,
@@ -95,13 +94,6 @@ const App = () => {
     }
     dispatch(closePage(removedPage));
     send2Local(TO_GENERAL, remove(PAGES, { key: removedPage.key }));
-  };
-
-  const showOpenDialog = () => {
-    send2Local(TO_GENERAL, {
-      type: PAGES,
-      name: SELECT_FILES,
-    });
   };
 
   const selectFolder = (folder) => {
@@ -236,7 +228,6 @@ const App = () => {
     >
       <div className="window">
         <Header
-          showOpenDialog={showOpenDialog}
           exportProject={exportProject}
           selectFolder={selectFolder}
         />

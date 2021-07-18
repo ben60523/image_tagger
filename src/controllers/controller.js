@@ -34,25 +34,6 @@ module.exports = ({win, props, db, logger}) => {
       : db.label
   )
 
-  const selectFiles = (props) => {
-    return dialog.showOpenDialog({
-      properties: ['openFile', 'multiSelections'],
-      filters: [{ name: 'Images', extensions: ['jpg', 'png', 'jpeg'] }]
-    })
-      .then(resp => {
-        if (!resp.canceled) {
-          return sendResponse(
-            FROM_GENERAL, 
-            {
-              ...props,
-              contents: resp.filePaths
-            }
-          );
-        }
-      })
-      .catch((err) => console.log(err));
-  }
-
   const selectFolder = (props) => {
     const filterSuffix = (filenames) => filenames.filter(
       (filename) => {

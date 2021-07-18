@@ -8,7 +8,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import ContextStore from '../context_store';
 
 const Header = ({
-  // showOpenDialog,
   // exportProject,
   selectFolder,
 }) => {
@@ -25,12 +24,6 @@ const Header = ({
       }}
     >
       {/* <ButtonGroup aria-label="outlined button group"> */}
-      {/* <Button
-          className="btn btn-default"
-          onClick={showOpenDialog}
-        >
-          <AddPhotoAlternateIcon className="icon" />
-        </Button> */}
       <div>
         <Tooltip title="Open Folder">
           <IconButton
