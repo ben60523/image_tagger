@@ -3,12 +3,12 @@ import IconButton from '@material-ui/core/IconButton';
 // import ButtonGroup from '@material-ui/core/ButtonGroup';
 // import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import FolderOpenIcon from '@material-ui/icons/FolderOpen';
-// import SaveIcon from '@material-ui/icons/Save';
+import SaveIcon from '@material-ui/icons/Save';
 import Tooltip from '@material-ui/core/Tooltip';
 import ContextStore from '../context_store';
 
 const Header = ({
-  // exportProject,
+  exportProject,
   selectFolder,
 }) => {
   const { workingPath } = useContext(ContextStore);
@@ -40,7 +40,7 @@ const Header = ({
         <strong>{workingPath}</strong>
       </div>
       {/* </ButtonGroup> */}
-      {/* <Tooltip title="Save">
+      <Tooltip title="Save">
         <IconButton
           aria-label="expand"
           size="small"
@@ -48,7 +48,7 @@ const Header = ({
         >
           <SaveIcon className="icon" />
         </IconButton>
-      </Tooltip> */}
+      </Tooltip>
     </div>
   );
 };
