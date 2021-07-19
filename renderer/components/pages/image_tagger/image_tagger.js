@@ -57,11 +57,6 @@ const Canvas = ({
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
 
-    const scale = () => ({
-      scaleX: canvas.width / context.canvas.offsetWidth,
-      scaleY: canvas.height / context.canvas.offsetHeight,
-    });
-
     context.lineWidth = context.canvas.width > context.canvas.height
       ? Math.round(context.canvas.width / 500)
       : Math.round(context.canvas.height / 500);
@@ -70,42 +65,53 @@ const Canvas = ({
 
     context.strokeStyle = color;
     // Move the the prevPosition of the mouse
-    context.moveTo(x * scale().scaleX, y * scale().scaleY);
+    context.moveTo(x, y);
     // Draw a line to the current position of the mouse
-    context.lineTo(left * scale().scaleX, top * scale().scaleY);
+    context.lineTo(left, top);
     // Visualize the line using the strokeStyle
     context.stroke();
-
-    prePoint = { left, top };
   };
 
-  const drawNewTag = (e) => {
-    prePoint = {
-      left: e.offsetX,
-      top: e.offsetY,
-    };
+  const drawNewTag = () => {
+    prePoint = null;
 
     const newTag = createTag();
 
     // Add mouse move event
-    const ref = canvasRef;
-    ref.current.onmousemove = (event) => {
+    const canvasDOM = canvasRef.current;
+    const context = canvasDOM.getContext('2d');
+
+    const scaleX = canvasDOM.width / context.canvas.offsetWidth;
+    const scaleY = canvasDOM.height / context.canvas.offsetHeight;
+
+    canvasDOM.onmousemove = (event) => {
+      if (prePoint == null) {
+        prePoint = {
+          left: event.offsetX * scaleX,
+          top: event.offsetY * scaleY,
+        };
+      } else {
+        const currentPoint = {
+          left: event.offsetX * scaleX,
+          top: event.offsetY * scaleY,
+        };
+
+        paint(
+          prePoint,
+          currentPoint,
+          getFocusLabel().color,
+        );
+
+        prePoint = currentPoint;
+      }
       newTag.points.push(prePoint);
-      paint(
-        prePoint,
-        {
-          left: event.offsetX,
-          top: event.offsetY,
-        },
-        getFocusLabel().color,
-      );
     };
 
-    ref.current.onmouseup = () => {
+    canvasDOM.onmouseup = () => {
       // remove mouse move event
       setTag([...tags, newTag]);
-      ref.current.onmousemove = null;
-      ref.current.onmouseup = null;
+      canvasDOM.onmousemove = null;
+      canvasDOM.onmouseup = null;
     };
   };
 
@@ -148,7 +154,7 @@ const Canvas = ({
           ? { ...baseStyle, height: '100%' }
           : { ...baseStyle, width: 'calc(100% - 11em)' }
       }
-      onMouseDown={(e) => drawNewTag(e)}
+      onMouseDown={drawNewTag}
     />
   ) : null;
 };
