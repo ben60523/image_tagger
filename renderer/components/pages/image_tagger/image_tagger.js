@@ -87,13 +87,13 @@ const Canvas = ({
     canvasDOM.onmousemove = (event) => {
       if (prePoint == null) {
         prePoint = {
-          left: event.offsetX * scaleX,
-          top: event.offsetY * scaleY,
+          left: Math.round(event.offsetX * scaleX),
+          top: Math.round(event.offsetY * scaleY),
         };
       } else {
         const currentPoint = {
-          left: event.offsetX * scaleX,
-          top: event.offsetY * scaleY,
+          left: Math.round(event.offsetX * scaleX),
+          top: Math.round(event.offsetY * scaleY),
         };
 
         paint(
