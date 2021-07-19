@@ -37,12 +37,11 @@ const PAINTING = 'painting';
 const Canvas = ({
   image,
   getFocusLabel,
-  updatePageTag,
   canvasRef,
-  page,
+  tags,
+  setTag,
   getLabelByID,
 }) => {
-  const { tags } = page;
   let prePoint = {};
 
   const createTag = () => ({
@@ -80,7 +79,7 @@ const Canvas = ({
     prePoint = { left, top };
   };
 
-  const onMouseDown = (e) => {
+  const drawNewTag = (e) => {
     prePoint = {
       left: e.offsetX,
       top: e.offsetY,
@@ -104,8 +103,9 @@ const Canvas = ({
 
     ref.current.onmouseup = () => {
       // remove mouse move event
-      tags.push(newTag);
+      setTag([...tags, newTag]);
       ref.current.onmousemove = null;
+      ref.current.onmouseup = null;
     };
   };
 
@@ -136,13 +136,7 @@ const Canvas = ({
     if (image) {
       initDraw();
     }
-
-    return () => {
-      if (image && canvasRef.current) {
-        updatePageTag(tags);
-      }
-    };
-  }, [image]);
+  }, [tags, image]);
 
   return image ? (
     <canvas
@@ -154,7 +148,7 @@ const Canvas = ({
           ? { ...baseStyle, height: '100%' }
           : { ...baseStyle, width: 'calc(100% - 11em)' }
       }
-      onMouseDown={(e) => onMouseDown(e)}
+      onMouseDown={(e) => drawNewTag(e)}
     />
   ) : null;
 };
@@ -163,9 +157,10 @@ export default function imageTagger({ page }) {
   const canvasRef = useRef(null);
   const { labels, onUpdatePage } = useContext(ContextStore);
   const [image, setImage] = useState(null);
+  const [tags, setTag] = useState(page.tags);
   const [teggedLabel, setTaggedLabel] = useState(labels[0]);
 
-  const updatePageTag = (tags) => {
+  const updatePageTag = () => {
     onUpdatePage({
       ...page,
       tags,
@@ -176,10 +171,8 @@ export default function imageTagger({ page }) {
 
   const getFocusLabel = () => teggedLabel;
 
-  const initImage = () => {
-    loadImage(page.src)
-      .then((img) => setImage(img))
-      .catch((error) => console.log('loading image error', error));
+  const removeAllTags = () => {
+    setTag([]);
   };
 
   const takeSnapshot = (e) => {
@@ -190,14 +183,16 @@ export default function imageTagger({ page }) {
 
   // Initial content
   useEffect(() => {
-    if (page.snapshot) {
-      const img = new Image();
-      img.onload = () => setImage(img);
-      img.src = page.snapshot;
-    } else {
-      initImage();
-    }
+    const initImage = () => {
+      loadImage(page.src)
+        .then((img) => setImage(img))
+        .catch((error) => console.log('loading image error', error));
+    };
+
+    initImage();
   }, []);
+
+  useEffect(() => updatePageTag(tags), [tags]);
 
   return (
     <div
@@ -208,8 +203,8 @@ export default function imageTagger({ page }) {
         canvasRef={canvasRef}
         getFocusLabel={getFocusLabel}
         image={image}
-        updatePageTag={updatePageTag}
-        page={page}
+        setTag={setTag}
+        tags={tags}
         getLabelByID={getLabelByID}
       />
       <div
@@ -240,7 +235,10 @@ export default function imageTagger({ page }) {
           <Tooltip title="Refresh">
             <IconButton
               size="small"
-              onClick={initImage}
+              style={{
+                color: 'rgba(0, 0, 0, 0.65)',
+              }}
+              onClick={removeAllTags}
             >
               <RefreshIcon />
             </IconButton>
