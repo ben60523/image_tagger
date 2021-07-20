@@ -42,6 +42,8 @@ import {
   AUTO_ANNO,
 } from '../constants';
 
+import loadImage from '../utils';
+
 const App = () => {
   const history = useHistory();
   const [pages, dispatch] = useReducer(pageReducer, []);
@@ -103,31 +105,42 @@ const App = () => {
       return false;
     };
 
-    const haveSnapshot = (page) => {
-      console.log(page);
-      if (page.snapshot) {
+    const pageHasTags = (page) => {
+      if (page.tags && page.tags.length > 0) {
         return true;
       }
 
       return false;
     };
 
+    const getBase64Image = (imgObject) => {
+      const canvas = document.createElement('canvas');
+      canvas.width = imgObject.width;
+      canvas.height = imgObject.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(imgObject, 0, 0);
+      const dataURL = canvas.toDataURL('image/jpeg');
+      return dataURL.replace(/^data:image\/(png|jpg|jpeg);base64,/, '');
+    };
+
     const zip = new JSZip();
+
+    zip.file('labels.json', JSON.stringify(labels));
 
     const img = zip.folder('images');
 
-    const result = pages.filter(findPagesInWorkingPath)
-      .filter(haveSnapshot)
-      .map((page) => {
-        const commaIndex = page.snapshot.indexOf(',');
-        img.file(page.name, page.snapshot.slice(commaIndex + 1), { base64: true });
+    const outputPages = pages.filter(findPagesInWorkingPath)
+      .filter(pageHasTags);
 
-        return page;
-      });
+    zip.file('pages.json', JSON.stringify(outputPages));
 
-    console.log(result);
+    const generateImageZip = (page) => loadImage(page.src)
+      .then((imgObject) => getBase64Image(imgObject))
+      .then((dataURL) => img.file(page.name, dataURL, { base64: true }))
+      .catch((error) => console.log('loading image error', error));
 
-    zip.generateAsync({ type: 'blob' })
+    Promise.all(outputPages.map(generateImageZip))
+      .then(() => zip.generateAsync({ type: 'blob' }))
       .then((ctn) => saveAs(ctn, `${moment(new Date()).format('YYYYMMDD_HHmmss')}.zip`));
   };
 

@@ -13,7 +13,7 @@ import CameraIcon from '@material-ui/icons/Camera';
 
 import ContextStore from '../../../context_store';
 
-import loadImage from './utils';
+import loadImage from '../../../utils';
 
 import Labels from './labels';
 
