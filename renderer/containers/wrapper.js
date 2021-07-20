@@ -1,9 +1,6 @@
 import React, { useReducer, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import '../assets/css/photon.css';
-import JSZip from 'jszip';
-import moment from 'moment';
-import { saveAs } from 'file-saver';
 
 import ContextStore from '../context_store';
 
@@ -40,7 +37,7 @@ import {
   PAGES,
 } from '../constants';
 
-import loadImage from '../utils';
+import { exportProject } from '../utils';
 
 const App = () => {
   const history = useHistory();
@@ -82,54 +79,6 @@ const App = () => {
       name: SELECT_FOLDER,
       contents: folder,
     });
-  };
-
-  const exportProject = () => {
-    const findPagesInWorkingPath = (page) => {
-      if (page.src.indexOf(workingPath) !== -1) {
-        return true;
-      }
-
-      return false;
-    };
-
-    const pageHasTags = (page) => {
-      if (page.tags && page.tags.length > 0) {
-        return true;
-      }
-
-      return false;
-    };
-
-    const getBase64Image = (imgObject) => {
-      const canvas = document.createElement('canvas');
-      canvas.width = imgObject.width;
-      canvas.height = imgObject.height;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(imgObject, 0, 0);
-      const dataURL = canvas.toDataURL('image/jpeg');
-      return dataURL.replace(/^data:image\/(png|jpg|jpeg);base64,/, '');
-    };
-
-    const zip = new JSZip();
-
-    zip.file('labels.json', JSON.stringify(labels));
-
-    const img = zip.folder('images');
-
-    const outputPages = pages.filter(findPagesInWorkingPath)
-      .filter(pageHasTags);
-
-    zip.file('pages.json', JSON.stringify(outputPages));
-
-    const generateImageZip = (page) => loadImage(page.src)
-      .then((imgObject) => getBase64Image(imgObject))
-      .then((dataURL) => img.file(page.name, dataURL, { base64: true }))
-      .catch((error) => console.log('loading image error', error));
-
-    Promise.all(outputPages.map(generateImageZip))
-      .then(() => zip.generateAsync({ type: 'blob' }))
-      .then((ctn) => saveAs(ctn, `${moment(new Date()).format('YYYYMMDD_HHmmss')}.zip`));
   };
 
   const getProject = () => {
@@ -201,7 +150,7 @@ const App = () => {
     >
       <div className="window">
         <Header
-          exportProject={exportProject}
+          exportProject={() => exportProject(pages, labels, workingPath)}
           selectFolder={selectFolder}
         />
         <div className="window-content">
