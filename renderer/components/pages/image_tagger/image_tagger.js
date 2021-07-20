@@ -96,11 +96,13 @@ const Canvas = ({
           top: Math.round(event.offsetY * scaleY),
         };
 
-        paint(
-          prePoint,
-          currentPoint,
-          getFocusLabel().color,
-        );
+        if (getFocusLabel()) {
+          paint(
+            prePoint,
+            currentPoint,
+            getFocusLabel().color,
+          );
+        }
 
         prePoint = currentPoint;
       }
@@ -118,10 +120,12 @@ const Canvas = ({
   const drawTags = (paintedTags) => {
     if (paintedTags.length !== 0) {
       paintedTags.forEach((tag) => {
-        const { color } = getLabelByID(tag.labelID);
-        if (tag.type === PAINTING && Array.isArray(tag.points)) {
-          for (let i = 0; i < tag.points.length - 1; i += 1) {
-            paint(tag.points[i], tag.points[i + 1], color);
+        if (getLabelByID(tag.labelID)) {
+          const { color } = getLabelByID(tag.labelID);
+          if (tag.type === PAINTING && Array.isArray(tag.points)) {
+            for (let i = 0; i < tag.points.length - 1; i += 1) {
+              paint(tag.points[i], tag.points[i + 1], color);
+            }
           }
         }
       });
