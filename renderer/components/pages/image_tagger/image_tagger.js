@@ -6,10 +6,6 @@ import React, {
 } from 'react';
 
 import Divider from '@material-ui/core/Divider';
-import RefreshIcon from '@material-ui/icons/Refresh';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import CameraIcon from '@material-ui/icons/Camera';
 
 import ContextStore from '../../../context_store';
 
@@ -17,6 +13,7 @@ import { loadImage } from '../../../utils';
 
 import Labels from './labels';
 import Canvas from './canvas';
+import Toolbar from './toolbar';
 
 const containerStyle = {
   width: '100%',
@@ -100,45 +97,11 @@ export default function imageTagger({ page }) {
           {page.name}
         </div>
         <Divider />
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <Tooltip title="Refresh">
-            <IconButton
-              size="small"
-              style={{
-                color: 'rgba(0, 0, 0, 0.65)',
-              }}
-              onClick={removeAllTags}
-            >
-              <RefreshIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Snapshot">
-            <a
-              href="test"
-              download={`${page.name}_snapshot.png`}
-              onClick={takeSnapshot}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <CameraIcon
-                size="small"
-                style={{
-                  textDecoration: 'none',
-                  color: 'rgba(0, 0, 0, 0.65)',
-                }}
-              >
-                <RefreshIcon />
-              </CameraIcon>
-            </a>
-          </Tooltip>
-        </div>
+        <Toolbar
+          downloadName={page.name.replace(/(.png|.jpg|.jpeg)/i, '')}
+          removeAllTags={removeAllTags}
+          takeSnapshot={takeSnapshot}
+        />
         <Divider />
         <Labels setTaggedLabel={setTaggedLabel} />
       </div>
