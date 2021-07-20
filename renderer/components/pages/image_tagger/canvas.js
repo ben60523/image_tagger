@@ -5,7 +5,7 @@ const PAINTING = 'painting';
 const baseStyle = {
   borderRadius: '4px',
   boxShadow: '0px 1px 3px 0px rgba(0, 0, 0, 0.12)',
-  marginRight: '5px',
+  marginRight: '10rem',
 };
 
 const Canvas = ({
@@ -130,7 +130,7 @@ const Canvas = ({
       style={
         image.width < image.height + 50
           ? { ...baseStyle, height: '100%' }
-          : { ...baseStyle, width: 'calc(100% - 11em)' }
+          : { ...baseStyle, width: 'calc(100% - 11rem)' }
       }
       onMouseDown={drawNewTag}
     />

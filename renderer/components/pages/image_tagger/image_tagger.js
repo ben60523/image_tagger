@@ -19,6 +19,7 @@ const containerStyle = {
   width: '100%',
   height: 'calc(100% - 27px)',
   display: 'flex',
+  position: 'relative',
   justifyContent: 'center',
   alignItems: 'center',
   padding: '5px',
@@ -80,6 +81,8 @@ export default function imageTagger({ page }) {
       />
       <div
         style={{
+          position: 'absolute',
+          right: '0',
           height: '100%',
           maxWidth: '10rem',
           marginRight: '3px',
