@@ -24,7 +24,6 @@ import Header from './header';
 import {
   send2Local,
   receive,
-  FIND,
   find,
   autoAnno,
 } from '../request';
@@ -39,7 +38,6 @@ import {
   FROM_GENERAL,
   SELECT_FOLDER,
   PAGES,
-  AUTO_ANNO,
 } from '../constants';
 
 import loadImage from '../utils';
@@ -50,16 +48,6 @@ const App = () => {
   const [labels, ldispatch] = useReducer(labelReducer, []);
   const [workingPath, setWorkingPath] = useState('');
   const [filterList, setFilterList] = useState([]);
-
-  const initPage = (dbPage) => {
-    if (dbPage.length > 0) {
-      history.push(dbPage[0].key);
-    }
-
-    dbPage.forEach((page) => {
-      dispatch(addPage(page));
-    });
-  };
 
   const initLabels = () => {
     ldispatch(addNewTaggingLabel(defaultabel));
@@ -163,26 +151,9 @@ const App = () => {
         return null;
       };
 
-      const onFind = () => {
-        if (resp.type !== PAGES) {
-          return null;
-        }
-
-        initPage(resp.contents);
-
-        return null;
-      };
-
       switch (resp.name) {
         case SELECT_FOLDER:
           return onSelectFolder(resp);
-        case FIND:
-          return onFind();
-        case AUTO_ANNO:
-          if (Array.isArray(resp.contents.tags) && resp.contents.tags.length !== 0) {
-            onUpdatePage(resp.contents);
-          }
-          break;
         default:
           // console.log('event not found', resp);
       }
