@@ -1,7 +1,5 @@
 import React, { useContext } from 'react';
 import IconButton from '@material-ui/core/IconButton';
-// import ButtonGroup from '@material-ui/core/ButtonGroup';
-// import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import SaveIcon from '@material-ui/icons/Save';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -23,7 +21,6 @@ const Header = ({
         backgroundColor: '#f5f5f4',
       }}
     >
-      {/* <ButtonGroup aria-label="outlined button group"> */}
       <div>
         <Tooltip title="Open Folder">
           <IconButton
@@ -39,7 +36,6 @@ const Header = ({
         </Tooltip>
         <strong>{workingPath}</strong>
       </div>
-      {/* </ButtonGroup> */}
       <Tooltip title="Save">
         <IconButton
           aria-label="expand"
