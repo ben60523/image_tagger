@@ -14,6 +14,7 @@ import { loadImage } from '../../../utils';
 import Labels from './labels';
 import Canvas from './canvas';
 import Toolbar from './toolbar';
+import TagList from './tag_list';
 
 const containerStyle = {
   width: '100%',
@@ -107,6 +108,10 @@ export default function imageTagger({ page }) {
         />
         <Divider />
         <Labels setTaggedLabel={setTaggedLabel} />
+        <TagList
+          tagList={tags}
+          getLabelByID={getLabelByID}
+        />
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 const PAINTING = 'painting';
 
@@ -19,6 +20,7 @@ const Canvas = ({
   let prePoint = {};
 
   const createTag = () => ({
+    key: uuidv4(),
     type: PAINTING,
     points: [],
     labelID: getFocusLabel().key,
