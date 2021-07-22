@@ -48,6 +48,13 @@ export default function imageTagger({ page }) {
     setTag([]);
   };
 
+  const removeTag = (tag) => {
+    const tagIndex = tags.findIndex((currentTag) => currentTag.key === tag.key);
+
+    tags.splice(tagIndex, 1);
+    setTag([...tags]);
+  };
+
   const takeSnapshot = (e) => {
     const dataURL = canvasRef.current.toDataURL();
     console.log(e.currentTarget);
@@ -111,6 +118,7 @@ export default function imageTagger({ page }) {
         <TagList
           tagList={tags}
           getLabelByID={getLabelByID}
+          removeTag={removeTag}
         />
       </div>
     </div>
