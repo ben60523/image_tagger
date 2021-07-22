@@ -22,7 +22,6 @@ import {
   send2Local,
   receive,
   find,
-  autoAnno,
 } from '../request';
 
 import {
@@ -137,7 +136,6 @@ const App = () => {
       value={{
         labels,
         onUpdatePage,
-        onAutoAnnoClick,
         workingPath,
         filterList,
         setFilterList,
