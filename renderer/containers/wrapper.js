@@ -54,13 +54,13 @@ const App = () => {
     if (Array.isArray(imgs)) {
       history.push(
         imgs.map((img) => {
-          const newPage = pageCreater(img, PROJECT_NAME);
+          const newPage = pageCreater(img);
           dispatch(addPage(newPage));
           return newPage;
         })[0].key,
       );
     } else {
-      dispatch(addPage(pageCreater(imgs, PROJECT_NAME)));
+      dispatch(addPage(pageCreater(imgs)));
     }
   };
 

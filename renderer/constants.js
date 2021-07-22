@@ -1,4 +1,3 @@
-export const MEDIA_TAGGER = 'MEDIA_TAGGER';
 export const PROJECT_NAME = 'test';
 
 export const TO_MAIN = 'TO_MAIN';
