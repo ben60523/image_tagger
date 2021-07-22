@@ -3,7 +3,7 @@ import {
   ADD_PAGE,
   UPDATE_PAGE,
   IMPORT_PAGE,
-} from './constants';
+} from '../constants';
 
 const IMAGE = 'image';
 

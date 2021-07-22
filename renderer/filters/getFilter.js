@@ -2,7 +2,7 @@ import {
   WORKING_FOLDER,
   TAGGED_IMAGE,
   PARTICULAR,
-} from './constants';
+} from '../constants';
 
 const filterWorkingPath = (pageList, workingPath = '') => (
   pageList.filter((page) => page.src.indexOf(workingPath) !== -1)

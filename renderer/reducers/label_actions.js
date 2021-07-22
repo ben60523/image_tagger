@@ -1,5 +1,5 @@
 import CryptoJS from 'crypto-js';
-import { UPDATE_LABEL, ADD_NEW_LABEL, INITIALIZE_LABEL } from './constants';
+import { UPDATE_LABEL, ADD_NEW_LABEL, INITIALIZE_LABEL } from '../constants';
 
 export const initializeLabel = (labels) => ({
   type: INITIALIZE_LABEL,

@@ -15,3 +15,14 @@ export const LABELS = 'labels';
 export const PAGES = 'pages';
 
 export const AUTO_ANNO = 'AUTO_ANNO';
+
+export const WORKING_FOLDER = 'WORKING_FOLDER';
+export const TAGGED_IMAGE = 'TAGGED_IMAGE';
+export const PARTICULAR = 'PARTICULAR';
+
+export const ADD_PAGE = 'ADD_PAGE';
+export const UPDATE_LABEL = 'UPDATE_LABEL';
+export const ADD_NEW_LABEL = 'ADD_NEW_LABEL';
+export const INITIALIZE_LABEL = 'INITIALIZE_LABEL';
+export const UPDATE_PAGE = 'UPDATE_PAGE';
+export const IMPORT_PAGE = 'IMPORT_PAGE';

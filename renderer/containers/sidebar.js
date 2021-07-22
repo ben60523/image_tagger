@@ -8,7 +8,7 @@ import getFilter from '../filters/getFilter';
 import {
   TAGGED_IMAGE,
   WORKING_FOLDER,
-} from '../filters/constants';
+} from '../constants';
 
 import ContextStore from '../context_store';
 
