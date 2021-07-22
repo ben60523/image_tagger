@@ -69,10 +69,6 @@ const App = () => {
     // send2Local(TO_GENERAL, update(PAGES, targetPage));
   };
 
-  const onAutoAnnoClick = (targetPage) => {
-    send2Local(TO_GENERAL, autoAnno(PAGES, targetPage));
-  };
-
   const selectFolder = (folder) => {
     send2Local(TO_GENERAL, {
       type: PAGES,
@@ -139,7 +135,6 @@ const App = () => {
   return (
     <ContextStore.Provider
       value={{
-        projectName: PROJECT_NAME,
         labels,
         onUpdatePage,
         onAutoAnnoClick,
