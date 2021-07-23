@@ -45,11 +45,13 @@ const TagItem = ({ tag, removeTag, getLabelByID }) => {
   return (
     <>
       <Button
+        variant="outlined"
         ref={anchorRef}
         key={key}
         onClick={handleToggle}
         size="small"
         style={{
+          marginTop: '5px',
           padding: '3px 10px',
           width: '100%',
           fontSize: '13px',
