@@ -8,6 +8,7 @@ import SideBar from './sidebar';
 const MainContent = ({ pages }) => (
   <div className="pane">
     <div className="pane-group">
+      <SideBar pages={pages} />
       <Route path="/" exact component={() => <Home />} />
       {
         pages.map((page) => (
@@ -15,7 +16,6 @@ const MainContent = ({ pages }) => (
             path={page.key}
             render={() => (
               <>
-                <SideBar pages={pages} />
                 <div className="pane">
                   <ImageTagger page={page} />
                 </div>
