@@ -91,6 +91,7 @@ export default function imageTagger({ page }) {
         style={{
           position: 'absolute',
           right: '0',
+          paddingRight: '0.5rem',
           height: '100%',
           maxWidth: '10rem',
           marginRight: '3px',

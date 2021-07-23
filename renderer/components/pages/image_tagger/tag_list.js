@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
+import Button from '@material-ui/core/Button';
 
 const usePrevOpen = (open) => {
   const prevOpen = React.useRef();
@@ -43,31 +44,26 @@ const TagItem = ({ tag, removeTag, getLabelByID }) => {
 
   return (
     <>
-      <div
+      <Button
         ref={anchorRef}
-        className="list-group-item"
-        role="button"
         key={key}
-        style={{
-          position: 'relative',
-          padding: '5px 10px',
-          border: '1px solid #888',
-          borderRadius: '3px',
-          marginTop: '5px',
-          display: 'flex',
-          boxSizing: 'border-box',
-          maxWidth: '9rem',
-        }}
-        tabIndex={0}
         onClick={handleToggle}
-        onKeyDown={() => (null)}
+        size="small"
+        style={{
+          padding: '3px 10px',
+          width: '100%',
+          fontSize: '13px',
+          textTransform: 'none',
+          display: 'flex',
+          justifyContent: 'flex-start',
+        }}
       >
         <span
           className="icon icon-record"
           style={{ color: label.color, marginRight: '5px' }}
         />
         {label.title}
-      </div>
+      </Button>
       <Popper
         open={open}
         anchorEl={anchorRef.current}
@@ -76,10 +72,7 @@ const TagItem = ({ tag, removeTag, getLabelByID }) => {
         transition
       >
         {({ TransitionProps }) => (
-          <Grow
-            {...TransitionProps}
-            // style={{ transformOrigin: 'top left' }}
-          >
+          <Grow {...TransitionProps}>
             <Paper>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList
