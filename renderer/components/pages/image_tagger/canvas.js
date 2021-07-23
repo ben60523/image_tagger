@@ -87,7 +87,10 @@ const Canvas = ({
 
     canvasDOM.onmouseup = () => {
       // remove mouse move event
-      setTag([...tags, newTag]);
+      if (newTag.points.length > 0) {
+        setTag([...tags, newTag]);
+      }
+
       canvasDOM.onmousemove = null;
       canvasDOM.onmouseup = null;
     };
