@@ -17,7 +17,6 @@ export const AUTO_ANNO = 'AUTO_ANNO';
 
 export const WORKING_FOLDER = 'WORKING_FOLDER';
 export const TAGGED_IMAGE = 'TAGGED_IMAGE';
-export const PARTICULAR = 'PARTICULAR';
 
 export const ADD_PAGE = 'ADD_PAGE';
 export const UPDATE_LABEL = 'UPDATE_LABEL';
