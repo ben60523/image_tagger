@@ -1,3 +1,11 @@
+import {
+  TO_GENERAL,
+  PAGES,
+  SELECT_FOLDER,
+  TO_MAIN,
+  PROJECT_NAME,
+} from './constants';
+
 export const FIND_ONE = 'findOne';
 export const UPDATE = 'update';
 export const FIND = 'find';
@@ -46,4 +54,30 @@ export const removeListener = (channel, handler) => {
 
 export const receive = (channel, handler) => {
   window.api.receive(channel, handler);
+};
+
+export const selectFolder = (folder) => {
+  send2Local(TO_GENERAL, {
+    type: PAGES,
+    name: SELECT_FOLDER,
+    contents: folder,
+  });
+};
+
+export const initProject = () => {
+  send2Local(TO_MAIN, {
+    name: 'FIND_ONE',
+    contents: { key: PROJECT_NAME },
+  });
+};
+
+export const updateWorkingPath = (workingPath) => {
+  send2Local(TO_MAIN, {
+    name: 'UPDATE',
+    contents: {
+      name: PROJECT_NAME,
+      key: PROJECT_NAME,
+      workingPath,
+    },
+  });
 };

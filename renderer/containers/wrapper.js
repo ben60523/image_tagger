@@ -19,21 +19,16 @@ import Main from './main_pane';
 import Header from './header';
 
 import {
-  send2Local,
   receive,
-  find,
+  selectFolder,
+  initProject,
+  updateWorkingPath,
 } from '../request';
 
 import {
-  TO_MAIN,
   FROM_MAIN,
-  PROJECT_NAME,
-  UPDATE,
-  FIND_ONE,
-  TO_GENERAL,
   FROM_GENERAL,
   SELECT_FOLDER,
-  PAGES,
 } from '../constants';
 
 import { exportProject } from '../utils';
@@ -45,12 +40,14 @@ const App = () => {
   const [workingPath, setWorkingPath] = useState('');
   const [filterList, setFilterList] = useState([]);
 
+  // Set the default labels as the initial label
   const initLabels = () => {
     ldispatch(addNewTaggingLabel(defaultabel));
   };
 
+  // Create page object to when select folder request return the file names.
   const addNewPage = (imgs) => {
-    if (Array.isArray(imgs)) {
+    const createMultiPages = () => {
       history.push(
         imgs.map((img) => {
           const newPage = pageCreater(img);
@@ -58,36 +55,23 @@ const App = () => {
           return newPage;
         })[0].key,
       );
+    };
+
+    if (Array.isArray(imgs)) {
+      createMultiPages();
     } else {
       dispatch(addPage(pageCreater(imgs)));
     }
   };
 
+  // update the page in react
   const onUpdatePage = (targetPage) => {
     dispatch(updatePage(targetPage));
-    // send2Local(TO_GENERAL, update(PAGES, targetPage));
-  };
-
-  const selectFolder = (folder) => {
-    send2Local(TO_GENERAL, {
-      type: PAGES,
-      name: SELECT_FOLDER,
-      contents: folder,
-    });
-  };
-
-  const getProject = () => {
-    send2Local(TO_GENERAL, find(PAGES, {}));
   };
 
   // Initial Project
   useEffect(() => {
-    // Get the preject information from DB
-    getProject();
-    initLabels();
-
-    // Add listener
-    receive(FROM_GENERAL, (e, resp) => {
+    const generalListener = (e, resp) => {
       const onSelectFolder = () => {
         addNewPage(resp.contents);
 
@@ -99,34 +83,30 @@ const App = () => {
         case SELECT_FOLDER:
           return onSelectFolder(resp);
         default:
-          // console.log('event not found', resp);
+          console.log('event not found', resp);
       }
 
       return null;
-    });
+    };
+
+    // Get the preject information from DB
+    initLabels();
+
+    // Add listener
+    receive(FROM_GENERAL, generalListener);
   }, []);
 
   useEffect(() => {
+    // Get the working path and get the file names in that folder
     const getProjectConfig = (e, resp) => {
       setWorkingPath(resp.contents.workingPath);
       selectFolder(resp.contents.workingPath);
     };
 
     if (workingPath.length !== 0) {
-      send2Local(TO_MAIN, {
-        name: UPDATE,
-        contents: {
-          name: PROJECT_NAME,
-          key: PROJECT_NAME,
-          workingPath,
-        },
-      });
+      updateWorkingPath(workingPath);
     } else {
-      send2Local(TO_MAIN, {
-        name: FIND_ONE,
-        contents: { key: PROJECT_NAME },
-      });
-
+      initProject();
       receive(FROM_MAIN, getProjectConfig);
     }
   }, [workingPath]);
