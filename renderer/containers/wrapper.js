@@ -117,13 +117,13 @@ const App = () => {
       value={{
         labels,
         onUpdatePage,
-        workingPath,
       }}
     >
       <div className="window">
         <Header
           exportProject={() => exportProject(pages, labels, workingPath)}
           selectFolder={selectFolder}
+          workingPath={workingPath}
         />
         <div className="window-content">
           <div className="pane">
@@ -132,6 +132,7 @@ const App = () => {
                 pages={pages}
                 filterList={filterList}
                 setFilterList={setFilterList}
+                workingPath={workingPath}
               />
               <Main pages={pages} />
             </div>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
@@ -9,8 +9,6 @@ import {
   TAGGED_IMAGE,
   WORKING_FOLDER,
 } from '../constants';
-
-import ContextStore from '../context_store';
 
 const SideBarItem = ({
   page,
@@ -44,9 +42,13 @@ const SideBarItem = ({
   );
 };
 
-const SideBar = ({ pages, filterList, setFilterList }) => {
+const SideBar = ({
+  pages,
+  filterList,
+  setFilterList,
+  workingPath,
+}) => {
   const history = useHistory();
-  const { workingPath } = useContext(ContextStore);
 
   const handleClick = (e, page) => {
     history.push(page.key);
