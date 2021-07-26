@@ -11,8 +11,6 @@ const controller = require('./controllers/controller');
 const mainController = require('./controllers/main_controller');
 const appMenu = require('./menu');
 
-const config = require('./config');
-
 const {
   TO_MAIN,
   FROM_MAIN,
