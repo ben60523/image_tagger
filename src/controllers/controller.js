@@ -16,7 +16,6 @@ const {
   FROM_GENERAL,
 } = require("../const");
 
-const SELECT_FILES = 'SELECT_FILES';
 const EXPORT_PROJECT = 'EXPORT_PROJECT';
 const SELECT_FOLDER = 'SELECT_FOLDER';
 const AUTO_ANNO = 'AUTO_ANNO';
@@ -179,8 +178,6 @@ module.exports = ({win, props, db, logger}) => {
   }
 
   switch(props.name) {
-    case SELECT_FILES:
-      return selectFiles(props);
     case SELECT_FOLDER:
       return selectFolder(props);
     case EXPORT_PROJECT:
