@@ -13,94 +13,59 @@ const { FROM_GENERAL } = require("../const");
 const SELECT_FOLDER = 'SELECT_FOLDER';
 const AUTO_ANNO = 'AUTO_ANNO';
 
-const supportSuffix = ['jpg', 'png', 'jpeg'];
+const supportImageSuffix = ['jpg', 'png', 'jpeg'];
 
 module.exports = ({ win, props }) => {
   const sendResponse = (channel, msg) => {
     win.webContents.send(channel, msg);
   }
 
-  const selectFolder = (props) => {
-    const filterSuffix = (filenames) => filenames.filter(
-      (filename) => {
-        let lowerCase = filename.toLowerCase();
+  const filterImages = (filenames) => filenames.filter(
+    (filename) => {
+      let lowerCase = filename.toLowerCase();
 
-        for (let i=0; i < supportSuffix.length; i = i+1) {
-          if (lowerCase.indexOf(supportSuffix[i]) !== -1) {
-            return true;
-          }
+      for (let i=0; i < supportImageSuffix.length; i = i+1) {
+        if (lowerCase.indexOf(supportImageSuffix[i]) !== -1) {
+          return true;
         }
-
-        return false;
       }
+
+      return false;
+    }
+  )
+
+  const parseName = (name, filePaths) => ({
+    name,
+    src: path.join(filePaths, name),
+    dir: filePaths,
+  });
+
+  const getResp = (filenames, filePaths) => ({
+    ...props,
+    contents: filterImages(filenames).map(
+      (name) => parseName(name, filePaths)
     )
+  })
 
-    const parseName = (name, filePaths) => ({
-      name,
-      src: path.join(filePaths, name),
-      dir: filePaths,
-    });
-
-    const getContents = (fileName, filePaths) => {
-      return readFile(path.join(filePaths, fileName))
-        .then((resp) => JSON.parse(resp))
-        .catch((err) => console.log(err));
-    }
-
-    const checkLabelCol = (filenames, filePaths) => {
-      const labelColName = 'labels.json';
-
-      if (filenames.indexOf(labelColName) !== -1) {
-        return getContents(labelColName, filePaths);
-      }
-
-      return null;
-    }
-
-    const checkPageCol = (filenames, filePaths) => {
-      const pageColName = 'pages.json';
-
-      if (filenames.indexOf(pageColName) !== -1) {
-        return getContents(pageColName, filePaths);
-      }
-
-      return null;
-    }
-
-    const parseFolder = (filePaths) => readdir(filePaths)
-      .then( async (filenames) => {
-        const labelImportContents = await checkLabelCol(filenames, filePaths);
-        const pageImportContents = await checkPageCol(filenames, filePaths);
-
-        const respCtn = {
-          ...props,
-          contents: filterSuffix(filenames).map(
-            (name) => parseName(name, filePaths)
-          ),
-          options: {
-            label: labelImportContents,
-            taggedFile: pageImportContents,
-          }
+  const parseFolder = (filePaths) => readdir(filePaths)
+    .then((filenames) => sendResponse(FROM_GENERAL, getResp(filenames, filePaths)))
+    .catch((err) => console.log(err));
+  
+  const onSelectIconClicked = () => (
+    dialog.showOpenDialog({ properties: ['openDirectory'] })
+      .then(resp => {
+        if (resp.canceled !== false) {
+          throw 'canceled';
         }
-
-        // console.log(respCtn.options);
-
-        return sendResponse(
-          FROM_GENERAL, 
-          respCtn,
-        );
+        return parseFolder(resp.filePaths[0])
       })
       .catch((err) => console.log(err))
-    
+  )
+
+  const selectFolder = (props) => {
+    // default on select folder button clicked
     if (props.contents === 'default') {
-      return dialog.showOpenDialog({ properties: ['openDirectory'] })
-        .then(resp => {
-          if (resp.canceled !== false) {
-            throw 'canceled';
-          }
-          return parseFolder(resp.filePaths[0])
-        })
-        .catch((err) => console.log(err));
+      return onSelectIconClicked();
     }
 
     return parseFolder(props.contents);
