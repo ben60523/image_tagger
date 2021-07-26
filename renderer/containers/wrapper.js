@@ -17,6 +17,7 @@ import {
 
 import Main from './main_pane';
 import Header from './header';
+import SideBar from './sidebar';
 
 import {
   receive,
@@ -45,7 +46,7 @@ const App = () => {
     ldispatch(addNewTaggingLabel(defaultabel));
   };
 
-  // Create page object to when select folder request return the file names.
+  // Create a page object when select folder request returns the file names.
   const addNewPage = (imgs) => {
     const createMultiPages = () => {
       history.push(
@@ -117,8 +118,6 @@ const App = () => {
         labels,
         onUpdatePage,
         workingPath,
-        filterList,
-        setFilterList,
       }}
     >
       <div className="window">
@@ -127,7 +126,16 @@ const App = () => {
           selectFolder={selectFolder}
         />
         <div className="window-content">
-          <Main pages={pages} />
+          <div className="pane">
+            <div className="pane-group">
+              <SideBar
+                pages={pages}
+                filterList={filterList}
+                setFilterList={setFilterList}
+              />
+              <Main pages={pages} />
+            </div>
+          </div>
         </div>
       </div>
     </ContextStore.Provider>

@@ -44,13 +44,9 @@ const SideBarItem = ({
   );
 };
 
-const SideBar = ({ pages }) => {
+const SideBar = ({ pages, filterList, setFilterList }) => {
   const history = useHistory();
-  const {
-    workingPath,
-    filterList,
-    setFilterList,
-  } = useContext(ContextStore);
+  const { workingPath } = useContext(ContextStore);
 
   const handleClick = (e, page) => {
     history.push(page.key);
