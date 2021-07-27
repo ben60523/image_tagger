@@ -16,7 +16,7 @@ export const AUTO_ANNO = 'AUTO_ANNO';
 export const WORKING_FOLDER = 'WORKING_FOLDER';
 export const TAGGED_IMAGE = 'TAGGED_IMAGE';
 
-// For label reducer
+// For label reducer (TODO: fix select label function)
 export const UPDATE_LABEL = 'UPDATE_LABEL';
 export const ADD_NEW_LABEL = 'ADD_NEW_LABEL';
 export const INITIALIZE_LABEL = 'INITIALIZE_LABEL';
