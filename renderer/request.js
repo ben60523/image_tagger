@@ -1,6 +1,5 @@
 import {
   TO_GENERAL,
-  PAGES,
   SELECT_FOLDER,
   TO_MAIN,
   PROJECT_NAME,
@@ -24,7 +23,6 @@ export const receive = (channel, handler) => {
 
 export const selectFolder = (folder) => {
   send2Local(TO_GENERAL, {
-    type: PAGES,
     name: SELECT_FOLDER,
     contents: folder,
   });
