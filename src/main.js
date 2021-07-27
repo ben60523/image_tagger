@@ -16,8 +16,6 @@ const {
   FROM_MAIN,
   TO_GENERAL,
   DB_PATH,
-  PAGE_COLLECTION,
-  LABEL_COLLECTION,
   PROJECT_COLLECTION,
   APP_PATH,
 } = require("./const");
@@ -47,23 +45,6 @@ const logger = winston.createLogger({
 });
 
 const db = {};
-db.page = new Datastore({
-  filename: path.join(
-    app.getPath(APP_PATH),
-    DB_PATH,
-    PAGE_COLLECTION,
-  ),
-  autoload: true,
-});
-
-db.label = new Datastore({
-  filename: path.join(
-    app.getPath(APP_PATH),
-    DB_PATH,
-    LABEL_COLLECTION,
-  ),
-  autoload: true,
-});
 
 db.project = new Datastore({
   filename: path.join(
@@ -75,15 +56,13 @@ db.project = new Datastore({
 });
 
 function createWindow () {
-  const { width, height } = screen.getPrimaryDisplay().rotation;
-    // Path to root directory.
+  // Path to root directory.
   const basePath = isDev ?  path.resolve(__dirname, '../') : app.getAppPath();
 
   // Create the browser window.
   let win = new BrowserWindow({
     title: app.name,
-    width: width,
-    height: height,
+    show: false,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true, // protect against prototype pollution
@@ -103,6 +82,10 @@ function createWindow () {
   win.loadURL(indexURL);
 
   win.maximize();
+
+  win.on('maximize', (e) => {
+    win.show();
+  })
 
   win.on('close', (e) => {
     if (win) {
