@@ -152,7 +152,10 @@ const importProject = (e) => {
       }
 
       const pages = await getPageContents(zipCtn.pagesFile);
-      return putImageFileAsSrc(pages, zipCtn.imageFileList);
+      return {
+        zipFile,
+        pages: putImageFileAsSrc(pages, zipCtn.imageFileList),
+      };
     } catch (err) {
       console.log(err);
     }

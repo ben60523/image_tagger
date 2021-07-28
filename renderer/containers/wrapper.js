@@ -61,8 +61,11 @@ const App = () => {
     return null;
   };
 
-  const importPageToReducer = (importedPages) => {
-    dispatch(importPage(importedPages));
+  const importPageToReducer = (zipInfo) => {
+    console.log(zipInfo);
+    dispatch(importPage(zipInfo.pages));
+    history.push(zipInfo.pages[0].key);
+    setWorkingPath(zipInfo.zipFile.path);
   };
 
   // update the page in react
