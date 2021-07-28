@@ -10,7 +10,6 @@ import { addNewTaggingLabel } from '../reducers/label_actions';
 import defaultabel from '../reducers/default_label';
 
 import {
-  addPage,
   pageCreater,
   updatePage,
   importPage,
@@ -50,20 +49,16 @@ const App = () => {
   // Create a page object when select folder request returns the file names.
   const addNewPage = (imgs) => {
     const createMultiPages = () => {
-      history.push(
-        imgs.map((img) => {
-          const newPage = pageCreater(img);
-          dispatch(addPage(newPage));
-          return newPage;
-        })[0].key,
-      );
+      const pageList = imgs.map((img) => pageCreater(img));
+      dispatch(importPage(pageList));
+      history.push(pageList[0].key);
     };
 
     if (Array.isArray(imgs)) {
-      createMultiPages();
-    } else {
-      dispatch(addPage(pageCreater(imgs)));
+      return createMultiPages();
     }
+
+    return null;
   };
 
   const importPageToReducer = (importedPages) => {

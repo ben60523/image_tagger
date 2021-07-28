@@ -1,6 +1,5 @@
 import CryptoJS from 'crypto-js';
 import {
-  ADD_PAGE,
   UPDATE_PAGE,
   IMPORT_PAGE,
 } from '../constants';
@@ -13,11 +12,6 @@ export const pageCreater = (img) => ({
   src: img.src,
   type: IMAGE,
   tags: [],
-});
-
-export const addPage = (page) => ({
-  type: ADD_PAGE,
-  payload: page,
 });
 
 export const updatePage = (page) => ({

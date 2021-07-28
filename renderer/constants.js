@@ -21,6 +21,5 @@ export const ADD_NEW_LABEL = 'ADD_NEW_LABEL';
 export const INITIALIZE_LABEL = 'INITIALIZE_LABEL';
 
 // For page reducer
-export const ADD_PAGE = 'ADD_PAGE';
 export const UPDATE_PAGE = 'UPDATE_PAGE';
 export const IMPORT_PAGE = 'IMPORT_PAGE';
