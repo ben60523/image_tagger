@@ -1,14 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import Tooltip from '@material-ui/core/Tooltip';
 import getFilter from '../filters/getFilter';
-import {
-  TAGGED_IMAGE,
-  WORKING_FOLDER,
-} from '../constants';
+import { TAGGED_IMAGE } from '../constants';
 
 const SideBarItem = ({
   page,
@@ -46,7 +43,6 @@ const SideBar = ({
   pages,
   filterList,
   setFilterList,
-  workingPath,
 }) => {
   const history = useHistory();
 
@@ -87,22 +83,6 @@ const SideBar = ({
   };
 
   const imageList = filterPage();
-
-  useEffect(() => {
-    const updateWorkingPath = () => {
-      filterList.splice(
-        findFilter(WORKING_FOLDER),
-        1,
-        {
-          name: WORKING_FOLDER,
-          options: { workingPath },
-        },
-      );
-      setFilterList([...filterList]);
-    };
-
-    updateWorkingPath();
-  }, [workingPath]);
 
   return (
     <div

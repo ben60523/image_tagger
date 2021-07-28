@@ -13,6 +13,7 @@ import {
   addPage,
   pageCreater,
   updatePage,
+  importPage,
 } from '../reducers/page_actions';
 
 import Main from './main_pane';
@@ -63,6 +64,10 @@ const App = () => {
     } else {
       dispatch(addPage(pageCreater(imgs)));
     }
+  };
+
+  const importPageToReducer = (importedPages) => {
+    dispatch(importPage(importedPages));
   };
 
   // update the page in react
@@ -124,6 +129,7 @@ const App = () => {
           exportProject={() => exportProject(pages, labels, workingPath)}
           selectFolder={selectFolder}
           workingPath={workingPath}
+          importPage={importPageToReducer}
         />
         <div className="window-content">
           <div className="pane">
@@ -132,7 +138,6 @@ const App = () => {
                 pages={pages}
                 filterList={filterList}
                 setFilterList={setFilterList}
-                workingPath={workingPath}
               />
               <Main pages={pages} />
             </div>

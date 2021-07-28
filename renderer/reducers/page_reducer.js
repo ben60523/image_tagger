@@ -36,21 +36,6 @@ const onUpdate = (pages, updatedPage) => {
   return pages;
 };
 
-const onImportPage = (prePages, importCtn) => importCtn.reduce(
-  (newPageList, importPage) => {
-    const index = newPageList.findIndex((prePage) => (
-      prePage.src === importPage.src
-    ));
-
-    if (index !== -1) {
-      return newPageList;
-    }
-
-    return [...prePages, importPage];
-  },
-  prePages,
-);
-
 export default (state, action) => {
   switch (action.type) {
     case ADD_PAGE:
@@ -58,7 +43,7 @@ export default (state, action) => {
     case UPDATE_PAGE:
       return onUpdate(state, action.payload);
     case IMPORT_PAGE:
-      return onImportPage(state, action.payload);
+      return [...action.payload];
     default:
       return state;
   }

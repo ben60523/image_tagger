@@ -13,7 +13,6 @@ export const SELECT_FOLDER = 'SELECT_FOLDER';
 export const AUTO_ANNO = 'AUTO_ANNO';
 
 // For sidebar filter
-export const WORKING_FOLDER = 'WORKING_FOLDER';
 export const TAGGED_IMAGE = 'TAGGED_IMAGE';
 
 // For label reducer (TODO: fix select label function)
