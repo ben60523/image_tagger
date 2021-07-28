@@ -4,7 +4,16 @@ import JSZip from 'jszip';
 import moment from 'moment';
 import { saveAs } from 'file-saver';
 
-export function loadImage(src) {
+// load base64 image from File Object
+const getBase64FromFile = async (file) => {
+  const base64Data = await file.async('base64');
+  const img = new Image();
+  img.src = `data:image/jpeg;base64,${base64Data}`;
+
+  return img;
+};
+
+function loadImageWithPath(src) {
   return new Promise((resolve, reject) => {
     const img = new Image();
     const timeoutTimer = setTimeout(() => {
@@ -24,7 +33,15 @@ export function loadImage(src) {
   });
 }
 
-export const exportProject = (pages, labels, workingPath) => {
+const loadImage = (src) => {
+  if (typeof src === 'string') {
+    return loadImageWithPath(src);
+  }
+
+  return getBase64FromFile(src);
+};
+
+const exportProject = (pages, labels, workingPath) => {
   const findPagesInWorkingPath = (page) => {
     if (page.src.indexOf(workingPath) !== -1) {
       return true;
@@ -73,7 +90,7 @@ export const exportProject = (pages, labels, workingPath) => {
     .then((ctn) => saveAs(ctn, `${moment(new Date()).format('YYYYMMDD_HHmmss')}.zip`));
 };
 
-export const importProject = (e) => {
+const importProject = (e) => {
   const { files } = e.target;
 
   const classifyFiles = (filesInZip) => {
@@ -146,11 +163,8 @@ export const importProject = (e) => {
   return getContents(files[0]);
 };
 
-// load base64 image from File Object
-export const getBase64FromFile = async (file) => {
-  const base64Data = await file.async('base64');
-  const img = new Image();
-  img.src = `data:image/jpeg;base64,${base64Data}`;
-
-  return img;
+export {
+  loadImage,
+  importProject,
+  exportProject,
 };
