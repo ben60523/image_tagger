@@ -20,11 +20,28 @@ const Canvas = ({
 }) => {
   let prePoint = {};
 
-  const countSameTags = () => tags.filter((tag) => getFocusLabel().key === tag.labelID);
+  const getMaxTagNumber = () => {
+    let counter = 1;
+    tags.forEach((tag) => {
+      if (getFocusLabel().key === tag.labelID) {
+        let tagTitleNum = tag.title
+          .match(/\([0-9]+\)/i)[0]
+          .match(/[0-9]+/i)[0];
+
+        tagTitleNum = Number(tagTitleNum);
+
+        if (tagTitleNum + 1 > counter) {
+          counter = tagTitleNum + 1;
+        }
+      }
+    });
+
+    return counter;
+  };
 
   const createTag = () => ({
     key: uuidv4(),
-    title: `${getFocusLabel().title}(${countSameTags().length + 1})`,
+    title: `${getFocusLabel().title}(${getMaxTagNumber()})`,
     type: PAINTING,
     points: [],
     labelID: getFocusLabel().key,
