@@ -17,7 +17,12 @@ const usePrevOpen = (open) => {
   return prevOpen.current;
 };
 
-const TagItem = ({ tag, removeTag, getLabelByID }) => {
+const TagItem = ({
+  tag,
+  removeTag,
+  getLabelByID,
+  setFocusTag,
+}) => {
   const { key } = tag;
   const label = getLabelByID(tag.labelID);
 
@@ -50,6 +55,8 @@ const TagItem = ({ tag, removeTag, getLabelByID }) => {
         key={key}
         onClick={handleToggle}
         size="small"
+        onMouseEnter={() => setFocusTag(tag)}
+        onMouseLeave={() => setFocusTag(null)}
         style={{
           marginTop: '5px',
           padding: '3px 10px',
@@ -103,6 +110,7 @@ export default ({
   tagList,
   removeTag,
   getLabelByID,
+  setFocusTag,
 }) => (
   <>
     <h5 className="nav-group-title">
@@ -113,6 +121,7 @@ export default ({
         tag={tag}
         removeTag={removeTag}
         getLabelByID={getLabelByID}
+        setFocusTag={setFocusTag}
       />
     )) }
   </>

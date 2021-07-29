@@ -30,6 +30,7 @@ export default function imageTagger({ page }) {
   const canvasRef = useRef(null);
   const { labels, onUpdatePage } = useContext(ContextStore);
   const [image, setImage] = useState(null);
+  const [focusTag, setFocusTag] = useState(null);
   const [tags, setTag] = useState(page.tags);
   const [teggedLabel, setTaggedLabel] = useState(labels[0]);
 
@@ -92,6 +93,7 @@ export default function imageTagger({ page }) {
         setTag={setTag}
         tags={tags}
         getLabelByID={getLabelByID}
+        focusTag={focusTag}
       />
       <div
         style={{
@@ -126,6 +128,7 @@ export default function imageTagger({ page }) {
           tagList={tags}
           getLabelByID={getLabelByID}
           removeTag={removeTag}
+          setFocusTag={setFocusTag}
         />
       </div>
     </div>

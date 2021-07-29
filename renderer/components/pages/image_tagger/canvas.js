@@ -16,6 +16,7 @@ const Canvas = ({
   tags,
   setTag,
   getLabelByID,
+  focusTag,
 }) => {
   let prePoint = {};
 
@@ -100,13 +101,28 @@ const Canvas = ({
   };
 
   const drawTags = (paintedTags) => {
+    const fitTag = (tag) => {
+      if (tag.key) {
+        return tag.key === focusTag.key;
+      }
+
+      return tag.points[0].left === focusTag.points[0].left
+        && tag.points[0].top === focusTag.points[0].top;
+    };
+
     if (paintedTags.length !== 0) {
       paintedTags.forEach((tag) => {
         if (getLabelByID(tag.labelID)) {
           const { color } = getLabelByID(tag.labelID);
           if (tag.type === PAINTING && Array.isArray(tag.points)) {
             for (let i = 0; i < tag.points.length - 1; i += 1) {
-              paint(tag.points[i], tag.points[i + 1], color);
+              paint(
+                tag.points[i],
+                tag.points[i + 1],
+                focusTag !== null && fitTag(tag)
+                  ? '#999999'
+                  : color,
+              );
             }
           }
         }
@@ -127,8 +143,9 @@ const Canvas = ({
   useEffect(() => {
     if (image) {
       initDraw();
+      console.log('render');
     }
-  }, [tags, image]);
+  }, [tags, image, focusTag]);
 
   return image ? (
     <canvas
