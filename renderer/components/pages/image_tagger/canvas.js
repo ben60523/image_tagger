@@ -19,8 +19,11 @@ const Canvas = ({
 }) => {
   let prePoint = {};
 
+  const countSameTags = () => tags.filter((tag) => getFocusLabel().key === tag.labelID);
+
   const createTag = () => ({
     key: uuidv4(),
+    title: `${getFocusLabel().title}(${countSameTags().length + 1})`,
     type: PAINTING,
     points: [],
     labelID: getFocusLabel().key,
