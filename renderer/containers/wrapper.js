@@ -62,7 +62,6 @@ const App = () => {
   };
 
   const importPageToReducer = (zipInfo) => {
-    console.log(zipInfo);
     dispatch(importPage(zipInfo.pages));
     history.push(zipInfo.pages[0].key);
     setWorkingPath(zipInfo.zipFile.path);
@@ -103,8 +102,13 @@ const App = () => {
   useEffect(() => {
     // Get the working path and get the file names in that folder
     const getProjectConfig = (e, resp) => {
-      setWorkingPath(resp.contents.workingPath);
-      selectFolder(resp.contents.workingPath);
+      const { workingPath: workingFolder } = resp.contents;
+      if (workingFolder.indexOf('.zip') !== -1) {
+        setWorkingPath('');
+        return null;
+      }
+      setWorkingPath(workingFolder);
+      return selectFolder(workingFolder);
     };
 
     if (workingPath.length !== 0) {

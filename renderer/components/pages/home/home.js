@@ -13,7 +13,7 @@ export default function () {
         alignItems: 'center',
       }}
     >
-      Empty
+      Please select a folder or import an exported file
     </div>
   );
 }
