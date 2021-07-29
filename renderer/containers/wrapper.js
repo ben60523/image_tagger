@@ -124,7 +124,7 @@ const App = () => {
     >
       <div className="window">
         <Header
-          exportProject={() => exportProject(pages, labels, workingPath)}
+          exportProject={() => exportProject(pages, labels)}
           selectFolder={selectFolder}
           workingPath={workingPath}
           importPage={importPageToReducer}

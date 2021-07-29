@@ -41,15 +41,7 @@ const loadImage = (src) => {
   return getBase64FromFile(src);
 };
 
-const exportProject = (pages, labels, workingPath) => {
-  const findPagesInWorkingPath = (page) => {
-    if (page.src.indexOf(workingPath) !== -1) {
-      return true;
-    }
-
-    return false;
-  };
-
+const exportProject = (pages, labels) => {
   const pageHasTags = (page) => {
     if (page.tags && page.tags.length > 0) {
       return true;
@@ -73,8 +65,9 @@ const exportProject = (pages, labels, workingPath) => {
   // Wrap labels.json
   zip.file('labels.json', JSON.stringify(labels));
 
-  const outputPages = pages.filter(findPagesInWorkingPath)
-    .filter(pageHasTags);
+  const img = zip.folder('images');
+
+  const outputPages = pages.filter(pageHasTags);
 
   // Wrap pages.json
   zip.file('pages.json', JSON.stringify(outputPages));
@@ -82,7 +75,7 @@ const exportProject = (pages, labels, workingPath) => {
   // Wrap image
   const generateImageZip = (page) => loadImage(page.src)
     .then((imgObject) => getBase64Image(imgObject))
-    .then((dataURL) => zip.file(page.name, dataURL, { base64: true }))
+    .then((dataURL) => img.file(page.name, dataURL, { base64: true }))
     .catch((error) => console.log('loading image error', error));
 
   Promise.all(outputPages.map(generateImageZip))
@@ -130,7 +123,14 @@ const importProject = (e) => {
 
   const putImageFileAsSrc = (pages, imageFileList) => pages.reduce((accumulator, page) => {
     const correspondImageIndex = imageFileList
-      .findIndex((image) => image.name === page.name);
+      .findIndex((image) => {
+        const splitedName = image.name.split('/');
+        if (splitedName[0] === 'images' && splitedName[1] === page.name) {
+          return true;
+        }
+
+        return false;
+      });
 
     if (correspondImageIndex !== -1) {
       accumulator.push({
