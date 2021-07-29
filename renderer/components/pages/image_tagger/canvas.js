@@ -23,7 +23,7 @@ const Canvas = ({
   const getMaxTagNumber = () => {
     let counter = 1;
     tags.forEach((tag) => {
-      if (getFocusLabel().key === tag.labelID) {
+      if (getFocusLabel().key === tag.labelID && tag.title) {
         let tagTitleNum = tag.title
           .match(/\([0-9]+\)/i)[0]
           .match(/[0-9]+/i)[0];
