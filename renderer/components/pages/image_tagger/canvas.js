@@ -129,18 +129,21 @@ const Canvas = ({
 
     if (paintedTags.length !== 0) {
       paintedTags.forEach((tag) => {
-        if (getLabelByID(tag.labelID)) {
-          const { color } = getLabelByID(tag.labelID);
-          if (tag.type === PAINTING && Array.isArray(tag.points)) {
-            for (let i = 0; i < tag.points.length - 1; i += 1) {
-              paint(
-                tag.points[i],
-                tag.points[i + 1],
-                focusTag !== null && fitTag(tag)
-                  ? '#999999'
-                  : color,
-              );
-            }
+        if (
+          getLabelByID(tag.labelID)
+          && tag.type === PAINTING
+          && Array.isArray(tag.points)
+        ) {
+          const defineColor = focusTag === null || fitTag(tag)
+            ? getLabelByID(tag.labelID).color
+            : '#999999';
+
+          for (let i = 0; i < tag.points.length - 1; i += 1) {
+            paint(
+              tag.points[i],
+              tag.points[i + 1],
+              defineColor,
+            );
           }
         }
       });
