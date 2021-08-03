@@ -82,10 +82,7 @@ function createWindow () {
   win.loadURL(indexURL);
 
   win.maximize();
-
-  win.on('maximize', (e) => {
-    win.show();
-  })
+  win.show();
 
   win.on('close', (e) => {
     if (win) {
