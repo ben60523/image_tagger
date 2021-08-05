@@ -6,13 +6,13 @@
   "productName": "media_tagger",
   "scripts": {
     "start:test": "electron .",
-    "start": "cross-env NODE_ENV=development webpack --config ./webpack.main.config.js && concurrently \"npm:watch\" \"electron .\"",
+    "start": "concurrently \"npm:watch\" \"electron .\"",
     "build:main": "cross-env NODE_ENV=production webpack --config ./webpack.main.config.js",
     "build:renderer": "cross-env NODE_ENV=production webpack --config ./webpack.renderer.config.js",
     "build": "npm run build:main && npm run build:renderer",
-    "analyse": "webpack --config ./webpack.renderer.config.js --mode=production --env.analyse=true",
+    "analyse": "webpack --config ./webpack.renderer.config.js --env.analyse=true",
     "lint": "eslint ./renderer",
-    "watch": "cross-env NODE_ENV=development webpack --config ./webpack.renderer.config.js --watch --watch-poll",
+    "watch": "cross-env NODE_ENV=development webpack --config ./webpack.renderer.config.js",
     "pack": "npm run build && electron-builder --dir",
     "dist": "npm run build && electron-builder",
     "clean": "rm -rf build dist"
