@@ -49,7 +49,7 @@ module.exports = (env={}, argv={}) => ({
     node: {
         __dirname: true
     },
-		watch: process.env.NODE_ENV === "development",
+	watch: process.env.NODE_ENV === "development",
     watchOptions: {
         poll: 1000, // Check for changes every second
     },
