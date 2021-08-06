@@ -22,10 +22,10 @@ const {
 
 /**
  * When in development mode:
- * - Enable automatic reloads
+ * - Enable rendeerer automatic reloads
  */
 if (isDev) {
-	require('electron-reload')(path.join(__dirname, '../'));
+	require('electron-reload')(path.join(__dirname, '../build/app.js'));
 }
 
 app.setName(`${app.getName()}_${app.getVersion()}`);

@@ -6,7 +6,7 @@
   "productName": "media_tagger",
   "scripts": {
     "start:test": "electron .",
-    "start": "concurrently \"npm:watch:main\" \"npm:watch:renderer\" \"electron .\"",
+    "start": "concurrently \"npm:watch:main\" \"npm:watch:renderer\" \"npm:nodemon:watch\"",
     "build:main": "cross-env NODE_ENV=production webpack --config ./webpack.main.config.js",
     "build:renderer": "cross-env NODE_ENV=production webpack --config ./webpack.renderer.config.js",
     "build": "npm run build:main && npm run build:renderer",
@@ -16,7 +16,8 @@
     "watch:main": "cross-env NODE_ENV=development webpack --config ./webpack.main.config.js",
     "pack": "npm run build && electron-builder --dir",
     "dist": "npm run build && electron-builder",
-    "clean": "rm -rf build dist"
+    "clean": "rm -rf build dist",
+    "nodemon:watch": "nodemon --watch ./build/main.js --exec electron ."
   },
   "repository": {
     "type": "git",
@@ -104,6 +105,7 @@
     "jest": "^27.0.6",
     "mini-css-extract-plugin": "^0.10.0",
     "node-sass": "^4.14.1",
+    "nodemon": "^2.0.12",
     "sass-loader": "^9.0.3",
     "style-loader": "^1.2.1",
     "webpack": "^4.44.1",
