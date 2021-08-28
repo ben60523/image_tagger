@@ -1,6 +1,10 @@
 ![Frame 3 (3)](https://user-images.githubusercontent.com/63446591/131225786-be6a7eab-d46e-4c3d-be1e-0b8640c86802.png)
+
 # What's Image_tagger
 Image is a cross-platform annotation application that help user annotates the images and share to others.
+
+# Download link
+[media_tagger 1.9.1](https://downloadfroms3.s3.ap-northeast-2.amazonaws.com/media_tagger_1.9.1_setup.exe) Installer for Windows 10, 64-bit.
 
 # User guide
 ![](https://i.imgur.com/QDkrmPR.jpg)
@@ -24,3 +28,4 @@ Image is a cross-platform annotation application that help user annotates the im
 3. ReactJS
 4. webpack
 5. React Hook
+6. Electron Hot reload
