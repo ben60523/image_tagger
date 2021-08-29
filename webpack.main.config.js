@@ -1,6 +1,6 @@
 const path = require('path')
 
-module.exports = {
+module.exports = () => ({
     target: 'electron-main',
     entry: { 
         main: './src/main.js',
@@ -18,5 +18,9 @@ module.exports = {
     } ],
     resolve: {
       modules: [path.resolve(__dirname, "node_modules"), "node_modules"]
-    }
-}
+    },
+    watch: process.env.NODE_ENV === "development",
+    watchOptions: {
+        poll: 1000, // Check for changes every second
+    },
+})
