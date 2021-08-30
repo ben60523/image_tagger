@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import '../assets/css/photon.css';
 
 import ContextStore from '../context_store';
+import { PageProvider } from '../stores/page_store';
 
 import pageReducer from '../reducers/page_reducer';
 import labelReducer from '../reducers/label_reducers';
@@ -76,6 +77,8 @@ const App = () => {
         return null;
       };
 
+      console.log('get page', resp.contents);
+
       switch (resp.name) {
         case SELECT_FOLDER:
           return onSelectFolder(resp);
@@ -99,7 +102,7 @@ const App = () => {
         return null;
       }
       setWorkingPath(workingFolder);
-      return selectFolder(workingFolder);
+      return null;
     };
 
     if (workingPath.length !== 0) {
@@ -118,26 +121,28 @@ const App = () => {
         ldispatch,
       }}
     >
-      <div className="window">
-        <Header
-          exportProject={() => exportProject(pages, labels)}
-          selectFolder={selectFolder}
-          workingPath={workingPath}
-          importPage={importPageToReducer}
-        />
-        <div className="window-content">
-          <div className="pane">
-            <div className="pane-group">
-              <SideBar
-                pages={pages}
-                filterList={filterList}
-                setFilterList={setFilterList}
-              />
-              <Main pages={pages} />
+      <PageProvider workingPath={workingPath}>
+        <div className="window">
+          <Header
+            exportProject={() => exportProject(pages, labels)}
+            selectFolder={selectFolder}
+            workingPath={workingPath}
+            importPage={importPageToReducer}
+          />
+          <div className="window-content">
+            <div className="pane">
+              <div className="pane-group">
+                <SideBar
+                  pages={pages}
+                  filterList={filterList}
+                  setFilterList={setFilterList}
+                />
+                <Main pages={pages} />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </PageProvider>
     </ContextStore.Provider>
   );
 };
