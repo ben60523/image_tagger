@@ -7,6 +7,7 @@ import { PageProvider } from '../stores/page_store';
 
 import pageReducer from '../reducers/page_reducer';
 import labelReducer from '../reducers/label_reducers';
+import { addNewTaggingLabel } from '../reducers/label_actions';
 import defaultabel from '../reducers/default_label';
 
 import {
@@ -37,9 +38,14 @@ import { exportProject } from '../utils';
 const App = () => {
   const history = useHistory();
   const [pages, dispatch] = useReducer(pageReducer, []);
-  const [labels, ldispatch] = useReducer(labelReducer, defaultabel);
+  const [labels, ldispatch] = useReducer(labelReducer, []);
   const [workingPath, setWorkingPath] = useState('');
   const [filterList, setFilterList] = useState([]);
+
+  // Set the default labels as the initial label
+  const initLabels = () => {
+    ldispatch(addNewTaggingLabel(defaultabel));
+  };
 
   // Create a page object when select folder request returns the file names.
   const addNewPage = (imgs) => {
@@ -89,6 +95,9 @@ const App = () => {
       return null;
     };
 
+    // Get the preject information from DB
+    initLabels();
+
     // Add listener
     receive(FROM_GENERAL, generalListener);
   }, []);
@@ -118,7 +127,6 @@ const App = () => {
       value={{
         labels,
         onUpdatePage,
-        ldispatch,
       }}
     >
       <PageProvider workingPath={workingPath}>
