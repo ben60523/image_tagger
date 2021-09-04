@@ -1,10 +1,12 @@
 import React from 'react';
+import Tooltip from '@material-ui/core/Tooltip';
 import { useHistory } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
-import Tooltip from '@material-ui/core/Tooltip';
 import getFilter from '../filters/getFilter';
+
+import { usePage } from '../stores/page_store';
 import { TAGGED_IMAGE } from '../constants';
 
 const SideBarItem = ({
@@ -40,11 +42,11 @@ const SideBarItem = ({
 };
 
 const SideBar = ({
-  pages,
   filterList,
   setFilterList,
 }) => {
   const history = useHistory();
+  const { pages } = usePage();
 
   const handleClick = (e, page) => {
     history.push(page.key);

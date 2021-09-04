@@ -20,7 +20,7 @@ import {
 
 const PageContext = React.createContext(null);
 
-export const PageProvider = ({ workingPath, children }) => {
+const usePages = ({ workingPath, setWorkingPath }) => {
   const [pages, dispatchPages] = useReducer(pageReducer, []);
 
   const addNewPage = (imgs) => {
@@ -40,8 +40,11 @@ export const PageProvider = ({ workingPath, children }) => {
       const onSelectFolder = () => {
         addNewPage(resp.contents);
 
+        setWorkingPath(resp.contents[0].dir);
         return null;
       };
+
+      console.log('get page', resp.contents);
 
       switch (resp.name) {
         case SELECT_FOLDER:
@@ -53,7 +56,6 @@ export const PageProvider = ({ workingPath, children }) => {
       return null;
     };
 
-    // Add listener
     receive(FROM_GENERAL, generalListener);
 
     return () => removeListener(FROM_GENERAL, generalListener);
@@ -65,11 +67,19 @@ export const PageProvider = ({ workingPath, children }) => {
     }
   }, [workingPath]);
 
+  return { pages, addNewPage };
+};
+
+export const PageProvider = ({ workingPath, setWorkingPath, children }) => {
+  const { pages, addNewPage } = usePages({ workingPath, setWorkingPath });
+
+  console.log(pages);
+
   return (
     <PageContext.Provider
       value={{
         pages,
-        dispatchPages,
+        addNewPage,
       }}
     >
       {children}
