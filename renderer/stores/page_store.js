@@ -9,7 +9,7 @@ import {
 
 import {
   pageCreater,
-  // updatePage,
+  updatePage,
   importPage,
 } from '../reducers/page_actions';
 
@@ -33,6 +33,10 @@ const usePages = ({ workingPath, setWorkingPath }) => {
     }
 
     return null;
+  };
+
+  const onUpdatePage = (targetPage) => {
+    dispatchPages(updatePage(targetPage));
   };
 
   useEffect(() => {
@@ -67,11 +71,11 @@ const usePages = ({ workingPath, setWorkingPath }) => {
     }
   }, [workingPath]);
 
-  return { pages, addNewPage };
+  return { pages, addNewPage, onUpdatePage };
 };
 
 export const PageProvider = ({ workingPath, setWorkingPath, children }) => {
-  const { pages, addNewPage } = usePages({ workingPath, setWorkingPath });
+  const { pages, addNewPage, onUpdatePage } = usePages({ workingPath, setWorkingPath });
 
   console.log(pages);
 
@@ -80,6 +84,7 @@ export const PageProvider = ({ workingPath, setWorkingPath, children }) => {
       value={{
         pages,
         addNewPage,
+        onUpdatePage,
       }}
     >
       {children}
