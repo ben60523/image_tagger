@@ -89,6 +89,7 @@ const App = () => {
       >
         <div className="window">
           <Header
+            labels={labels}
             // exportProject={() => exportProject(pages, labels)}
             selectFolder={selectFolder}
             workingPath={workingPath}

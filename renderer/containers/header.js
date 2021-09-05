@@ -5,14 +5,16 @@ import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import SaveIcon from '@material-ui/icons/Save';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import { importProject } from '../utils';
+import { importProject, exportProject } from '../utils';
+import { usePage } from '../stores/page_store';
 
 const Header = ({
-  exportProject,
   selectFolder,
   workingPath,
-  importPage,
+  labels,
 }) => {
+  const { importPageToReducer, pages } = usePage();
+
   const clickInput = () => {
     const fileElem = document.getElementById('fileElem');
 
@@ -21,7 +23,7 @@ const Header = ({
     }
   };
 
-  const onImportZip = async (e) => importPage(await importProject(e));
+  const onImportZip = async (e) => importPageToReducer(await importProject(e));
 
   return (
     <div
@@ -71,7 +73,7 @@ const Header = ({
         <IconButton
           aria-label="expand"
           size="small"
-          onClick={exportProject}
+          onClick={() => exportProject(pages, labels)}
         >
           <SaveIcon className="icon" />
         </IconButton>

@@ -1,4 +1,5 @@
 import React, { useReducer, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import pageReducer from '../reducers/page_reducer';
 
 import {
@@ -22,6 +23,7 @@ const PageContext = React.createContext(null);
 
 const usePages = ({ workingPath, setWorkingPath }) => {
   const [pages, dispatchPages] = useReducer(pageReducer, []);
+  const history = useHistory();
 
   const addNewPage = (imgs) => {
     const createMultiPages = () => {
@@ -33,6 +35,12 @@ const usePages = ({ workingPath, setWorkingPath }) => {
     }
 
     return null;
+  };
+
+  const importPageToReducer = (zipInfo) => {
+    dispatchPages(importPage(zipInfo.pages));
+    history.push(zipInfo.pages[0].key);
+    setWorkingPath(zipInfo.zipFile.path);
   };
 
   const onUpdatePage = (targetPage) => {
@@ -71,25 +79,20 @@ const usePages = ({ workingPath, setWorkingPath }) => {
     }
   }, [workingPath]);
 
-  return { pages, addNewPage, onUpdatePage };
+  return {
+    pages,
+    addNewPage,
+    onUpdatePage,
+    importPageToReducer,
+  };
 };
 
-export const PageProvider = ({ workingPath, setWorkingPath, children }) => {
-  const { pages, addNewPage, onUpdatePage } = usePages({ workingPath, setWorkingPath });
-
-  console.log(pages);
-
-  return (
-    <PageContext.Provider
-      value={{
-        pages,
-        addNewPage,
-        onUpdatePage,
-      }}
-    >
-      {children}
-    </PageContext.Provider>
-  );
-};
+export const PageProvider = ({ workingPath, setWorkingPath, children }) => (
+  <PageContext.Provider
+    value={usePages({ workingPath, setWorkingPath })}
+  >
+    {children}
+  </PageContext.Provider>
+);
 
 export const usePage = () => React.useContext(PageContext);
