@@ -35,8 +35,8 @@ const pageStore = ({ workingPath, setWorkingPath }) => {
     return null;
   };
 
-  const importPageToReducer = (zipInfo) => {
-    dispatchPages(importPage(zipInfo.pages));
+  const importPages = (importedPages) => {
+    dispatchPages(importPage(importedPages));
   };
 
   const onUpdatePage = (targetPage) => {
@@ -51,8 +51,6 @@ const pageStore = ({ workingPath, setWorkingPath }) => {
         setWorkingPath(resp.contents[0].dir);
         return null;
       };
-
-      console.log('get page', resp.contents);
 
       switch (resp.name) {
         case SELECT_FOLDER:
@@ -79,7 +77,7 @@ const pageStore = ({ workingPath, setWorkingPath }) => {
     pages,
     addNewPage,
     onUpdatePage,
-    importPageToReducer,
+    importPages,
   };
 };
 

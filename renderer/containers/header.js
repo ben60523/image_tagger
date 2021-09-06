@@ -15,7 +15,7 @@ const Header = ({
   labels,
   setWorkingPath,
 }) => {
-  const { importPageToReducer, pages } = usePage();
+  const { importPages, pages } = usePage();
   const history = useHistory();
 
   const clickInput = () => {
@@ -28,7 +28,7 @@ const Header = ({
 
   const onImportZip = async (e) => {
     const zipInfo = await importProject(e);
-    importPageToReducer(zipInfo);
+    importPages(zipInfo.pages);
     history.push(zipInfo.pages[0].key);
     setWorkingPath(zipInfo.zipFile.path);
   };
