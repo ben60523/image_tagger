@@ -1,19 +1,12 @@
 import React, { useReducer, useEffect, useState } from 'react';
-// import { useHistory } from 'react-router-dom';
 import '../assets/css/photon.css';
 
 import ContextStore from '../context_store';
 import { PageProvider } from '../stores/page_store';
 
-// import pageReducer from '../reducers/page_reducer';
 import labelReducer from '../reducers/label_reducers';
 import { addNewTaggingLabel } from '../reducers/label_actions';
 import defaultabel from '../reducers/default_label';
-
-// import {
-//   updatePage,
-//   importPage,
-// } from '../reducers/page_actions';
 
 import Main from './main_pane';
 import Header from './header';
@@ -30,11 +23,7 @@ import {
   FROM_MAIN,
 } from '../constants';
 
-// import { exportProject } from '../utils';
-
 const App = () => {
-  // const history = useHistory();
-  // const [pages, dispatch] = useReducer(pageReducer, []);
   const [labels, ldispatch] = useReducer(labelReducer, []);
   const [workingPath, setWorkingPath] = useState('');
   const [filterList, setFilterList] = useState([]);
@@ -43,12 +32,6 @@ const App = () => {
   const initLabels = () => {
     ldispatch(addNewTaggingLabel(defaultabel));
   };
-
-  // const importPageToReducer = (zipInfo) => {
-  //   dispatch(importPage(zipInfo.pages));
-  //   history.push(zipInfo.pages[0].key);
-  //   setWorkingPath(zipInfo.zipFile.path);
-  // };
 
   // Initial Project
   useEffect(() => {
@@ -83,17 +66,13 @@ const App = () => {
         setWorkingPath,
       }}
     >
-      <PageProvider
-        workingPath={workingPath}
-        setWorkingPath={setWorkingPath}
-      >
+      <PageProvider workingPath={workingPath}>
         <div className="window">
           <Header
             labels={labels}
-            // exportProject={() => exportProject(pages, labels)}
             selectFolder={selectFolder}
             workingPath={workingPath}
-            // importPage={importPageToReducer}
+            setWorkingPath={setWorkingPath}
           />
           <div className="window-content">
             <div className="pane">

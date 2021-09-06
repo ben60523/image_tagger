@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import LibraryAddIcon from '@material-ui/icons/LibraryAdd';
 import FolderOpenIcon from '@material-ui/icons/FolderOpen';
@@ -12,8 +13,10 @@ const Header = ({
   selectFolder,
   workingPath,
   labels,
+  setWorkingPath,
 }) => {
   const { importPageToReducer, pages } = usePage();
+  const history = useHistory();
 
   const clickInput = () => {
     const fileElem = document.getElementById('fileElem');
@@ -23,7 +26,12 @@ const Header = ({
     }
   };
 
-  const onImportZip = async (e) => importPageToReducer(await importProject(e));
+  const onImportZip = async (e) => {
+    const zipInfo = await importProject(e);
+    importPageToReducer(zipInfo);
+    history.push(zipInfo.pages[0].key);
+    setWorkingPath(zipInfo.zipFile.path);
+  };
 
   return (
     <div

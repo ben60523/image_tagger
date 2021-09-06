@@ -1,5 +1,4 @@
 import React, { useReducer, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import pageReducer from '../reducers/page_reducer';
 
 import {
@@ -21,9 +20,8 @@ import {
 
 const PageContext = React.createContext(null);
 
-const usePages = ({ workingPath, setWorkingPath }) => {
+const pageStore = ({ workingPath, setWorkingPath }) => {
   const [pages, dispatchPages] = useReducer(pageReducer, []);
-  const history = useHistory();
 
   const addNewPage = (imgs) => {
     const createMultiPages = () => {
@@ -39,8 +37,6 @@ const usePages = ({ workingPath, setWorkingPath }) => {
 
   const importPageToReducer = (zipInfo) => {
     dispatchPages(importPage(zipInfo.pages));
-    history.push(zipInfo.pages[0].key);
-    setWorkingPath(zipInfo.zipFile.path);
   };
 
   const onUpdatePage = (targetPage) => {
@@ -89,7 +85,7 @@ const usePages = ({ workingPath, setWorkingPath }) => {
 
 export const PageProvider = ({ workingPath, setWorkingPath, children }) => (
   <PageContext.Provider
-    value={usePages({ workingPath, setWorkingPath })}
+    value={pageStore({ workingPath, setWorkingPath })}
   >
     {children}
   </PageContext.Provider>
