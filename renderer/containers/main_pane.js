@@ -3,10 +3,10 @@ import { Route } from 'react-router-dom';
 
 import Home from '../components/pages/home/home';
 import ImageTagger from '../components/pages/image_tagger/image_tagger';
-import { usePage } from '../stores/page_store';
+import { usePageContext } from '../stores/page_store';
 
 const MainContent = () => {
-  const { pages } = usePage();
+  const { pages } = usePageContext();
 
   return (
     <>

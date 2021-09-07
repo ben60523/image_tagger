@@ -20,7 +20,7 @@ import {
 
 const PageContext = React.createContext(null);
 
-const pageStore = ({ workingPath, setWorkingPath }) => {
+const usePage = ({ workingPath, setWorkingPath }) => {
   const [pages, dispatchPages] = useReducer(pageReducer, []);
 
   const addNewPage = (imgs) => {
@@ -83,10 +83,10 @@ const pageStore = ({ workingPath, setWorkingPath }) => {
 
 export const PageProvider = ({ workingPath, setWorkingPath, children }) => (
   <PageContext.Provider
-    value={pageStore({ workingPath, setWorkingPath })}
+    value={usePage({ workingPath, setWorkingPath })}
   >
     {children}
   </PageContext.Provider>
 );
 
-export const usePage = () => React.useContext(PageContext);
+export const usePageContext = () => React.useContext(PageContext);

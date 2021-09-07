@@ -7,7 +7,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import { importProject, exportProject } from '../utils';
-import { usePage } from '../stores/page_store';
+import { usePageContext } from '../stores/page_store';
 
 const Header = ({
   selectFolder,
@@ -15,7 +15,7 @@ const Header = ({
   labels,
   setWorkingPath,
 }) => {
-  const { importPages, pages } = usePage();
+  const { importPages, pages } = usePageContext();
   const history = useHistory();
 
   const clickInput = () => {

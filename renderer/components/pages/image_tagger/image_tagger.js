@@ -15,7 +15,7 @@ import Labels from './labels';
 import Canvas from './canvas';
 import Toolbar from './toolbar';
 import TagList from './tag_list';
-import { usePage } from '../../../stores/page_store';
+import { usePageContext } from '../../../stores/page_store';
 
 const containerStyle = {
   width: '100%',
@@ -30,7 +30,7 @@ const containerStyle = {
 export default function imageTagger({ page }) {
   const canvasRef = useRef(null);
   const { labels } = useContext(ContextStore);
-  const { onUpdatePage } = usePage();
+  const { onUpdatePage } = usePageContext();
   const [image, setImage] = useState(null);
   const [focusTag, setFocusTag] = useState(null);
   const [tags, setTag] = useState(page.tags);

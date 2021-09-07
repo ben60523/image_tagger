@@ -6,7 +6,7 @@ import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import getFilter from '../filters/getFilter';
 
-import { usePage } from '../stores/page_store';
+import { usePageContext } from '../stores/page_store';
 import { TAGGED_IMAGE } from '../constants';
 
 const SideBarItem = ({
@@ -46,7 +46,7 @@ const SideBar = ({
   setFilterList,
 }) => {
   const history = useHistory();
-  const { pages } = usePage();
+  const { pages } = usePageContext();
 
   const handleClick = (e, page) => {
     history.push(page.key);
