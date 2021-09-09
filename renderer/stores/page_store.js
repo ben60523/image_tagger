@@ -20,7 +20,7 @@ import {
 
 const PageContext = React.createContext(null);
 
-const usePage = ({ workingPath, setWorkingPath }) => {
+export const usePage = ({ workingPath, setWorkingPath }) => {
   const [pages, dispatchPages] = useReducer(pageReducer, []);
 
   const addNewPage = (imgs) => {

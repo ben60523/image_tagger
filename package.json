@@ -5,7 +5,7 @@
   "main": "./build/main.js",
   "productName": "media_tagger",
   "scripts": {
-    "start:test": "electron .",
+    "test": "jest",
     "start": "concurrently \"npm:watch:main\" \"npm:watch:renderer\" \"npm:nodemon:watch\"",
     "build:main": "cross-env NODE_ENV=production webpack --config ./webpack.main.config.js",
     "build:renderer": "cross-env NODE_ENV=production webpack --config ./webpack.renderer.config.js",
@@ -76,6 +76,7 @@
     "@babel/core": "^7.11.1",
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-react": "^7.10.4",
+    "@testing-library/react-hooks": "^7.0.2",
     "babel-core": "^6.26.3",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.2",
