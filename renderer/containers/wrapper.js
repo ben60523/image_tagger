@@ -66,7 +66,7 @@ const App = () => {
         setWorkingPath,
       }}
     >
-      <PageProvider workingPath={workingPath}>
+      <PageProvider workingPath={workingPath} setWorkingPath={setWorkingPath}>
         <div className="window">
           <Header
             labels={labels}
