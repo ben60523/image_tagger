@@ -43,25 +43,25 @@ export const usePage = ({ workingPath, setWorkingPath }) => {
     dispatchPages(updatePage(targetPage));
   };
 
-  useEffect(() => {
-    const generalListener = (e, resp) => {
-      const onSelectFolder = () => {
-        addNewPage(resp.contents);
+  const generalListener = (e, resp) => {
+    const onSelectFolder = () => {
+      addNewPage(resp.contents);
 
-        setWorkingPath(resp.contents[0].dir);
-        return null;
-      };
-
-      switch (resp.name) {
-        case SELECT_FOLDER:
-          return onSelectFolder(resp);
-        default:
-          console.log('event not found', resp);
-      }
-
+      setWorkingPath(resp.contents[0].dir);
       return null;
     };
 
+    switch (resp.name) {
+      case SELECT_FOLDER:
+        return onSelectFolder(resp);
+      default:
+        console.log('event not found', resp);
+    }
+
+    return null;
+  };
+
+  useEffect(() => {
     receive(FROM_GENERAL, generalListener);
 
     return () => removeListener(FROM_GENERAL, generalListener);
@@ -78,6 +78,7 @@ export const usePage = ({ workingPath, setWorkingPath }) => {
     addNewPage,
     onUpdatePage,
     importPages,
+    generalListener,
   };
 };
 
