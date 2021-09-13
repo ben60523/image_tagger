@@ -6,6 +6,7 @@
   "productName": "media_tagger",
   "scripts": {
     "test": "jest",
+    "test:watch": "jest --watch",
     "start": "concurrently \"npm:watch:main\" \"npm:watch:renderer\" \"npm:nodemon:watch\"",
     "build:main": "cross-env NODE_ENV=production webpack --config ./webpack.main.config.js",
     "build:renderer": "cross-env NODE_ENV=production webpack --config ./webpack.renderer.config.js",

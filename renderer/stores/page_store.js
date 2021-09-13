@@ -24,14 +24,10 @@ export const usePage = ({ workingPath, setWorkingPath }) => {
   const [pages, dispatchPages] = useReducer(pageReducer, []);
 
   const addNewPage = (imgs) => {
-    const createMultiPages = () => {
-      dispatchPages(importPage(imgs.map((img) => pageCreater(img))));
-    };
-
     if (Array.isArray(imgs)) {
-      return createMultiPages();
+      return importPages(imgs.map((img) => pageCreater(img)));
     }
-
+  
     return null;
   };
 
