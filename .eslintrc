@@ -10,6 +10,7 @@
     "rules": {
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
         "react/jsx-props-no-spreading": ["error", {"custom": "ignore"}],
+        "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
         "react/prop-types": 0,
         "linebreak-style": 0
     }

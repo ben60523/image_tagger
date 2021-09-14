@@ -6,7 +6,7 @@ import {
 
 const IMAGE = 'image';
 
-export const pageCreater = (img) => ({
+export const pageCreator = (img) => ({
   key: `/${CryptoJS.SHA256(img.src).toString(CryptoJS.enc.Hex)}`,
   name: img.name,
   src: img.src,

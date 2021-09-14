@@ -7,10 +7,10 @@ import ContextStore from '../context_store';
 import pageReducer from '../reducers/page_reducer';
 import labelReducer from '../reducers/label_reducers';
 import { addNewTaggingLabel } from '../reducers/label_actions';
-import defaultabel from '../reducers/default_label';
+import defaultLabel from '../reducers/default_label';
 
 import {
-  pageCreater,
+  pageCreator,
   updatePage,
   importPage,
 } from '../reducers/page_actions';
@@ -37,19 +37,19 @@ import { exportProject } from '../utils';
 const App = () => {
   const history = useHistory();
   const [pages, dispatch] = useReducer(pageReducer, []);
-  const [labels, ldispatch] = useReducer(labelReducer, []);
+  const [labels, labelDispatch] = useReducer(labelReducer, []);
   const [workingPath, setWorkingPath] = useState('');
   const [filterList, setFilterList] = useState([]);
 
   // Set the default labels as the initial label
   const initLabels = () => {
-    ldispatch(addNewTaggingLabel(defaultabel));
+    labelDispatch(addNewTaggingLabel(defaultLabel));
   };
 
   // Create a page object when select folder request returns the file names.
   const addNewPage = (imgs) => {
     const createMultiPages = () => {
-      const pageList = imgs.map((img) => pageCreater(img));
+      const pageList = imgs.map((img) => pageCreator(img));
       dispatch(importPage(pageList));
       history.push(pageList[0].key);
     };
@@ -92,7 +92,7 @@ const App = () => {
       return null;
     };
 
-    // Get the preject information from DB
+    // Get the project information from DB
     initLabels();
 
     // Add listener

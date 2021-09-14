@@ -32,7 +32,7 @@ export default function imageTagger({ page }) {
   const [image, setImage] = useState(null);
   const [focusTag, setFocusTag] = useState(null);
   const [tags, setTag] = useState(page.tags);
-  const [teggedLabel, setTaggedLabel] = useState(labels[0]);
+  const [taggedLabel, setTaggedLabel] = useState(labels[0]);
 
   const updatePageTag = () => {
     onUpdatePage({
@@ -43,7 +43,7 @@ export default function imageTagger({ page }) {
 
   const getLabelByID = (id) => labels.find((label) => label.key === id);
 
-  const getFocusLabel = () => teggedLabel;
+  const getFocusLabel = () => taggedLabel;
 
   const removeAllTags = () => {
     setTag([]);

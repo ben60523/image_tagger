@@ -1,28 +1,30 @@
-const { FROM_MAIN } = require("../const");
+const { FROM_MAIN } = require('../const');
+const nedb = require('../models/nedb');
 
 const FIND_ONE = 'FIND_ONE';
 const UPDATE = 'UPDATE';
 
-module.exports = ({win, db, props}) => {
+module.exports = ({ win, db, props }) => {
   const sendResp = (message) => {
-    win.webContents.send(FROM_MAIN, message)
-  }
+    win.webContents.send(FROM_MAIN, message);
+  };
 
-  switch(props.name) {
+  switch (props.name) {
     case FIND_ONE:
-      require('../models/nedb').findOne(db, props)
+      nedb
+        .findOne(db, props)
         .then((resp) => {
           sendResp({
             ...props,
-            contents: resp
-          })
+            contents: resp,
+          });
         })
-        .catch((err) => console.log('findProject', err))
+        .catch((err) => console.log('findProject', err));
       break;
     case UPDATE:
-      require('../models/nedb').update(db, props);
+      nedb.update(db, props);
       break;
     default:
       console.log('event not found', props);
   }
-}
+};
