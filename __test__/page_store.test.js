@@ -1,4 +1,3 @@
-/* eslint-disable import/no-named-as-default-member */
 import { act, renderHook } from '@testing-library/react-hooks/dom';
 import { usePage } from '../renderer/stores/page_store';
 import request from '../renderer/request';

@@ -51,6 +51,7 @@ export const usePage = ({ workingPath, setWorkingPath }) => {
       case SELECT_FOLDER:
         return onSelectFolder(resp);
       default:
+        // eslint-disable-next-line no-console
         console.log('event not found', resp);
     }
 
