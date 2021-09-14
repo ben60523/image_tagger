@@ -1,19 +1,12 @@
 import React, { useReducer, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import '../assets/css/photon.css';
 
 import ContextStore from '../context_store';
+import { PageProvider } from '../stores/page_store';
 
-import pageReducer from '../reducers/page_reducer';
 import labelReducer from '../reducers/label_reducers';
 import { addNewTaggingLabel } from '../reducers/label_actions';
 import defaultabel from '../reducers/default_label';
-
-import {
-  pageCreater,
-  updatePage,
-  importPage,
-} from '../reducers/page_actions';
 
 import Main from './main_pane';
 import Header from './header';
@@ -28,15 +21,9 @@ import {
 
 import {
   FROM_MAIN,
-  FROM_GENERAL,
-  SELECT_FOLDER,
 } from '../constants';
 
-import { exportProject } from '../utils';
-
 const App = () => {
-  const history = useHistory();
-  const [pages, dispatch] = useReducer(pageReducer, []);
   const [labels, ldispatch] = useReducer(labelReducer, []);
   const [workingPath, setWorkingPath] = useState('');
   const [filterList, setFilterList] = useState([]);
@@ -46,57 +33,10 @@ const App = () => {
     ldispatch(addNewTaggingLabel(defaultabel));
   };
 
-  // Create a page object when select folder request returns the file names.
-  const addNewPage = (imgs) => {
-    const createMultiPages = () => {
-      const pageList = imgs.map((img) => pageCreater(img));
-      dispatch(importPage(pageList));
-      history.push(pageList[0].key);
-    };
-
-    if (Array.isArray(imgs)) {
-      return createMultiPages();
-    }
-
-    return null;
-  };
-
-  const importPageToReducer = (zipInfo) => {
-    dispatch(importPage(zipInfo.pages));
-    history.push(zipInfo.pages[0].key);
-    setWorkingPath(zipInfo.zipFile.path);
-  };
-
-  // update the page in react
-  const onUpdatePage = (targetPage) => {
-    dispatch(updatePage(targetPage));
-  };
-
   // Initial Project
   useEffect(() => {
-    const generalListener = (e, resp) => {
-      const onSelectFolder = () => {
-        addNewPage(resp.contents);
-
-        setWorkingPath(resp.contents[0].dir);
-        return null;
-      };
-
-      switch (resp.name) {
-        case SELECT_FOLDER:
-          return onSelectFolder(resp);
-        default:
-          console.log('event not found', resp);
-      }
-
-      return null;
-    };
-
     // Get the preject information from DB
     initLabels();
-
-    // Add listener
-    receive(FROM_GENERAL, generalListener);
   }, []);
 
   useEffect(() => {
@@ -108,7 +48,7 @@ const App = () => {
         return null;
       }
       setWorkingPath(workingFolder);
-      return selectFolder(workingFolder);
+      return null;
     };
 
     if (workingPath.length !== 0) {
@@ -123,29 +63,30 @@ const App = () => {
     <ContextStore.Provider
       value={{
         labels,
-        onUpdatePage,
+        setWorkingPath,
       }}
     >
-      <div className="window">
-        <Header
-          exportProject={() => exportProject(pages, labels)}
-          selectFolder={selectFolder}
-          workingPath={workingPath}
-          importPage={importPageToReducer}
-        />
-        <div className="window-content">
-          <div className="pane">
-            <div className="pane-group">
-              <SideBar
-                pages={pages}
-                filterList={filterList}
-                setFilterList={setFilterList}
-              />
-              <Main pages={pages} />
+      <PageProvider workingPath={workingPath} setWorkingPath={setWorkingPath}>
+        <div className="window">
+          <Header
+            labels={labels}
+            selectFolder={selectFolder}
+            workingPath={workingPath}
+            setWorkingPath={setWorkingPath}
+          />
+          <div className="window-content">
+            <div className="pane">
+              <div className="pane-group">
+                <SideBar
+                  filterList={filterList}
+                  setFilterList={setFilterList}
+                />
+                <Main />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </PageProvider>
     </ContextStore.Provider>
   );
 };
