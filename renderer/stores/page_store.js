@@ -23,16 +23,16 @@ const PageContext = React.createContext(null);
 export const usePage = ({ workingPath, setWorkingPath }) => {
   const [pages, dispatchPages] = useReducer(pageReducer, []);
 
+  const addPages = (importedPages) => {
+    dispatchPages(importPage(importedPages));
+  };
+
   const addNewPage = (imgs) => {
     if (Array.isArray(imgs)) {
       return addPages(imgs.map((img) => pageCreater(img)));
     }
-  
-    return null;
-  };
 
-  const addPages = (importedPages) => {
-    dispatchPages(importPage(importedPages));
+    return null;
   };
 
   const onUpdatePage = (targetPage) => {
