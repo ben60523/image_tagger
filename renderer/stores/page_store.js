@@ -25,13 +25,13 @@ export const usePage = ({ workingPath, setWorkingPath }) => {
 
   const addNewPage = (imgs) => {
     if (Array.isArray(imgs)) {
-      return importPages(imgs.map((img) => pageCreater(img)));
+      return addPages(imgs.map((img) => pageCreater(img)));
     }
   
     return null;
   };
 
-  const importPages = (importedPages) => {
+  const addPages = (importedPages) => {
     dispatchPages(importPage(importedPages));
   };
 
@@ -73,7 +73,7 @@ export const usePage = ({ workingPath, setWorkingPath }) => {
     pages,
     addNewPage,
     onUpdatePage,
-    importPages,
+    addPages,
     generalListener,
   };
 };

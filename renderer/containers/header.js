@@ -15,7 +15,7 @@ const Header = ({
   labels,
   setWorkingPath,
 }) => {
-  const { importPages, pages } = usePageContext();
+  const { addPages, pages } = usePageContext();
   const history = useHistory();
 
   const clickInput = () => {
@@ -28,7 +28,7 @@ const Header = ({
 
   const onImportZip = async (e) => {
     const zipInfo = await importProject(e);
-    importPages(zipInfo.pages);
+    addPages(zipInfo.pages);
     history.push(zipInfo.pages[0].key);
     setWorkingPath(zipInfo.zipFile.path);
   };

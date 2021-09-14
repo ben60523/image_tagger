@@ -68,9 +68,7 @@ jest.mock('../renderer/request', () => ({
 }));
 
 afterEach(() => {
-  request.receive.mockReset();
-  request.removeListener.mockReset();
-  request.selectFolder.mockReset();
+  jest.clearAllMocks();
 })
 
 
@@ -104,7 +102,7 @@ test('test import pages function', () => {
 
   // import zip file(replace the page list with imported pages)
   act(() => {
-    result.current.importPages(mockImport);
+    result.current.addPages(mockImport);
   });
 
   expect(result.current.pages).toEqual(mockImport);
