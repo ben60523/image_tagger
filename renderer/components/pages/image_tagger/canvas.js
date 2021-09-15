@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { usePreferencesContext } from '../../../stores/preferences_store';
 
 const PAINTING = 'painting';
 
@@ -11,19 +12,18 @@ const baseStyle = {
 
 const Canvas = ({
   image,
-  getFocusLabel,
   canvasRef,
   tags,
   setTag,
-  getLabelByID,
   focusTag,
 }) => {
   let prePoint = {};
+  const { getLabelByID, getFocusedLabel } = usePreferencesContext();
 
   const getMaxTagNumber = () => {
     let counter = 1;
     tags.forEach((tag) => {
-      if (getFocusLabel().key === tag.labelID && tag.title) {
+      if (getFocusedLabel().key === tag.labelID && tag.title) {
         let tagTitleNum = tag.title
           .match(/\([0-9]+\)/i)[0]
           .match(/[0-9]+/i)[0];
@@ -41,10 +41,10 @@ const Canvas = ({
 
   const createTag = () => ({
     key: uuidv4(),
-    title: `${getFocusLabel().title}(${getMaxTagNumber()})`,
+    title: `${getFocusedLabel().title}(${getMaxTagNumber()})`,
     type: PAINTING,
     points: [],
-    labelID: getFocusLabel().key,
+    labelID: getFocusedLabel().key,
   });
 
   const paint = (prevPos, currPos, color) => {
@@ -93,11 +93,11 @@ const Canvas = ({
           top: Math.round(event.offsetY * scaleY),
         };
 
-        if (getFocusLabel()) {
+        if (getFocusedLabel()) {
           paint(
             prePoint,
             currentPoint,
-            getFocusLabel().color,
+            getFocusedLabel().color,
           );
         }
 
