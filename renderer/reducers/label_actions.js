@@ -18,5 +18,5 @@ export const addLabel = (labelInfo) => ({
   type: ADD_NEW_LABEL,
   payload: Array.isArray(labelInfo)
     ? labelInfo.map((labelItem) => createLabel(labelItem))
-    : createLabel(labelInfo),
+    : [createLabel(labelInfo)],
 });
