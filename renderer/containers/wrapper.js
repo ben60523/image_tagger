@@ -4,7 +4,7 @@ import '../assets/css/photon.css';
 import ContextStore from '../context_store';
 import { PageProvider } from '../stores/page_store';
 
-import labelReducer from '../reducers/label_reducers';
+import labelReducer from '../reducers/label_reducer';
 import { addNewTaggingLabel } from '../reducers/label_actions';
 import defaultabel from '../reducers/default_label';
 
