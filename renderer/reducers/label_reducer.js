@@ -6,13 +6,9 @@ const getNewLabelList = (labels, newLabel) => {
   return [...labels];
 };
 
-const addNewLabel = (preLabels, label) => {
-  if (Array.isArray(label)) {
-    return [...preLabels, ...label];
-  }
-
-  return [...preLabels, label];
-};
+const addNewLabel = (preLabels, label) => (
+  [...preLabels, ...label].sort((a, b) => (a.title > b.title ? 1 : -1))
+);
 
 export default (state, action) => {
   switch (action.type) {

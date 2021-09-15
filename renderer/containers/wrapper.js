@@ -3,9 +3,10 @@ import '../assets/css/photon.css';
 
 import ContextStore from '../context_store';
 import { PageProvider } from '../stores/page_store';
+import { PreferencesProvider } from '../stores/preferences_store';
 
 import labelReducer from '../reducers/label_reducer';
-import { addNewTaggingLabel } from '../reducers/label_actions';
+import { addLabel } from '../reducers/label_actions';
 import defaultabel from '../reducers/default_label';
 
 import Main from './main_pane';
@@ -30,7 +31,7 @@ const App = () => {
 
   // Set the default labels as the initial label
   const initLabels = () => {
-    ldispatch(addNewTaggingLabel(defaultabel));
+    ldispatch(addLabel(defaultabel));
   };
 
   // Initial Project
@@ -66,27 +67,29 @@ const App = () => {
         setWorkingPath,
       }}
     >
-      <PageProvider workingPath={workingPath} setWorkingPath={setWorkingPath}>
-        <div className="window">
-          <Header
-            labels={labels}
-            selectFolder={selectFolder}
-            workingPath={workingPath}
-            setWorkingPath={setWorkingPath}
-          />
-          <div className="window-content">
-            <div className="pane">
-              <div className="pane-group">
-                <SideBar
-                  filterList={filterList}
-                  setFilterList={setFilterList}
-                />
-                <Main />
+      <PreferencesProvider>
+        <PageProvider workingPath={workingPath} setWorkingPath={setWorkingPath}>
+          <div className="window">
+            <Header
+              labels={labels}
+              selectFolder={selectFolder}
+              workingPath={workingPath}
+              setWorkingPath={setWorkingPath}
+            />
+            <div className="window-content">
+              <div className="pane">
+                <div className="pane-group">
+                  <SideBar
+                    filterList={filterList}
+                    setFilterList={setFilterList}
+                  />
+                  <Main />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </PageProvider>
+        </PageProvider>
+      </PreferencesProvider>
     </ContextStore.Provider>
   );
 };
