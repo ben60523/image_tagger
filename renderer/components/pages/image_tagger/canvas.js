@@ -163,7 +163,6 @@ const Canvas = ({
   useEffect(() => {
     if (image) {
       initDraw();
-      console.log('render');
     }
   }, [tags, image, focusTag]);
 

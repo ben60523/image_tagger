@@ -25,7 +25,7 @@ export default () => {
                 alignItems: 'center',
               }}
               onClick={() => onSetFocusedLabelID(label.key)}
-              onKeyDown={() => console.log('key down')}
+              onKeyDown={() => null}
               tabIndex={0}
             >
               <span

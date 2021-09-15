@@ -59,9 +59,7 @@ export default function imageTagger({ page }) {
     const initImage = () => {
       loadImage(page.src)
         .then((img) => setImage(img))
-        .catch((error) => {
-          console.log('loading image error', error);
-
+        .catch(() => {
           setTimeout(() => {
             initImage();
           }, 500);
