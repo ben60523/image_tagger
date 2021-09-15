@@ -18,7 +18,6 @@ export const TAGGED_IMAGE = 'TAGGED_IMAGE';
 // For label reducer (TODO: fix select label function)
 export const UPDATE_LABEL = 'UPDATE_LABEL';
 export const ADD_NEW_LABEL = 'ADD_NEW_LABEL';
-export const INITIALIZE_LABEL = 'INITIALIZE_LABEL';
 
 // For page reducer
 export const UPDATE_PAGE = 'UPDATE_PAGE';
