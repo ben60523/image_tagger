@@ -44,8 +44,6 @@ export const usePreferences = () => {
 
   return {
     labels,
-    focusedLabelID,
-    dispatchLabels,
     createLabel,
     updateLabel,
     getLabelByID,

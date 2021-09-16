@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, screen, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu } = require('electron');
 const electronShortcut = require('electron-localshortcut');
 const winston = require('winston');
 const Datastore = require('nedb');

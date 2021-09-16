@@ -70,7 +70,6 @@ afterEach(() => {
   jest.clearAllMocks();
 })
 
-
 test('test initialize', () => {
   const { result } = renderHook(() => usePage({
     workingPath: 'test',
