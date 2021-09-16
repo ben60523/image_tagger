@@ -2,6 +2,15 @@ import React from 'react';
 
 import { usePreferencesContext } from '../../../stores/preferences_store';
 
+const labelStyle = {
+  position: 'relative',
+  display: 'flex',
+  padding: '3px 10px',
+  borderRadius: '5px',
+  marginTop: '5px',
+  alignItems: 'center',
+};
+
 export default () => {
   const { labels, onSetFocusedLabelID, getFocusedLabel } = usePreferencesContext();
 
@@ -16,14 +25,7 @@ export default () => {
             <div
               key={label.key}
               role="button"
-              style={{
-                position: 'relative',
-                display: 'flex',
-                padding: '3px 10px',
-                borderRadius: '5px',
-                marginTop: '5px',
-                alignItems: 'center',
-              }}
+              style={labelStyle}
               onClick={() => onSetFocusedLabelID(label.key)}
               onKeyDown={() => null}
               tabIndex={0}
