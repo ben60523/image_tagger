@@ -1,13 +1,9 @@
-import React, { useReducer, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../assets/css/photon.css';
 
 import ContextStore from '../context_store';
 import { PageProvider } from '../stores/page_store';
 import { PreferencesProvider } from '../stores/preferences_store';
-
-import labelReducer from '../reducers/label_reducer';
-import { addLabel } from '../reducers/label_actions';
-import defaultabel from '../reducers/default_label';
 
 import Main from './main_pane';
 import Header from './header';
@@ -15,7 +11,6 @@ import SideBar from './sidebar';
 
 import {
   receive,
-  selectFolder,
   initProject,
   updateWorkingPath,
 } from '../request';
@@ -25,20 +20,8 @@ import {
 } from '../constants';
 
 const App = () => {
-  const [labels, ldispatch] = useReducer(labelReducer, []);
   const [workingPath, setWorkingPath] = useState('');
   const [filterList, setFilterList] = useState([]);
-
-  // Set the default labels as the initial label
-  const initLabels = () => {
-    ldispatch(addLabel(defaultabel));
-  };
-
-  // Initial Project
-  useEffect(() => {
-    // Get the preject information from DB
-    initLabels();
-  }, []);
 
   useEffect(() => {
     // Get the working path and get the file names in that folder
@@ -63,7 +46,6 @@ const App = () => {
   return (
     <ContextStore.Provider
       value={{
-        labels,
         setWorkingPath,
       }}
     >
@@ -71,8 +53,6 @@ const App = () => {
         <PageProvider workingPath={workingPath} setWorkingPath={setWorkingPath}>
           <div className="window">
             <Header
-              labels={labels}
-              selectFolder={selectFolder}
               workingPath={workingPath}
               setWorkingPath={setWorkingPath}
             />

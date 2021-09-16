@@ -8,14 +8,12 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 import { importProject, exportProject } from '../utils';
 import { usePageContext } from '../stores/page_store';
+import { usePreferencesContext } from '../stores/preferences_store';
+import { selectFolder } from '../request';
 
-const Header = ({
-  selectFolder,
-  workingPath,
-  labels,
-  setWorkingPath,
-}) => {
+const Header = ({ workingPath, setWorkingPath }) => {
   const { addPages, pages } = usePageContext();
+  const { labels } = usePreferencesContext();
   const history = useHistory();
 
   const clickInput = () => {
