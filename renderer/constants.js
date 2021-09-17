@@ -9,9 +9,6 @@ export const FIND_ONE = 'FIND_ONE';
 export const UPDATE = 'UPDATE';
 export const SELECT_FOLDER = 'SELECT_FOLDER';
 
-// Auto tag function needs to be fixed
-export const AUTO_ANNO = 'AUTO_ANNO';
-
 // For sidebar filter
 export const TAGGED_IMAGE = 'TAGGED_IMAGE';
 
