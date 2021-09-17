@@ -6,15 +6,12 @@ export const createLabel = (label) => ({
   ...label,
 });
 
-export const createUpdateLabelAction = (label, contents) => ({
+export const updateLabelAction = (newLabel) => ({
   type: UPDATE_LABEL,
-  payload: {
-    ...label,
-    ...contents,
-  },
+  payload: newLabel,
 });
 
-export const addLabel = (labelInfo) => ({
+export const addLabelAction = (labelInfo) => ({
   type: ADD_NEW_LABEL,
   payload: Array.isArray(labelInfo)
     ? labelInfo.map((labelItem) => createLabel(labelItem))

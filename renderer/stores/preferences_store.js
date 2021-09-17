@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect, useState } from 'react';
 import labelReducer from '../reducers/label_reducer';
-import { addLabel, createUpdateLabelAction } from '../reducers/label_actions';
+import { addLabelAction, updateLabelAction } from '../reducers/label_actions';
 import defaultLabels from '../reducers/default_label';
 
 const PreferencesContext = React.createContext(null);
@@ -9,17 +9,78 @@ export const usePreferences = () => {
   const [labels, dispatchLabels] = useReducer(labelReducer, []);
   const [focusedLabelID, setFocusedLabelID] = useState(null);
 
+  const isValidColor = (strColor) => {
+    const s = new Option().style;
+    s.color = strColor;
+
+    // return 'false' if color wasn't assigned
+    return s.color !== '';
+  };
+
+  const isString = (title) => typeof title === 'string';
+
+  const titlehasExisted = (title) => {
+    const index = labels.findIndex((label) => title === label.title);
+
+    if (index !== -1) {
+      return true;
+    }
+
+    return false;
+  };
+
+  const checkNewLabel = (newLabelInfo) => {
+    if (
+      isString(newLabelInfo.title)
+      && isValidColor(newLabelInfo.color)
+      && !titlehasExisted(newLabelInfo.title)
+    ) {
+      return true;
+    }
+    return false;
+  };
+
   const createLabel = (newLabelInfo) => {
-    dispatchLabels(addLabel(newLabelInfo));
+    if (checkNewLabel(newLabelInfo)) {
+      dispatchLabels(addLabelAction(newLabelInfo));
+    }
   };
 
   // Add some logic for checking the contents
-  const updateLabel = (label, updatedContents) => {
-    dispatchLabels(createUpdateLabelAction(label, updatedContents));
+  const updateLabel = (newLabel) => {
+    dispatchLabels(updateLabelAction(newLabel));
+  };
+
+  const updateLabelColor = (label, newTitle) => {
+    if (
+      isString(newTitle)
+      && !titlehasExisted(newTitle)
+    ) {
+      updateLabel({
+        ...label,
+        title: newTitle,
+      });
+    }
+  };
+
+  const updateLabelTitle = (label, updatedColor) => {
+    if (isValidColor(updatedColor)) {
+      updateLabel({
+        ...label,
+        color: updatedColor,
+      });
+    }
   };
 
   const initLabels = () => {
-    dispatchLabels(addLabel(defaultLabels));
+    const result = defaultLabels.reduce((newLabelsArray, currentlabel) => {
+      if (checkNewLabel(currentlabel)) {
+        newLabelsArray.push(currentlabel);
+      }
+      return newLabelsArray;
+    }, []);
+
+    dispatchLabels(addLabelAction(result));
   };
 
   const getLabelByID = (id) => labels.find((label) => label.key === id);
@@ -45,7 +106,8 @@ export const usePreferences = () => {
   return {
     labels,
     createLabel,
-    updateLabel,
+    updateLabelColor,
+    updateLabelTitle,
     getLabelByID,
     getFocusedLabel,
     onSetFocusedLabelID,
