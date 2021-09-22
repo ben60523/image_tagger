@@ -51,7 +51,7 @@ export const usePreferences = () => {
     dispatchLabels(updateLabelAction(newLabel));
   };
 
-  const updateLabelColor = (label, newTitle) => {
+  const updateLabelTitle = (label, newTitle) => {
     if (
       isString(newTitle)
       && !titlehasExisted(newTitle)
@@ -63,7 +63,7 @@ export const usePreferences = () => {
     }
   };
 
-  const updateLabelTitle = (label, updatedColor) => {
+  const updateLabelColor = (label, updatedColor) => {
     if (isValidColor(updatedColor)) {
       updateLabel({
         ...label,
