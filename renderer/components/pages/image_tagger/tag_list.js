@@ -6,6 +6,7 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import Button from '@material-ui/core/Button';
+import { usePreferencesContext } from '../../../stores/preferences_store';
 
 const usePrevOpen = (open) => {
   const prevOpen = React.useRef();
@@ -20,10 +21,10 @@ const usePrevOpen = (open) => {
 const TagItem = ({
   tag,
   removeTag,
-  getLabelByID,
   setFocusTag,
 }) => {
   const { key } = tag;
+  const { getLabelByID } = usePreferencesContext();
   const label = getLabelByID(tag.labelID);
 
   const [open, setOpen] = React.useState(false);
@@ -109,7 +110,6 @@ const TagItem = ({
 export default ({
   tagList,
   removeTag,
-  getLabelByID,
   setFocusTag,
 }) => (
   <>
@@ -120,7 +120,6 @@ export default ({
       <TagItem
         tag={tag}
         removeTag={removeTag}
-        getLabelByID={getLabelByID}
         setFocusTag={setFocusTag}
       />
     )) }

@@ -1,18 +1,21 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import LibraryAddIcon from '@material-ui/icons/LibraryAdd';
 import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import SaveIcon from '@material-ui/icons/Save';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import { importProject } from '../utils';
+import { importProject, exportProject } from '../utils';
+import { usePageContext } from '../stores/page_store';
+import { usePreferencesContext } from '../stores/preferences_store';
+import { selectFolder } from '../request';
 
-const Header = ({
-  exportProject,
-  selectFolder,
-  workingPath,
-  importPage,
-}) => {
+const Header = ({ workingPath, setWorkingPath }) => {
+  const { addPages, pages } = usePageContext();
+  const { labels } = usePreferencesContext();
+  const history = useHistory();
+
   const clickInput = () => {
     const fileElem = document.getElementById('fileElem');
 
@@ -21,7 +24,12 @@ const Header = ({
     }
   };
 
-  const onImportZip = async (e) => importPage(await importProject(e));
+  const onImportZip = async (e) => {
+    const zipInfo = await importProject(e);
+    addPages(zipInfo.pages);
+    history.push(zipInfo.pages[0].key);
+    setWorkingPath(zipInfo.zipFile.path);
+  };
 
   return (
     <div
@@ -71,7 +79,7 @@ const Header = ({
         <IconButton
           aria-label="expand"
           size="small"
-          onClick={exportProject}
+          onClick={() => exportProject(pages, labels)}
         >
           <SaveIcon className="icon" />
         </IconButton>

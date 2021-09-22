@@ -2,12 +2,9 @@ import React, {
   useEffect,
   useRef,
   useState,
-  useContext,
 } from 'react';
 
 import Divider from '@material-ui/core/Divider';
-
-import ContextStore from '../../../context_store';
 
 import { loadImage } from '../../../utils';
 
@@ -15,6 +12,7 @@ import Labels from './labels';
 import Canvas from './canvas';
 import Toolbar from './toolbar';
 import TagList from './tag_list';
+import { usePageContext } from '../../../stores/page_store';
 
 const containerStyle = {
   width: '100%',
@@ -28,11 +26,10 @@ const containerStyle = {
 
 export default function imageTagger({ page }) {
   const canvasRef = useRef(null);
-  const { labels, onUpdatePage } = useContext(ContextStore);
+  const { onUpdatePage } = usePageContext();
   const [image, setImage] = useState(null);
   const [focusTag, setFocusTag] = useState(null);
   const [tags, setTag] = useState(page.tags);
-  const [teggedLabel, setTaggedLabel] = useState(labels[0]);
 
   const updatePageTag = () => {
     onUpdatePage({
@@ -40,10 +37,6 @@ export default function imageTagger({ page }) {
       tags,
     });
   };
-
-  const getLabelByID = (id) => labels.find((label) => label.key === id);
-
-  const getFocusLabel = () => teggedLabel;
 
   const removeAllTags = () => {
     setTag([]);
@@ -58,7 +51,6 @@ export default function imageTagger({ page }) {
 
   const takeSnapshot = (e) => {
     const dataURL = canvasRef.current.toDataURL();
-    console.log(e.currentTarget);
     e.currentTarget.href = dataURL;
   };
 
@@ -67,9 +59,7 @@ export default function imageTagger({ page }) {
     const initImage = () => {
       loadImage(page.src)
         .then((img) => setImage(img))
-        .catch((error) => {
-          console.log('loading image error', error);
-
+        .catch(() => {
           setTimeout(() => {
             initImage();
           }, 500);
@@ -88,11 +78,9 @@ export default function imageTagger({ page }) {
     >
       <Canvas
         canvasRef={canvasRef}
-        getFocusLabel={getFocusLabel}
         image={image}
         setTag={setTag}
         tags={tags}
-        getLabelByID={getLabelByID}
         focusTag={focusTag}
       />
       <div
@@ -123,10 +111,9 @@ export default function imageTagger({ page }) {
           takeSnapshot={takeSnapshot}
         />
         <Divider />
-        <Labels setTaggedLabel={setTaggedLabel} />
+        <Labels />
         <TagList
           tagList={tags}
-          getLabelByID={getLabelByID}
           removeTag={removeTag}
           setFocusTag={setFocusTag}
         />

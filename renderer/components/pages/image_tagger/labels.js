@@ -1,24 +1,18 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React from 'react';
 
-import ContextStore from '../../../context_store';
+import { usePreferencesContext } from '../../../stores/preferences_store';
 
-export default ({ setTaggedLabel }) => {
-  const { labels } = useContext(ContextStore);
-  const [focusedLabel, setFocusLabel] = useState(labels[0]);
+const labelStyle = {
+  position: 'relative',
+  display: 'flex',
+  padding: '3px 10px',
+  borderRadius: '5px',
+  marginTop: '5px',
+  alignItems: 'center',
+};
 
-  const updateCurrentLabel = (selectedLabel) => {
-    setFocusLabel(selectedLabel);
-  };
-
-  useEffect(() => {
-    if (labels.length !== 0) {
-      setFocusLabel(labels[0]);
-    }
-  }, []);
-
-  useEffect(() => {
-    setTaggedLabel(focusedLabel);
-  }, [focusedLabel]);
+export default () => {
+  const { labels, onSetFocusedLabelID, getFocusedLabel } = usePreferencesContext();
 
   return (
     <div>
@@ -26,26 +20,18 @@ export default ({ setTaggedLabel }) => {
         Labels
       </h5>
       {
-        labels.length !== 0 ? labels
-          .sort((a, b) => (a.title > b.title ? 1 : -1))
+        labels.length !== 0 && getFocusedLabel() !== null ? labels
           .map((label) => (
             <div
               key={label.key}
               role="button"
-              style={{
-                position: 'relative',
-                display: 'flex',
-                padding: '3px 10px',
-                borderRadius: '5px',
-                marginTop: '5px',
-                alignItems: 'center',
-              }}
-              onClick={() => updateCurrentLabel(label)}
-              onKeyDown={() => console.log('key down')}
+              style={labelStyle}
+              onClick={() => onSetFocusedLabelID(label.key)}
+              onKeyDown={() => null}
               tabIndex={0}
             >
               <span
-                className={`icon ${focusedLabel.key !== label.key ? 'icon-record' : 'icon-play'}`}
+                className={`icon ${getFocusedLabel().key !== label.key ? 'icon-record' : 'icon-play'}`}
                 style={{ color: label.color, marginRight: '5px' }}
               />
               {label.title}
