@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import EditIcon from '@material-ui/icons/Edit';
 import TextField from '@material-ui/core/TextField';
+import EditButton from '../../../common-components/edit_button';
 
-import { usePreferencesContext } from '../../../stores/preferences_store';
+import { usePreferencesContext } from '../../../../stores/preferences_store';
 
 const labelStyle = {
   position: 'relative',
@@ -14,27 +14,7 @@ const labelStyle = {
   justifyContent: 'space-between',
 };
 
-const EditButton = ({ editMode, setEditedLbelID, onEditDone }) => (
-  editMode ? (
-    <div
-      tabIndex="0"
-      role="button"
-      onClick={onEditDone}
-      onKeyPress={onEditDone}
-    >
-      Done
-    </div>
-  ) : (
-    <EditIcon
-      style={{
-        fontSize: '16px',
-      }}
-      onClick={setEditedLbelID}
-    />
-  )
-);
-
-const NormalLabel = ({ label, editedLbelID, setEditedLbelID }) => {
+export default ({ label, editedLbelID, setEditedLbelID }) => {
   const { onSetFocusedLabelID, getFocusedLabel, updateLabelTitle } = usePreferencesContext();
   const [labelInput, setLabelInput] = useState(label.title);
 
@@ -74,38 +54,9 @@ const NormalLabel = ({ label, editedLbelID, setEditedLbelID }) => {
       </div>
       <EditButton
         editMode={editedLbelID === label.key}
-        setEditedLbelID={() => setEditedLbelID(label.key)}
+        onEditBtnClick={() => setEditedLbelID(label.key)}
         onEditDone={onEditDone}
       />
-    </div>
-  );
-};
-
-export default () => {
-  const { labels, getFocusedLabel } = usePreferencesContext();
-  const [editedLbelID, setEditedLbelID] = useState(null);
-
-  return (
-    <div>
-      <div
-        style={{
-          padding: '10px 10px 2px',
-          fontWeight: '500',
-          color: '#666666',
-        }}
-      >
-        Labels
-      </div>
-      {
-        labels.length !== 0 && getFocusedLabel() !== null ? labels
-          .map((label) => (
-            <NormalLabel
-              label={label}
-              editedLbelID={editedLbelID}
-              setEditedLbelID={setEditedLbelID}
-            />
-          )) : null
-      }
     </div>
   );
 };
