@@ -48,27 +48,11 @@ export const usePreferences = () => {
 
   // Add some logic for checking the contents
   const updateLabel = (newLabel) => {
-    dispatchLabels(updateLabelAction(newLabel));
-  };
-
-  const updateLabelTitle = (label, newTitle) => {
     if (
-      isString(newTitle)
-      && !titlehasExisted(newTitle)
+      isString(newLabel.title)
+      && isValidColor(newLabel.color)
     ) {
-      updateLabel({
-        ...label,
-        title: newTitle,
-      });
-    }
-  };
-
-  const updateLabelColor = (label, updatedColor) => {
-    if (isValidColor(updatedColor)) {
-      updateLabel({
-        ...label,
-        color: updatedColor,
-      });
+      dispatchLabels(updateLabelAction(newLabel));
     }
   };
 
@@ -106,8 +90,7 @@ export const usePreferences = () => {
   return {
     labels,
     createLabel,
-    updateLabelColor,
-    updateLabelTitle,
+    updateLabel,
     getLabelByID,
     getFocusedLabel,
     onSetFocusedLabelID,

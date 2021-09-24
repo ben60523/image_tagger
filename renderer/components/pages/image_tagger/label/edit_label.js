@@ -13,18 +13,18 @@ import { usePreferencesContext } from '../../../../stores/preferences_store';
 
 function Palette({ selectedColor, handleColorChange }) {
   const colorList = [
-    { title: 'light blue', hex: '#64b5f6' },
-    { title: 'main blue', hex: '#2196f3' },
-    { title: 'dark blue', hex: '#1976d2' },
-    { title: 'light red', hex: '#e57373' },
-    { title: 'main red', hex: '#f44336' },
-    { title: 'dark red', hex: '#d32f2f' },
-    { title: 'light yellow', hex: '#ffb74d' },
-    { title: 'main yellow', hex: '#ff9800' },
-    { title: 'dark yellow', hex: '#f57c00' },
-    { title: 'light green', hex: '#81c784' },
-    { title: 'main green', hex: '#4caf50' },
-    { title: 'dark green', hex: '#388e3c' },
+    '#64b5f6', // light blue
+    '#2196f3', // main blue
+    '#1976d2', // dark blue
+    '#e57373', // light red
+    '#f44336', // main red
+    '#d32f2f', // dark red
+    '#ffb74d', // light yellow
+    '#ff9800', // main yellow
+    '#f57c00', // dark yellow
+    '#81c784', // light green
+    '#4caf50', // main green
+    '#388e3c', // dark green
   ];
 
   return (
@@ -39,17 +39,17 @@ function Palette({ selectedColor, handleColorChange }) {
     >
       {
         colorList.map((color) => (
-          selectedColor.title === color.title ? (
+          selectedColor === color ? (
             <CheckCircleIcon
               style={{
-                color: color.hex,
+                color,
                 margin: '2px',
               }}
             />
           ) : (
             <FiberManualRecordIcon
               style={{
-                color: color.hex,
+                color,
                 margin: '2px',
               }}
               onClick={() => handleColorChange(color)}
@@ -62,20 +62,21 @@ function Palette({ selectedColor, handleColorChange }) {
 }
 
 export default function EditModeLabel({ label }) {
-  const { updateLabelTitle } = usePreferencesContext();
+  const { updateLabel } = usePreferencesContext();
   const [anchorEl, setAnchorEl] = useState(null);
   const [labelInput, setLabelInput] = useState(label.title);
-  const [selectedColor, setSelectedColor] = useState({
-    title: label.title,
-    hex: label.color,
-  });
+  const [selectedColor, setSelectedColor] = useState(label.color);
 
   const handleClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
 
   const onEditDone = () => {
-    updateLabelTitle(label, labelInput);
+    updateLabel({
+      ...label,
+      title: labelInput,
+      color: selectedColor,
+    });
     setAnchorEl(null);
   };
 
