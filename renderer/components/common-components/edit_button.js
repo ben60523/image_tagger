@@ -1,5 +1,5 @@
 import React from 'react';
-import EditIcon from '@material-ui/icons/Edit';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 export default ({ editMode, onEditBtnClick, onEditDone }) => (
   editMode ? (
@@ -12,7 +12,7 @@ export default ({ editMode, onEditBtnClick, onEditDone }) => (
       Done
     </div>
   ) : (
-    <EditIcon
+    <MoreVertIcon
       style={{
         fontSize: '16px',
       }}

@@ -50,6 +50,7 @@ export default function EditCard({
               size="small"
               value={labelInput}
               variant="outlined"
+              placeholder="Label Title"
               onChange={(e) => setLabelInput(e.target.value)}
             />
             <Palette

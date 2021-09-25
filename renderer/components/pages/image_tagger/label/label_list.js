@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Label from './label';
 import EditLabe from './edit_label';
 import EditButton from '../../../common-components/edit_button';
-
+import Label from './label';
 import { usePreferencesContext } from '../../../../stores/preferences_store';
+import CreateLabel from './create_label';
 
 const labelStyle = {
   position: 'relative',
@@ -37,6 +37,7 @@ export default () => {
           onEditDone={() => setEditMode(false)}
         />
       </div>
+      { editMode ? (<CreateLabel />) : null}
       {
         labels.length !== 0 && getFocusedLabel() !== null ? labels
           .map((label) => (
