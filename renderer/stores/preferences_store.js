@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect, useState } from 'react';
 import labelReducer from '../reducers/label_reducer';
-import { addLabelAction, updateLabelAction } from '../reducers/label_actions';
+import { addLabelAction, updateLabelAction, importLabelAction } from '../reducers/label_actions';
 import defaultLabels from '../reducers/default_label';
 
 const PreferencesContext = React.createContext(null);
@@ -27,6 +27,23 @@ export const usePreferences = () => {
     }
 
     return false;
+  };
+
+  const importLabels = (newlabellist) => {
+    let isValid = true;
+
+    newlabellist.forEach((newLabel) => {
+      if (
+        !isString(newLabel.title)
+        || !isValidColor(newLabel.color)
+      ) {
+        isValid = false;
+      }
+    });
+
+    if (isValid) {
+      dispatchLabels(importLabelAction(newlabellist));
+    }
   };
 
   const checkNewLabel = (newLabelInfo) => {
@@ -94,6 +111,7 @@ export const usePreferences = () => {
     getLabelByID,
     getFocusedLabel,
     onSetFocusedLabelID,
+    importLabels,
   };
 };
 

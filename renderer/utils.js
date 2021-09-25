@@ -88,6 +88,7 @@ const importProject = (e) => {
 
   const classifyFiles = (filesInZip) => {
     let pagesFile = null;
+    let labelsFile = null;
     const imageFileList = [];
     const imageRegExp = /(.jpg|.png|.jpeg)$/;
 
@@ -95,6 +96,11 @@ const importProject = (e) => {
       .forEach((fileName) => {
         if (fileName === 'pages.json') {
           pagesFile = filesInZip[fileName];
+          return 'page';
+        }
+
+        if (fileName === 'labels.json') {
+          labelsFile = filesInZip[fileName];
           return 'page';
         }
 
@@ -110,6 +116,7 @@ const importProject = (e) => {
       return {
         pagesFile,
         imageFileList,
+        labelsFile,
       };
     }
 
@@ -155,6 +162,7 @@ const importProject = (e) => {
       return {
         zipFile,
         pages: putImageFileAsSrc(pages, zipCtn.imageFileList),
+        labels: await getPageContents(zipCtn.labelsFile),
       };
     } catch (err) {
       console.log(err);
