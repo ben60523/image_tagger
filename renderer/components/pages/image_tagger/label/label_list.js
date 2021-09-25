@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
-import EditLabe from './edit_label';
-import EditButton from '../../../common-components/edit_button';
+import React from 'react';
 import Label from './label';
 import { usePreferencesContext } from '../../../../stores/preferences_store';
-import CreateLabel from './create_label';
 
 const labelStyle = {
   position: 'relative',
@@ -17,38 +14,14 @@ const labelStyle = {
 
 export default () => {
   const { labels, getFocusedLabel } = usePreferencesContext();
-  const [editMode, setEditMode] = useState(false);
 
-  return (
-    <div>
+  return labels.length !== 0 && getFocusedLabel() !== null ? labels
+    .map((label) => (
       <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          padding: '10px 10px 2px',
-          fontWeight: '500',
-          color: '#666666',
-        }}
+        key={label.key}
+        style={labelStyle}
       >
-        Labels
-        <EditButton
-          editMode={editMode}
-          onEditBtnClick={() => setEditMode(true)}
-          onEditDone={() => setEditMode(false)}
-        />
+        <Label label={label} />
       </div>
-      { editMode ? (<CreateLabel />) : null}
-      {
-        labels.length !== 0 && getFocusedLabel() !== null ? labels
-          .map((label) => (
-            <div
-              key={label.key}
-              style={labelStyle}
-            >
-              { editMode ? <EditLabe label={label} /> : <Label label={label} /> }
-            </div>
-          )) : null
-      }
-    </div>
-  );
+    )) : null;
 };

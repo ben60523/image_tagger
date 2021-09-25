@@ -4,7 +4,8 @@ import EditCard from './edit_card';
 import { usePreferencesContext } from '../../../../stores/preferences_store';
 
 const label = {
-  color: '#555555',
+  title: 'default',
+  color: '#64b5f6',
 };
 
 export default function EditModeLabel() {
