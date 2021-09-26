@@ -13,7 +13,7 @@ import { selectFolder } from '../request';
 
 const Header = ({ workingPath, setWorkingPath }) => {
   const { addPages, pages } = usePageContext();
-  const { labels } = usePreferencesContext();
+  const { labels, importLabels } = usePreferencesContext();
   const history = useHistory();
 
   const clickInput = () => {
@@ -27,6 +27,7 @@ const Header = ({ workingPath, setWorkingPath }) => {
   const onImportZip = async (e) => {
     const zipInfo = await importProject(e);
     addPages(zipInfo.pages);
+    importLabels(zipInfo.labels);
     history.push(zipInfo.pages[0].key);
     setWorkingPath(zipInfo.zipFile.path);
   };

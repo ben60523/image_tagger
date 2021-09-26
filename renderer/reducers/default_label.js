@@ -1,22 +1,22 @@
 export default [
   {
     title: 'Red',
-    color: '#fc605b',
+    color: '#f44336',
     describe: 'Default',
   },
   {
     title: 'Green',
-    color: '#34c84a',
+    color: '#4caf50',
     describe: 'Default',
   },
   {
     title: 'Blue',
-    color: '#57acf5',
+    color: '#2196f3',
     describe: 'Default',
   },
   {
     title: 'Yellow',
-    color: '#fdbc40',
+    color: '#ff9800',
     describe: 'normal',
   },
 ];

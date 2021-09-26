@@ -8,7 +8,7 @@ import Divider from '@material-ui/core/Divider';
 
 import { loadImage } from '../../../utils';
 
-import Labels from './labels';
+import Labels from './label/label_container';
 import Canvas from './canvas';
 import Toolbar from './toolbar';
 import TagList from './tag_list';

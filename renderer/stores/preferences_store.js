@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect, useState } from 'react';
 import labelReducer from '../reducers/label_reducer';
-import { addLabelAction, updateLabelAction } from '../reducers/label_actions';
+import { addLabelAction, updateLabelAction, importLabelAction } from '../reducers/label_actions';
 import defaultLabels from '../reducers/default_label';
 
 const PreferencesContext = React.createContext(null);
@@ -29,6 +29,23 @@ export const usePreferences = () => {
     return false;
   };
 
+  const importLabels = (newlabellist) => {
+    let isValid = true;
+
+    newlabellist.forEach((newLabel) => {
+      if (
+        !isString(newLabel.title)
+        || !isValidColor(newLabel.color)
+      ) {
+        isValid = false;
+      }
+    });
+
+    if (isValid) {
+      dispatchLabels(importLabelAction(newlabellist));
+    }
+  };
+
   const checkNewLabel = (newLabelInfo) => {
     if (
       isString(newLabelInfo.title)
@@ -48,27 +65,11 @@ export const usePreferences = () => {
 
   // Add some logic for checking the contents
   const updateLabel = (newLabel) => {
-    dispatchLabels(updateLabelAction(newLabel));
-  };
-
-  const updateLabelColor = (label, newTitle) => {
     if (
-      isString(newTitle)
-      && !titlehasExisted(newTitle)
+      isString(newLabel.title)
+      && isValidColor(newLabel.color)
     ) {
-      updateLabel({
-        ...label,
-        title: newTitle,
-      });
-    }
-  };
-
-  const updateLabelTitle = (label, updatedColor) => {
-    if (isValidColor(updatedColor)) {
-      updateLabel({
-        ...label,
-        color: updatedColor,
-      });
+      dispatchLabels(updateLabelAction(newLabel));
     }
   };
 
@@ -106,11 +107,11 @@ export const usePreferences = () => {
   return {
     labels,
     createLabel,
-    updateLabelColor,
-    updateLabelTitle,
+    updateLabel,
     getLabelByID,
     getFocusedLabel,
     onSetFocusedLabelID,
+    importLabels,
   };
 };
 

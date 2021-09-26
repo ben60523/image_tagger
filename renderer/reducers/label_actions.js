@@ -1,5 +1,5 @@
 import CryptoJS from 'crypto-js';
-import { UPDATE_LABEL, ADD_NEW_LABEL } from '../constants';
+import { UPDATE_LABEL, ADD_NEW_LABEL, IMPORT_LABEL } from '../constants';
 
 export const createLabel = (label) => ({
   key: `${CryptoJS.SHA256(label.title).toString(CryptoJS.enc.Hex)}`,
@@ -16,4 +16,9 @@ export const addLabelAction = (labelInfo) => ({
   payload: Array.isArray(labelInfo)
     ? labelInfo.map((labelItem) => createLabel(labelItem))
     : [createLabel(labelInfo)],
+});
+
+export const importLabelAction = (labelList) => ({
+  type: IMPORT_LABEL,
+  payload: labelList,
 });
