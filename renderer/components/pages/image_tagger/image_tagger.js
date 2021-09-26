@@ -6,7 +6,7 @@ import React, {
 
 import Divider from '@material-ui/core/Divider';
 
-import { loadImage } from '../../../utils';
+import { loadImage } from '../../../utils/files_handler';
 
 import Labels from './label/label_container';
 import Canvas from './canvas';

@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
-import getFilter from '../filters/getFilter';
+import getFilter from '../utils/page_filters';
 
 import { usePageContext } from '../stores/page_store';
 import { TAGGED_IMAGE } from '../constants';
