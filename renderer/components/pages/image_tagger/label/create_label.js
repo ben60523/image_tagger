@@ -8,7 +8,7 @@ const label = {
   color: '#64b5f6',
 };
 
-export default function EditModeLabel() {
+export default function CreateModeLabel() {
   const { createLabel } = usePreferencesContext();
   const [anchorEl, setAnchorEl] = useState(null);
 
