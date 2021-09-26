@@ -6,10 +6,10 @@ import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import SaveIcon from '@material-ui/icons/Save';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import { importProject, exportProject } from '../utils/files_handler';
-import { usePageContext } from '../stores/page_store';
-import { usePreferencesContext } from '../stores/preferences_store';
-import { selectFolder } from '../request';
+import { importProject, exportProject } from '../../utils/files_handler';
+import { usePageContext } from '../../stores/page_store';
+import { usePreferencesContext } from '../../stores/preferences_store';
+import { selectFolder } from '../../request';
 
 const Header = ({ workingPath, setWorkingPath }) => {
   const { addPages, pages } = usePageContext();

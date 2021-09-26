@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import '../assets/css/photon.css';
+import '../../assets/css/photon.css';
 
-import ContextStore from '../context_store';
-import { PageProvider } from '../stores/page_store';
-import { PreferencesProvider } from '../stores/preferences_store';
+import ContextStore from '../../context_store';
+import { PageProvider } from '../../stores/page_store';
+import { PreferencesProvider } from '../../stores/preferences_store';
 
 import Main from './main_pane';
 import Header from './header';
@@ -13,11 +13,11 @@ import {
   receive,
   initProject,
   updateWorkingPath,
-} from '../request';
+} from '../../request';
 
 import {
   FROM_MAIN,
-} from '../constants';
+} from '../../constants';
 
 const App = () => {
   const [workingPath, setWorkingPath] = useState('');
