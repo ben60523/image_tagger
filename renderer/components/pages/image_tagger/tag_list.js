@@ -72,7 +72,7 @@ const TagItem = ({
           className="icon icon-record"
           style={{ color: label.color, marginRight: '5px' }}
         />
-        {tag.title ? tag.title : label.title}
+        {label.title}
       </Button>
       <Popper
         open={open}
