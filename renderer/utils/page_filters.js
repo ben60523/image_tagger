@@ -1,14 +1,8 @@
-import { TAGGED_IMAGE } from '../constants';
+const filterTaggedPage = (page) => page.tags.length > 0;
 
-const filterTaggedImg = (pageList) => (
-  pageList.filter((page) => page.tags.length > 0)
-);
+const searchFromName = (page, options) => (page.name.search(options.regexp) !== -1);
 
-export default (filterName, list) => {
-  switch (filterName) {
-    case TAGGED_IMAGE:
-      return filterTaggedImg(list);
-    default:
-      return list;
-  }
+export default {
+  filterTaggedPage,
+  searchFromName,
 };

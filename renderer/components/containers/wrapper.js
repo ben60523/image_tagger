@@ -21,7 +21,6 @@ import {
 
 const App = () => {
   const [workingPath, setWorkingPath] = useState('');
-  const [filterList, setFilterList] = useState([]);
 
   useEffect(() => {
     // Get the working path and get the file names in that folder
@@ -59,10 +58,7 @@ const App = () => {
             <div className="window-content">
               <div className="pane">
                 <div className="pane-group">
-                  <SideBar
-                    filterList={filterList}
-                    setFilterList={setFilterList}
-                  />
+                  <SideBar />
                   <Main />
                 </div>
               </div>

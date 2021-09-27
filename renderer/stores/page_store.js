@@ -1,5 +1,12 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, useState } from 'react';
 import pageReducer from '../reducers/page_reducer';
+import filtersList from '../utils/page_filters';
+import {
+  FROM_GENERAL,
+  FILTER_TAGGED_PAGE,
+  SELECT_FOLDER,
+  // FILTER_PAGE_WITH_NAME,
+} from '../constants';
 
 import {
   receive,
@@ -13,15 +20,11 @@ import {
   importPage,
 } from '../reducers/page_actions';
 
-import {
-  FROM_GENERAL,
-  SELECT_FOLDER,
-} from '../constants';
-
 const PageContext = React.createContext(null);
 
 export const usePage = ({ workingPath, setWorkingPath }) => {
   const [pages, dispatchPages] = useReducer(pageReducer, []);
+  const [pageFilters, setPageFilter] = useState([]);
 
   const addPages = (importedPages) => {
     dispatchPages(importPage(importedPages));
@@ -58,6 +61,36 @@ export const usePage = ({ workingPath, setWorkingPath }) => {
     return null;
   };
 
+  const filterPage = () => {
+    if (Array.isArray(pages) && pages.length > 0) {
+      return pageFilters.reduce((newPagelist, filter) => (
+        newPagelist.filter((page) => filtersList[filter.name](page, filter.options))
+      ), pages);
+    }
+
+    return pages;
+  };
+
+  const findFilter = (filterName) => pageFilters.findIndex(
+    (filter) => filter.name === filterName,
+  );
+
+  const toggleTagFilter = () => {
+    const filterIndex = findFilter(FILTER_TAGGED_PAGE);
+
+    if (filterIndex === -1) {
+      setPageFilter(
+        [
+          ...pageFilters,
+          { name: FILTER_TAGGED_PAGE },
+        ],
+      );
+    } else {
+      pageFilters.splice(filterIndex, 1);
+      setPageFilter([...pageFilters]);
+    }
+  };
+
   useEffect(() => {
     receive(FROM_GENERAL, generalListener);
 
@@ -71,7 +104,9 @@ export const usePage = ({ workingPath, setWorkingPath }) => {
   }, [workingPath]);
 
   return {
-    pages,
+    pages: filterPage(),
+    toggleTagFilter,
+    findFilter,
     addNewPage,
     onUpdatePage,
     addPages,
