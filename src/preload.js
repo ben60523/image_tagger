@@ -4,7 +4,6 @@ const {
 } = require("electron");
 
 const {
-  FROM_MAIN,
   TO_GENERAL,
   FROM_GENERAL,
 } = require("./const");
@@ -21,7 +20,7 @@ contextBridge.exposeInMainWorld(
       }
     },
     receive: (channel, func) => {
-      let validChannels = [FROM_MAIN, FROM_GENERAL];
+      let validChannels = [FROM_GENERAL];
       if (validChannels.includes(channel)) {
         ipcRenderer.on(channel, func);
       }

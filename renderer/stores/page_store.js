@@ -5,7 +5,6 @@ import {
   FROM_GENERAL,
   FILTER_TAGGED_PAGE,
   SELECT_FOLDER,
-  // FILTER_PAGE_WITH_NAME,
 } from '../constants';
 
 import {

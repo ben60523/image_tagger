@@ -1,5 +1,4 @@
 // For requests
-export const FROM_MAIN = 'FROM_MAIN';
 export const TO_GENERAL = 'TO_GENERAL';
 export const FROM_GENERAL = 'FROM_GENERAL';
 export const SELECT_FOLDER = 'SELECT_FOLDER';
