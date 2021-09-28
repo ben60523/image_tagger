@@ -12,7 +12,7 @@ const labelStyle = {
   justifyContent: 'space-between',
 };
 
-export default () => {
+export default React.memo(() => {
   const { labels, getFocusedLabel } = usePreferencesContext();
 
   return labels.length !== 0 && getFocusedLabel() !== null ? labels
@@ -24,4 +24,4 @@ export default () => {
         <Label label={label} />
       </div>
     )) : null;
-};
+});
