@@ -11,8 +11,13 @@ import { usePageContext } from '../../stores/page_store';
 import { usePreferencesContext } from '../../stores/preferences_store';
 import { selectFolder } from '../../request';
 
-const Header = ({ workingPath, setWorkingPath }) => {
-  const { addPages, pages } = usePageContext();
+const Header = () => {
+  const {
+    addPages,
+    pages,
+    workingPath,
+    setWorkingPath,
+  } = usePageContext();
   const { labels, importLabels } = usePreferencesContext();
   const history = useHistory();
 

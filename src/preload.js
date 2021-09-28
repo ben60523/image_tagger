@@ -4,7 +4,6 @@ const {
 } = require("electron");
 
 const {
-  TO_MAIN,
   FROM_MAIN,
   TO_GENERAL,
   FROM_GENERAL,
@@ -16,7 +15,7 @@ contextBridge.exposeInMainWorld(
   "api", {
     send: (channel, data) => {
       // whitelist channels
-      let validChannels = [TO_MAIN, TO_GENERAL];
+      let validChannels = [TO_GENERAL];
       if (validChannels.includes(channel)) {
         ipcRenderer.send(channel, data);
       }

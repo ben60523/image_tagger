@@ -22,9 +22,15 @@ import {
 
 const PageContext = React.createContext(null);
 
-export const usePage = ({ workingPath, setWorkingPath }) => {
+const getInitial = () => {
+  const path = localStorage.getItem('workingPath');
+  return path.search(/.zip$/) > -1 ? '' : path;
+};
+
+export const usePage = () => {
   const [pages, dispatchPages] = useReducer(pageReducer, []);
   const [pageFilters, setPageFilter] = useState([]);
+  const [workingPath, setWorkingPath] = useState(getInitial());
 
   const addPages = (importedPages) => {
     dispatchPages(importPage(importedPages));
@@ -98,8 +104,9 @@ export const usePage = ({ workingPath, setWorkingPath }) => {
   }, []);
 
   useEffect(() => {
-    if (workingPath.length !== 0) {
+    if (workingPath && workingPath?.length !== 0) {
       selectFolder(workingPath);
+      localStorage.setItem('workingPath', workingPath);
     }
   }, [workingPath]);
 
@@ -111,12 +118,14 @@ export const usePage = ({ workingPath, setWorkingPath }) => {
     onUpdatePage,
     addPages,
     generalListener,
+    workingPath,
+    setWorkingPath,
   };
 };
 
-export const PageProvider = ({ workingPath, setWorkingPath, children }) => (
+export const PageProvider = ({ children }) => (
   <PageContext.Provider
-    value={usePage({ workingPath, setWorkingPath })}
+    value={usePage()}
   >
     {children}
   </PageContext.Provider>

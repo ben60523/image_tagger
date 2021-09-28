@@ -8,11 +8,9 @@ const URL = require('url');
 const isDev = require('electron-is-dev');
 
 const controller = require('./controllers/controller');
-const mainController = require('./controllers/main_controller');
 const appMenu = require('./menu');
 
 const {
-  TO_MAIN,
   FROM_MAIN,
   TO_GENERAL,
   DB_PATH,
@@ -81,7 +79,7 @@ function createWindow () {
   win.maximize();
   win.show();
 
-  win.on('close', (e) => {
+  win.on('close', () => {
     if (win) {
       // e.preventDefault();
       win.webContents.send(FROM_MAIN, 'app-close');
@@ -97,15 +95,6 @@ function createWindow () {
   if (!isDev) {
     Menu.setApplicationMenu(Menu.buildFromTemplate(appMenu()));
   }
-  
-  // ipc connection
-  ipcMain.on(TO_MAIN, (e, props) => {
-    mainController({
-      win,
-      db: db.project,
-      props
-    })
-  })
 
   ipcMain.on(TO_GENERAL, (e, props) => {
     // console.log(props);
