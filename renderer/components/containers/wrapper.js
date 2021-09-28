@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../../assets/css/photon.css';
 
-import ContextStore from '../../context_store';
 import { PageProvider } from '../../stores/page_store';
 import { PreferencesProvider } from '../../stores/preferences_store';
 
@@ -43,30 +42,24 @@ const App = () => {
   }, [workingPath]);
 
   return (
-    <ContextStore.Provider
-      value={{
-        setWorkingPath,
-      }}
-    >
-      <PreferencesProvider>
-        <PageProvider workingPath={workingPath} setWorkingPath={setWorkingPath}>
-          <div className="window">
-            <Header
-              workingPath={workingPath}
-              setWorkingPath={setWorkingPath}
-            />
-            <div className="window-content">
-              <div className="pane">
-                <div className="pane-group">
-                  <SideBar />
-                  <Main />
-                </div>
+    <PreferencesProvider>
+      <PageProvider workingPath={workingPath} setWorkingPath={setWorkingPath}>
+        <div className="window">
+          <Header
+            workingPath={workingPath}
+            setWorkingPath={setWorkingPath}
+          />
+          <div className="window-content">
+            <div className="pane">
+              <div className="pane-group">
+                <SideBar />
+                <Main />
               </div>
             </div>
           </div>
-        </PageProvider>
-      </PreferencesProvider>
-    </ContextStore.Provider>
+        </div>
+      </PageProvider>
+    </PreferencesProvider>
   );
 };
 
