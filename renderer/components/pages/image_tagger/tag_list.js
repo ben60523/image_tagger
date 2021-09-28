@@ -48,6 +48,10 @@ const TagItem = ({
     handleClose(e);
   };
 
+  if (!label) {
+    return null;
+  }
+
   return (
     <>
       <Button

@@ -31,8 +31,8 @@ const Header = () => {
 
   const onImportZip = async (e) => {
     const zipInfo = await importProject(e);
-    addPages(zipInfo.pages);
     importLabels(zipInfo.labels);
+    addPages(zipInfo.pages);
     history.push(zipInfo.pages[0].key);
     setWorkingPath(zipInfo.zipFile.path);
   };
