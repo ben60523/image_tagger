@@ -1,19 +1,15 @@
 import React, {
-  useEffect,
   useRef,
-  useState,
-  useCallback,
 } from 'react';
 
 import Divider from '@material-ui/core/Divider';
-
-import { loadImage } from '../../../utils/files_handler';
 
 import Labels from './label/label_container';
 import Canvas from './canvas';
 import Toolbar from './toolbar';
 import TagList from './tag/tag_list';
-import { usePageContext } from '../../../stores/page_store';
+
+import usePage from './page_hook';
 
 const containerStyle = {
   width: '100%',
@@ -40,61 +36,6 @@ const pageTitleStyle = {
   margin: '10px 10px',
   overflow: 'auto',
   textOverflow: 'ellipsis',
-};
-
-const usePage = ({ page }) => {
-  const { onUpdatePage } = usePageContext();
-  const [image, setImage] = useState(null);
-  const [focusTag, setFocusTag] = useState(null);
-  const [tags, setTag] = useState(page.tags);
-
-  const updatePageTag = () => {
-    onUpdatePage({
-      ...page,
-      tags,
-    });
-  };
-
-  const removeAllTags = () => {
-    setTag([]);
-  };
-
-  const removeTag = useCallback(
-    (tag) => {
-      const tagIndex = tags.findIndex((currentTag) => currentTag.key === tag.key);
-
-      tags.splice(tagIndex, 1);
-      setTag([...tags]);
-    },
-    [tags],
-  );
-
-  const initImage = () => {
-    loadImage(page.src)
-      .then((img) => setImage(img))
-      .catch(() => {
-        setTimeout(() => {
-          initImage();
-        }, 500);
-      });
-  };
-
-  // Initial content
-  useEffect(() => {
-    initImage();
-  }, []);
-
-  useEffect(() => updatePageTag(tags), [tags]);
-
-  return {
-    image,
-    focusTag,
-    tags,
-    removeAllTags,
-    removeTag,
-    setTag,
-    setFocusTag,
-  };
 };
 
 export default function imageTagger({ page }) {
