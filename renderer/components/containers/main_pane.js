@@ -16,11 +16,9 @@ const MainContent = () => {
           <Route
             path={page.key}
             render={() => (
-              <>
-                <div className="pane">
-                  <ImageTagger page={page} />
-                </div>
-              </>
+              <div className="pane">
+                <ImageTagger page={page} />
+              </div>
             )}
           />
         ))

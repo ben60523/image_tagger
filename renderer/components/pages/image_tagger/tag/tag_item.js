@@ -6,7 +6,17 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import Button from '@material-ui/core/Button';
-import { usePreferencesContext } from '../../../stores/preferences_store';
+import { usePreferencesContext } from '../../../../stores/preferences_store';
+
+const labelButtonStyle = {
+  marginTop: '5px',
+  padding: '3px 10px',
+  width: '100%',
+  fontSize: '13px',
+  textTransform: 'none',
+  display: 'flex',
+  justifyContent: 'flex-start',
+};
 
 const usePrevOpen = (open) => {
   const prevOpen = React.useRef();
@@ -62,15 +72,7 @@ const TagItem = ({
         size="small"
         onMouseEnter={() => setFocusTag(tag)}
         onMouseLeave={() => setFocusTag(null)}
-        style={{
-          marginTop: '5px',
-          padding: '3px 10px',
-          width: '100%',
-          fontSize: '13px',
-          textTransform: 'none',
-          display: 'flex',
-          justifyContent: 'flex-start',
-        }}
+        style={labelButtonStyle}
       >
         <span
           className="icon icon-record"
@@ -111,21 +113,4 @@ const TagItem = ({
   );
 };
 
-export default ({
-  tagList,
-  removeTag,
-  setFocusTag,
-}) => (
-  <>
-    <h5 className="nav-group-title">
-      Tags
-    </h5>
-    { tagList.map((tag) => (
-      <TagItem
-        tag={tag}
-        removeTag={removeTag}
-        setFocusTag={setFocusTag}
-      />
-    )) }
-  </>
-);
+export default TagItem;
