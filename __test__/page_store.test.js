@@ -66,6 +66,11 @@ jest.mock('../renderer/request', () => ({
   selectFolder: jest.fn(() => null),
 }));
 
+beforeEach(() => {
+  jest.spyOn(global.localStorage.__proto__, 'getItem');
+  global.localStorage.__proto__.getItem = jest.fn(() => 'test');
+});
+
 afterEach(() => {
   jest.clearAllMocks();
 })
@@ -81,7 +86,7 @@ test('test initialize', () => {
     result.current.generalListener('', mockResp);
   });
 
-  expect(request.selectFolder.mock.calls.length).toBe(1);
+  expect(request.selectFolder.mock.calls.length).toBe(2);
   expect(result.current.pages).toEqual(mockPages);
 });
 

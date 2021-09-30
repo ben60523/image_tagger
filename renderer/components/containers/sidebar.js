@@ -4,10 +4,9 @@ import { useHistory } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
-import getFilter from '../filters/getFilter';
 
-import { usePageContext } from '../stores/page_store';
-import { TAGGED_IMAGE } from '../constants';
+import { usePageContext } from '../../stores/page_store';
+import { FILTER_TAGGED_PAGE } from '../../constants';
 
 const SideBarItem = ({
   page,
@@ -41,50 +40,13 @@ const SideBarItem = ({
   );
 };
 
-const SideBar = ({
-  filterList,
-  setFilterList,
-}) => {
+const SideBar = () => {
   const history = useHistory();
-  const { pages } = usePageContext();
+  const { pages, toggleTagFilter, findFilter } = usePageContext();
 
   const handleClick = (e, page) => {
     history.push(page.key);
   };
-
-  const filterPage = () => {
-    if (Array.isArray(pages) && pages.length > 0) {
-      const filteredMedia = filterList.reduce((list, filter) => (
-        getFilter(filter.name, list, filter.options)
-      ), pages);
-
-      return filteredMedia;
-    }
-
-    return [];
-  };
-
-  const findFilter = (filterName) => filterList.findIndex(
-    (filter) => filter.name === filterName,
-  );
-
-  const toggleTagFilter = (filterName) => {
-    const filterIndex = findFilter(filterName);
-
-    if (filterIndex === -1) {
-      setFilterList(
-        [
-          ...filterList,
-          { name: TAGGED_IMAGE },
-        ],
-      );
-    } else {
-      filterList.splice(filterIndex, 1);
-      setFilterList([...filterList]);
-    }
-  };
-
-  const imageList = filterPage();
 
   return (
     <div
@@ -114,10 +76,10 @@ const SideBar = ({
             <IconButton
               aria-label="expand"
               size="small"
-              onClick={() => toggleTagFilter(TAGGED_IMAGE)}
+              onClick={() => toggleTagFilter()}
             >
               {
-                findFilter(TAGGED_IMAGE) === -1 ? (
+                findFilter(FILTER_TAGGED_PAGE) === -1 ? (
                   <BookmarkBorderIcon fontSize="inherit" />
                 ) : (
                   <BookmarkIcon fontSize="inherit" />
@@ -129,13 +91,13 @@ const SideBar = ({
       </div>
       <ul className="list-group">
         {
-          imageList !== null ? imageList.map((page) => (
+          pages.map((page) => (
             <SideBarItem
               page={page}
               handleClick={handleClick}
               focusTabName={history.location.pathname}
             />
-          )) : null
+          ))
         }
       </ul>
     </div>

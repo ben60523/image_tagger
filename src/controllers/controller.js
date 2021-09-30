@@ -3,12 +3,9 @@ const { dialog } = require('electron');
 
 const { promises: fsPromises } = require('fs');
 
-const { autoAnno } = require('../models/auto_anno');
-
 const { FROM_GENERAL } = require("../const");
 
 const SELECT_FOLDER = 'SELECT_FOLDER';
-const AUTO_ANNO = 'AUTO_ANNO';
 
 const supportImageSuffix = ['jpg', 'png', 'jpeg'];
 
@@ -66,29 +63,9 @@ module.exports = ({ win, props }) => {
     return parseFolder(props.contents);
   }
 
-  const autoAnnotationImage = (props) => {
-    autoAnno(props.contents)
-      .then(lacations => {
-        console.log({
-          ...props,
-          contents: lacations                                                                                                                                                                                                                                                                                                                                                                                                 
-        });
-        return sendResponse(
-          FROM_GENERAL,
-          {
-            ...props,
-            contents: lacations                                                                                                                                                                                                                                                                                                                                                                                                 
-          }
-        );
-      })
-      .catch(err => console.error('autoAnnotationImage error'))
-  }
-
   switch(props.name) {
     case SELECT_FOLDER:
       return selectFolder(props);
-    case AUTO_ANNO:
-      return autoAnnotationImage(props);
     default:
       console.log('other request');
   }

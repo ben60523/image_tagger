@@ -1,8 +1,8 @@
-import CryptoJS from 'crypto-js';
+import { v4 as uuidv4 } from 'uuid';
 import { UPDATE_LABEL, ADD_NEW_LABEL, IMPORT_LABEL } from '../constants';
 
 export const createLabel = (label) => ({
-  key: `${CryptoJS.SHA256(label.title).toString(CryptoJS.enc.Hex)}`,
+  key: uuidv4(),
   ...label,
 });
 

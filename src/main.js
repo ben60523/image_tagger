@@ -1,23 +1,16 @@
 const { app, BrowserWindow, ipcMain, Menu } = require('electron');
 const electronShortcut = require('electron-localshortcut');
 const winston = require('winston');
-const Datastore = require('nedb');
 
 const path = require('path');
 const URL = require('url');
 const isDev = require('electron-is-dev');
 
 const controller = require('./controllers/controller');
-const mainController = require('./controllers/main_controller');
 const appMenu = require('./menu');
 
 const {
-  TO_MAIN,
-  FROM_MAIN,
   TO_GENERAL,
-  DB_PATH,
-  PROJECT_COLLECTION,
-  APP_PATH,
 } = require("./const");
 
 /**
@@ -39,17 +32,6 @@ const logger = winston.createLogger({
       filename: path.join(app.getPath('logs'), 'media_tagger_main.json')
     })
   ]
-});
-
-const db = {};
-
-db.project = new Datastore({
-  filename: path.join(
-    app.getPath(APP_PATH),
-    DB_PATH,
-    PROJECT_COLLECTION,
-  ),
-  autoload: true,
 });
 
 function createWindow () {
@@ -81,13 +63,6 @@ function createWindow () {
   win.maximize();
   win.show();
 
-  win.on('close', (e) => {
-    if (win) {
-      // e.preventDefault();
-      win.webContents.send(FROM_MAIN, 'app-close');
-    }
-  })
-
   // Register the shortcut for windows version
   electronShortcut.register(win, 'F12', () => {
     win.toggleDevTools();
@@ -97,19 +72,10 @@ function createWindow () {
   if (!isDev) {
     Menu.setApplicationMenu(Menu.buildFromTemplate(appMenu()));
   }
-  
-  // ipc connection
-  ipcMain.on(TO_MAIN, (e, props) => {
-    mainController({
-      win,
-      db: db.project,
-      props
-    })
-  })
 
   ipcMain.on(TO_GENERAL, (e, props) => {
     // console.log(props);
-    controller({win, app, db, props, logger: logger})
+    controller({win, app,  props, logger: logger})
   })
 }
 

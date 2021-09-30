@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 module.exports = (() => {
   const insert = (db, props) => {
     return new Promise((resolve, reject) => {

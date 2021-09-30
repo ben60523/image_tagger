@@ -6,13 +6,18 @@ import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import SaveIcon from '@material-ui/icons/Save';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import { importProject, exportProject } from '../utils';
-import { usePageContext } from '../stores/page_store';
-import { usePreferencesContext } from '../stores/preferences_store';
-import { selectFolder } from '../request';
+import { importProject, exportProject } from '../../utils/files_handler';
+import { usePageContext } from '../../stores/page_store';
+import { usePreferencesContext } from '../../stores/preferences_store';
+import { selectFolder } from '../../request';
 
-const Header = ({ workingPath, setWorkingPath }) => {
-  const { addPages, pages } = usePageContext();
+const Header = () => {
+  const {
+    addPages,
+    pages,
+    workingPath,
+    setWorkingPath,
+  } = usePageContext();
   const { labels, importLabels } = usePreferencesContext();
   const history = useHistory();
 
@@ -26,8 +31,8 @@ const Header = ({ workingPath, setWorkingPath }) => {
 
   const onImportZip = async (e) => {
     const zipInfo = await importProject(e);
-    addPages(zipInfo.pages);
     importLabels(zipInfo.labels);
+    addPages(zipInfo.pages);
     history.push(zipInfo.pages[0].key);
     setWorkingPath(zipInfo.zipFile.path);
   };

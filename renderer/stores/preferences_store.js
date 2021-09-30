@@ -1,4 +1,8 @@
-import React, { useReducer, useEffect, useState } from 'react';
+import React, {
+  useReducer,
+  useEffect,
+  useState,
+} from 'react';
 import labelReducer from '../reducers/label_reducer';
 import { addLabelAction, updateLabelAction, importLabelAction } from '../reducers/label_actions';
 import defaultLabels from '../reducers/default_label';

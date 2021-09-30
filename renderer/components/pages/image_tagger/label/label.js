@@ -5,6 +5,10 @@ import { usePreferencesContext } from '../../../../stores/preferences_store';
 export default ({ label }) => {
   const { onSetFocusedLabelID, getFocusedLabel } = usePreferencesContext();
 
+  if (!label) {
+    return null;
+  }
+
   return (
     <div
       style={{
@@ -17,7 +21,7 @@ export default ({ label }) => {
       tabIndex={0}
     >
       <span
-        className={`icon ${getFocusedLabel().key !== label.key ? 'icon-record' : 'icon-play'}`}
+        className={`icon ${getFocusedLabel()?.key !== label.key ? 'icon-record' : 'icon-play'}`}
         style={{ color: label.color, marginRight: '5px' }}
       />
       {label.title}

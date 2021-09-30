@@ -20,28 +20,8 @@ const Canvas = ({
   let prePoint = {};
   const { getLabelByID, getFocusedLabel } = usePreferencesContext();
 
-  const getMaxTagNumber = () => {
-    let counter = 1;
-    tags.forEach((tag) => {
-      if (getFocusedLabel().key === tag.labelID && tag.title) {
-        let tagTitleNum = tag.title
-          .match(/\([0-9]+\)/i)[0]
-          .match(/[0-9]+/i)[0];
-
-        tagTitleNum = Number(tagTitleNum);
-
-        if (tagTitleNum + 1 > counter) {
-          counter = tagTitleNum + 1;
-        }
-      }
-    });
-
-    return counter;
-  };
-
   const createTag = () => ({
     key: uuidv4(),
-    title: `${getFocusedLabel().title}(${getMaxTagNumber()})`,
     type: PAINTING,
     points: [],
     labelID: getFocusedLabel().key,
