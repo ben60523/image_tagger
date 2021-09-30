@@ -23,7 +23,7 @@ const PageContext = React.createContext(null);
 
 const getInitial = () => {
   const path = localStorage.getItem('workingPath');
-  return path.search(/.zip$/) > -1 ? '' : path;
+  return String.toString(path).search(/.zip$/) > -1 ? '' : path;
 };
 
 export const usePage = () => {
