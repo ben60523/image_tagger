@@ -6,7 +6,7 @@ Image is a cross-platform annotation application that help user annotates the im
 # Download link
 [media_tagger 1.9.1](https://downloadfroms3.s3.ap-northeast-2.amazonaws.com/media_tagger_1.9.1_setup.exe) Installer for Windows 10, 64-bit.
 
-# User guide
+# Quick guide
 ![](https://i.imgur.com/QDkrmPR.jpg)
 
 1. `Import`button
@@ -22,10 +22,42 @@ Image is a cross-platform annotation application that help user annotates the im
 
 [For more details](https://hackmd.io/@iJR7h8jYSP-QULUBWb122A/HJAjSYm-t)
 
-# Tags
-1. cross-platform
-2. Electron
+# Development
+
+## Tech stack
+1. Electron
 3. ReactJS
 4. webpack
 5. React Hook
-6. Electron Hot reload
+6. babel
+7. Jest
+
+## How to install?
+```bash
+npm install
+```
+
+## How to start?
+After running start, when the code changed it will auto-update
+```bash
+npm start
+```
+
+## How to test?
+```bash
+npm test
+```
+
+## How to build different version?
+1. run on specific flatform
+2. run instruction
+
+```bash
+npm run dist
+```
+
+# Todo List
+- [ ] Extract frontend code(for web version)
+- [ ] Setting CI/CD (try github action)
+
+
