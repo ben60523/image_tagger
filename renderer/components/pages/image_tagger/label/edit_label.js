@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ColorIcon from '../../../common-components/color_icon';
 import EditCard from './edit_card';
 
 import { usePreferencesContext } from '../../../../stores/preferences_store';
@@ -32,10 +33,7 @@ export default function EditModeLabel({ label }) {
         onKeyDown={() => null}
         tabIndex={0}
       >
-        <span
-          className="icon icon-record"
-          style={{ color: label.color, marginRight: '5px' }}
-        />
+        <ColorIcon color={label.color} />
         {label.title}
       </div>
       <EditCard

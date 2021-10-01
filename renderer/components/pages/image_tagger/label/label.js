@@ -1,6 +1,6 @@
 import React from 'react';
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import CheckIcon from '@material-ui/icons/Check';
+import ColorIcon from '../../../common-components/color_icon';
 
 import { usePreferencesContext } from '../../../../stores/preferences_store';
 
@@ -34,9 +34,7 @@ export default ({ label }) => {
             style={iconStyle(label.color)}
           />
         ) : (
-          <FiberManualRecordIcon
-            style={iconStyle(label.color)}
-          />
+          <ColorIcon color={label.color} />
         )
       }
       {label.title}
