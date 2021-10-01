@@ -62,6 +62,7 @@ const Header = () => {
               type="file"
               id="fileElem"
               name="file"
+              accept=".zip"
               onChange={onImportZip}
               style={{ display: 'none' }}
             />
