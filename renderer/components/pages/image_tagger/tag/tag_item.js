@@ -6,6 +6,7 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import Button from '@material-ui/core/Button';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import { usePreferencesContext } from '../../../../stores/preferences_store';
 
 const labelButtonStyle = {
@@ -17,6 +18,12 @@ const labelButtonStyle = {
   display: 'flex',
   justifyContent: 'flex-start',
 };
+
+const iconStyle = (color) => ({
+  fontSize: '14px',
+  color,
+  marginRight: '5px',
+});
 
 const usePrevOpen = (open) => {
   const prevOpen = React.useRef();
@@ -74,9 +81,8 @@ const TagItem = ({
         onMouseLeave={() => setFocusTag(null)}
         style={labelButtonStyle}
       >
-        <span
-          className="icon icon-record"
-          style={{ color: label.color, marginRight: '5px' }}
+        <FiberManualRecordIcon
+          style={iconStyle(label.color)}
         />
         {label.title}
       </Button>
