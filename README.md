@@ -58,6 +58,10 @@ npm run dist
 
 # Todo List
 - [ ] Extract frontend code(for web version)
-- [ ] Setting CI/CD (try github action)
+- [ ] Try CI/CD (auto build and update the application to s3)
+- [ ] Try style conponent
+- [ ] Setting backend(firebase)
+- [ ] release Mac OS version 
+
 
 
