@@ -1,6 +1,14 @@
 import React from 'react';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import CheckIcon from '@material-ui/icons/Check';
 
 import { usePreferencesContext } from '../../../../stores/preferences_store';
+
+const iconStyle = (color) => ({
+  fontSize: '14px',
+  color,
+  marginRight: '5px',
+});
 
 export default ({ label }) => {
   const { onSetFocusedLabelID, getFocusedLabel } = usePreferencesContext();
@@ -20,10 +28,17 @@ export default ({ label }) => {
       onKeyDown={() => null}
       tabIndex={0}
     >
-      <span
-        className={`icon ${getFocusedLabel()?.key !== label.key ? 'icon-record' : 'icon-play'}`}
-        style={{ color: label.color, marginRight: '5px' }}
-      />
+      {
+        getFocusedLabel()?.key === label.key ? (
+          <CheckIcon
+            style={iconStyle(label.color)}
+          />
+        ) : (
+          <FiberManualRecordIcon
+            style={iconStyle(label.color)}
+          />
+        )
+      }
       {label.title}
     </div>
   );
