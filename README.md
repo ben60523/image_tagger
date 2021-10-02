@@ -4,7 +4,11 @@
 Image is a cross-platform annotation application that help user annotates the images and share to others.
 
 # Download link
-[media_tagger 1.9.1](https://downloadfroms3.s3.ap-northeast-2.amazonaws.com/media_tagger_1.9.1_setup.exe) Installer for Windows 10, 64-bit.
+[media_tagger 0.9.1 for Windows](https://downloadfroms3.s3.ap-northeast-2.amazonaws.com/media_tagger_0.9.1_setup.exe)
+
+[media_tagger 0.9.1 for Mac OS](https://downloadfroms3.s3.ap-northeast-2.amazonaws.com/media_tagger_mac_0.9.1_setup.dmg)
+
+Warning: the warning will pop up when you install the app because the application doesn't apply certification for now
 
 # Quick guide
 ![](https://i.imgur.com/QDkrmPR.jpg)
@@ -58,10 +62,9 @@ npm run dist
 
 # Todo List
 - [ ] Extract frontend code(for web version)
-- [ ] Try CI/CD (auto build and update the application to s3)
+- [ ] Try CI/CD (auto build and update different version to s3)
 - [ ] Try style conponent
 - [ ] Setting backend(firebase)
-- [ ] release Mac OS version 
 
 
 
